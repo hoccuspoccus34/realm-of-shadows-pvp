@@ -542,7 +542,6 @@ body::before {
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="client.js"></script>
 <script>
 // =====================================================
 // REALM OF SHADOWS - Multiplayer PvP RPG
@@ -743,7 +742,7 @@ socket.on('error', (data) => {
 socket.on('registered', (data) => {
   isRegistered = true;
   console.log('[WS] Registered:', data.message);
-  showToast('🌐 ' + data.message, 'arena');
+  // USUNIĘTO showToast - brak powiadomienia o rejestracji
   updateConnectionStatus();
   if (getActivePanel() === 'arena') {
     renderArena();
@@ -754,9 +753,13 @@ socket.on('registered', (data) => {
 socket.on('playerList', (list) => {
   onlinePlayers = list;
   updateOnlinePlayersList();
-  if (getActivePanel() === 'arena') {
-    renderArena(); // Odśwież arenę żeby zaktualizować leaderboard
+  // NIE wywołuj renderArena() tutaj - tylko aktualizuj listę i leaderboard
+  const lbEl = document.getElementById('arena-leaderboard-container');
+  if (lbEl && getActivePanel() === 'arena') {
+    lbEl.innerHTML = renderLeaderboard();
   }
+  const countEl = document.getElementById('online-count');
+  if (countEl) countEl.textContent = list.length;
 });
 
 socket.on('onlineCount', (count) => {
@@ -816,7 +819,104 @@ socket.on('battleUpdate', (data) => {
     currentBattle.log.push(data.log);
   }
   currentBattle.turns = data.turns;
-  renderArena();
+  
+function updateBattleUI() {
+  if (!currentBattle || currentBattle.finished) return;
+  
+  // Update HP bars
+  const you = currentBattle.you;
+  const opp = currentBattle.opponent;
+  
+  const youHpPct = Math.max(0, (you.currentHP / you.maxHP) * 100);
+  const oppHpPct = Math.max(0, (opp.currentHP / opp.maxHP) * 100);
+  
+  // Update your HP bar
+  const youEl = document.getElementById('mp-you');
+  if (youEl) {
+    const hpBar = youEl.querySelector('.bar-fill');
+    const hpText = youEl.querySelector('.bar-text');
+    if (hpBar) {
+      hpBar.style.width = youHpPct + '%';
+      if (youHpPct < 25) hpBar.style.animation = 'pulse .5s infinite';
+      else hpBar.style.animation = '';
+    }
+    if (hpText) hpText.textContent = you.currentHP + '/' + you.maxHP;
+    
+    // Shake animation on hit
+    if (currentBattle.log.length > 0) {
+      const lastLog = currentBattle.log[currentBattle.log.length - 1];
+      if (lastLog.defender === you.name) {
+        youEl.classList.add('animate-shake');
+        setTimeout(() => youEl.classList.remove('animate-shake'), 400);
+      }
+    }
+  }
+  
+  // Update opponent HP bar
+  const oppEl = document.getElementById('mp-opp');
+  if (oppEl) {
+    const hpBar = oppEl.querySelector('.bar-fill');
+    const hpText = oppEl.querySelector('.bar-text');
+    if (hpBar) {
+      hpBar.style.width = oppHpPct + '%';
+      if (oppHpPct < 25) {
+        hpBar.style.animation = 'pulse .5s infinite';
+        hpBar.style.background = 'linear-gradient(90deg,#e74c3c,#ff6b6b)';
+      } else {
+        hpBar.style.animation = '';
+      }
+    }
+    if (hpText) hpText.textContent = opp.currentHP + '/' + opp.maxHP;
+    
+    if (currentBattle.log.length > 0) {
+      const lastLog = currentBattle.log[currentBattle.log.length - 1];
+      if (lastLog.defender === opp.name) {
+        oppEl.classList.add('animate-shake');
+        setTimeout(() => oppEl.classList.remove('animate-shake'), 400);
+      }
+    }
+  }
+  
+  // Update combat log
+  const logEl = document.getElementById('mp-combat-log');
+  if (logEl && currentBattle.log.length > 0) {
+    const lastLog = currentBattle.log[currentBattle.log.length - 1];
+    let logHtml = '';
+    if (lastLog.type === 'attack') {
+      const cls = lastLog.crit ? 'log-crit' : (lastLog.attacker === currentBattle.you.name ? 'log-player' : 'log-enemy');
+      logHtml = '<div class="log-entry ' + cls + '">';
+      logHtml += (lastLog.crit ? '⚡ CRIT! ' : '') + lastLog.attacker + ' hits ' + lastLog.defender + ' for ' + lastLog.damage + ' dmg (' + lastLog.blocked + ' blocked)';
+      logHtml += ' — ' + lastLog.defender + ': ' + lastLog.defenderHP + '/' + lastLog.defenderMaxHP + ' HP';
+      logHtml += '</div>';
+    } else {
+      logHtml = '<div class="log-entry log-system">' + (lastLog.message || lastLog.type) + '</div>';
+    }
+    logEl.insertAdjacentHTML('beforeend', logHtml);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+}
+
+function updateTurnUI() {
+  const indicator = document.querySelector('.mp-turn-indicator');
+  if (indicator) {
+    if (isMyTurn) {
+      indicator.innerHTML = '<span style="color:var(--gold-bright);font-weight:700;">⚔️ YOUR TURN — Attack!</span>';
+    } else {
+      indicator.innerHTML = '<span style="color:var(--text-dim);">⏳ ' + currentBattle.currentTurnName + '\'s turn...</span>';
+    }
+  }
+  
+  // Update attack button
+  const atkBtn = document.querySelector('.btn-fight');
+  if (atkBtn) {
+    atkBtn.disabled = !isMyTurn;
+    atkBtn.innerHTML = '⚔️ Attack' + (!isMyTurn ? ' (Wait...)' : '');
+  }
+}
+
+  // Zamiast renderArena() - aktualizuj tylko HP i log
+  updateBattleUI();
+  
   if (data.log && data.log.crit) playSound('crit');
   else if (data.log) playSound('hit');
 });
@@ -826,7 +926,8 @@ socket.on('turnChange', (data) => {
   currentBattle.currentTurn = data.currentTurn;
   currentBattle.currentTurnName = data.currentTurnName;
   isMyTurn = (data.currentTurn === mySocketId);
-  renderArena();
+  // Aktualizuj tylko turn indicator i przyciski
+  updateTurnUI();
 });
 
 socket.on('battleEnd', (data) => {
@@ -1331,8 +1432,10 @@ function renderArena() {
   }
 
   // LEADERBOARD (based on online players)
-  html += '<div class="panel-title" style="margin-top:14px;"><span class="icon">🏆</span> Global Leaderboard</div>';
-  html += renderLeaderboard();
+html += '<div class="panel-title" style="margin-top:14px;"><span class="icon">🏆</span> Global Leaderboard</div>';
+html += '<div id="arena-leaderboard-container">';
+html += renderLeaderboard();
+html += '</div>';
 
   // CHAT
   html += renderChat();
