@@ -6,7 +6,6 @@
 <title>Realm of Shadows - Multiplayer PvP RPG</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;700&family=Uncial+Antiqua&display=swap');
-
 :root {
   --bg-dark: #0d0d14;
   --bg-panel: #1a1a2e;
@@ -34,9 +33,7 @@
   --shadow: 0 4px 20px rgba(0,0,0,0.6);
   --glow-gold: 0 0 15px rgba(200,168,78,0.3);
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
   background: var(--bg-dark);
   color: var(--text);
@@ -44,7 +41,6 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
-
 body::before {
   content: '';
   position: fixed;
@@ -56,12 +52,10 @@ body::before {
   pointer-events: none;
   z-index: 0;
 }
-
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
 ::-webkit-scrollbar-thumb { background: var(--border-gold-dim); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-gold); }
-
 @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes slideInLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes slideInRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
@@ -92,7 +86,7 @@ body::before {
   0%, 100% { text-shadow: 0 0 10px rgba(192,57,43,0.5); }
   50% { text-shadow: 0 0 30px rgba(192,57,43,0.9); }
 }
-
+@keyframes spin { to { transform: rotate(360deg); } }
 .animate-fade { animation: fadeIn 0.5s ease-out; }
 .animate-slide-left { animation: slideInLeft 0.4s ease-out; }
 .animate-slide-right { animation: slideInRight 0.4s ease-out; }
@@ -100,9 +94,7 @@ body::before {
 .animate-crit { animation: critFlash 0.3s ease-out; }
 .animate-level-up { animation: levelUp 0.8s ease-out; }
 .animate-bounce { animation: bounceIn 0.5s ease-out; }
-
 #app { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 10px; min-height: 100vh; }
-
 .game-header {
   text-align: center; padding: 18px 10px 10px;
   border-bottom: 2px solid var(--border-gold-dim); margin-bottom: 10px;
@@ -111,19 +103,16 @@ body::before {
 }
 .game-title { font-family: 'Uncial Antiqua', cursive; font-size: 2.2rem; color: var(--gold); text-shadow: 0 0 30px rgba(200,168,78,0.4), 0 2px 4px rgba(0,0,0,0.8); letter-spacing: 3px; margin-bottom: 4px; }
 .game-subtitle { font-size: 0.75rem; color: var(--text-dim); letter-spacing: 2px; }
-
 .nav-bar { display: flex; gap: 4px; padding: 8px; background: var(--bg-panel); border: 1px solid var(--border-gold-dim); border-radius: 8px; margin-bottom: 10px; flex-wrap: wrap; justify-content: center; }
 .nav-btn { flex: 1; min-width: 80px; padding: 10px 8px; background: var(--bg-panel-light); border: 1px solid var(--border-gold-dim); border-radius: 6px; color: var(--text); font-family: 'Cinzel', serif; font-size: 0.75rem; cursor: pointer; transition: all 0.3s; text-align: center; }
 .nav-btn:hover { background: var(--bg-panel-accent); border-color: var(--border-gold); color: var(--gold); transform: translateY(-2px); }
 .nav-btn.active { background: linear-gradient(135deg, rgba(200,168,78,0.2), rgba(200,168,78,0.05)); border-color: var(--border-gold); color: var(--gold); box-shadow: var(--glow-gold); }
 .nav-btn .nav-icon { font-size: 1.2rem; display: block; margin-bottom: 2px; }
-
 .panel { display: none; animation: fadeIn 0.4s ease-out; }
 .panel.active { display: block; }
 .panel-box { background: var(--bg-panel); border: 1px solid var(--border-gold-dim); border-radius: 10px; padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow); }
 .panel-title { font-family: 'MedievalSharp', cursive; font-size: 1.3rem; color: var(--gold); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border-gold-dim); display: flex; align-items: center; gap: 8px; }
 .panel-title .icon { font-size: 1.4rem; }
-
 #creation-screen { display: flex; align-items: center; justify-content: center; min-height: 90vh; animation: fadeIn 0.8s ease-out; }
 .creation-box { background: var(--bg-panel); border: 2px solid var(--border-gold); border-radius: 16px; padding: 30px; max-width: 520px; width: 100%; box-shadow: var(--shadow), var(--glow-gold); }
 .creation-box h1 { font-family: 'Uncial Antiqua', cursive; color: var(--gold); text-align: center; font-size: 2rem; margin-bottom: 6px; text-shadow: 0 0 20px rgba(200,168,78,0.3); }
@@ -145,7 +134,6 @@ body::before {
 .class-stats-preview .stat-label { color: var(--text-dim); font-size: 0.6rem; }
 .btn-create { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--border-gold), #9a7a30); border: none; border-radius: 8px; color: #1a1a2e; font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; letter-spacing: 2px; margin-top: 10px; }
 .btn-create:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(200,168,78,0.4); }
-
 .status-bar { display: grid; grid-template-columns: auto 1fr 1fr auto; gap: 12px; align-items: center; background: var(--bg-panel); border: 1px solid var(--border-gold-dim); border-radius: 8px; padding: 10px 16px; margin-bottom: 10px; }
 .status-name { font-family: 'MedievalSharp', cursive; color: var(--gold); font-size: 1rem; }
 .status-class { font-size: 0.7rem; color: var(--text-dim); }
@@ -158,7 +146,6 @@ body::before {
 .bar-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.65rem; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.8); z-index: 2; white-space: nowrap; font-weight: 700; }
 .status-resources { display: flex; gap: 14px; font-size: 0.8rem; }
 .status-resources span { display: flex; align-items: center; gap: 4px; }
-
 .char-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .stats-list { display: flex; flex-direction: column; gap: 6px; }
 .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--bg-panel-accent); border-radius: 6px; border-left: 3px solid var(--border-gold-dim); transition: all 0.3s; position: relative; }
@@ -173,7 +160,6 @@ body::before {
 .stat-point-btn-10:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
 .stat-points-banner { background: linear-gradient(135deg, rgba(200,168,78,0.15), transparent); border: 1px solid var(--border-gold); border-radius: 8px; padding: 10px; text-align: center; margin-bottom: 14px; animation: glow 2s infinite; }
 .stat-points-banner .count { color: var(--gold-bright); font-size: 1.3rem; font-weight: 700; }
-
 .stat-name-wrap { position: relative; display: inline-flex; align-items: center; cursor: help; }
 .stat-tooltip { display: none; position: absolute; bottom: calc(100% + 12px); left: 0; background: var(--bg-dark); border: 1px solid var(--border-gold); border-radius: 8px; padding: 14px 16px; min-width: 300px; max-width: 360px; z-index: 100; box-shadow: 0 8px 32px rgba(0,0,0,0.8), var(--glow-gold); pointer-events: none; animation: fadeIn 0.15s ease-out; }
 .stat-tooltip::after { content: ''; position: absolute; top: 100%; left: 20px; border: 6px solid transparent; border-top-color: var(--border-gold); }
@@ -186,7 +172,6 @@ body::before {
 .stat-tooltip-breakdown .stb-value { color: var(--text-bright); font-weight: 700; }
 .stat-tooltip-breakdown .stb-value.stb-green { color: var(--heal-green); }
 .stat-tooltip-breakdown .stb-value.stb-gold { color: var(--gold-bright); }
-
 .equip-slots { display: flex; flex-direction: column; gap: 8px; }
 .equip-slot { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--bg-panel-accent); border: 1px dashed var(--border-gold-dim); border-radius: 8px; min-height: 56px; transition: all 0.3s; }
 .equip-slot.filled { border-style: solid; }
@@ -197,7 +182,6 @@ body::before {
 .equip-slot .slot-stats { font-size: 0.65rem; color: var(--heal-green); }
 .btn-unequip { background: rgba(192,57,43,0.3); border: 1px solid rgba(192,57,43,0.5); color: #e74c3c; padding: 4px 8px; border-radius: 4px; font-size: 0.65rem; cursor: pointer; font-family: 'Cinzel', serif; transition: all 0.2s; }
 .btn-unequip:hover { background: rgba(192,57,43,0.5); }
-
 .combat-arena { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-bottom: 16px; }
 .combatant { text-align: center; padding: 18px; background: var(--bg-panel-accent); border-radius: 12px; border: 1px solid var(--border-gold-dim); }
 .combatant .avatar { font-size: 3.5rem; margin-bottom: 8px; display: block; }
@@ -214,15 +198,14 @@ body::before {
 .combat-controls { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 .btn-combat { flex: 1; min-width: 120px; padding: 12px 16px; border: 1px solid var(--border-gold-dim); border-radius: 8px; font-family: 'Cinzel', serif; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; font-weight: 700; }
 .btn-fight { background: linear-gradient(135deg, rgba(192,57,43,0.3), rgba(192,57,43,0.1)); color: #e74c3c; border-color: rgba(192,57,43,0.5); }
-.btn-fight:hover { background: rgba(192,57,43,0.4); transform: translateY(-2px); }
+.btn-fight:hover:not(:disabled) { background: rgba(192,57,43,0.4); transform: translateY(-2px); }
 .btn-heal { background: linear-gradient(135deg, rgba(39,174,96,0.3), rgba(39,174,96,0.1)); color: #2ecc71; border-color: rgba(39,174,96,0.5); }
-.btn-heal:hover { background: rgba(39,174,96,0.4); transform: translateY(-2px); }
+.btn-heal:hover:not(:disabled) { background: rgba(39,174,96,0.4); transform: translateY(-2px); }
 .btn-flee { background: linear-gradient(135deg, rgba(200,168,78,0.2), rgba(200,168,78,0.05)); color: var(--gold); border-color: var(--border-gold-dim); }
-.btn-flee:hover { background: rgba(200,168,78,0.3); transform: translateY(-2px); }
+.btn-flee:hover:not(:disabled) { background: rgba(200,168,78,0.3); transform: translateY(-2px); }
 .btn-new-enemy { background: linear-gradient(135deg, rgba(142,68,173,0.3), rgba(142,68,173,0.1)); color: #9b59b6; border-color: rgba(142,68,173,0.5); }
-.btn-new-enemy:hover { background: rgba(142,68,173,0.4); transform: translateY(-2px); }
+.btn-new-enemy:hover:not(:disabled) { background: rgba(142,68,173,0.4); transform: translateY(-2px); }
 .btn-combat:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
-
 .inv-toolbar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; padding: 10px; background: var(--bg-panel-accent); border: 1px solid var(--border-gold-dim); border-radius: 8px; align-items: center; }
 .inv-toolbar-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-right: 4px; white-space: nowrap; }
 .inv-toolbar-sep { width: 1px; height: 24px; background: var(--border-gold-dim); margin: 0 4px; }
@@ -261,7 +244,6 @@ body::before {
 .btn-sell { width: 100%; padding: 6px; margin-top: 4px; background: linear-gradient(135deg, rgba(192,57,43,0.15), rgba(192,57,43,0.05)); border: 1px solid rgba(192,57,43,0.3); border-radius: 4px; color: #e74c3c; font-family: 'Cinzel', serif; font-size: 0.65rem; cursor: pointer; transition: all 0.2s; }
 .btn-sell:hover { background: rgba(192,57,43,0.3); }
 .empty-inv { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-dim); font-style: italic; }
-
 .tavern-header { text-align: center; margin-bottom: 16px; }
 .tavern-header .tavern-art { font-size: 3rem; margin-bottom: 6px; }
 .tavern-header p { color: var(--text-dim); font-size: 0.8rem; font-style: italic; }
@@ -282,7 +264,6 @@ body::before {
 .btn-quest { width: 100%; padding: 10px; background: linear-gradient(135deg, rgba(200,168,78,0.2), rgba(200,168,78,0.05)); border: 1px solid var(--border-gold-dim); border-radius: 6px; color: var(--gold); font-family: 'Cinzel', serif; font-size: 0.8rem; cursor: pointer; transition: all 0.3s; }
 .btn-quest:hover { background: rgba(200,168,78,0.3); border-color: var(--border-gold); }
 .btn-quest:disabled { opacity: 0.4; cursor: not-allowed; }
-
 .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
 .shop-item { background: var(--bg-panel-accent); border: 1px solid var(--border-gold-dim); border-radius: 8px; padding: 12px; transition: all 0.3s; }
 .shop-item:hover { border-color: var(--border-gold); transform: translateY(-2px); }
@@ -290,8 +271,6 @@ body::before {
 .btn-buy { width: 100%; padding: 8px; background: linear-gradient(135deg, rgba(39,174,96,0.2), rgba(39,174,96,0.05)); border: 1px solid rgba(39,174,96,0.4); border-radius: 4px; color: #2ecc71; font-family: 'Cinzel', serif; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; }
 .btn-buy:hover { background: rgba(39,174,96,0.3); }
 .btn-buy:disabled { opacity: 0.4; cursor: not-allowed; }
-
-/* ---- ARENA STYLES (PURE PVP) ---- */
 .arena-header { text-align: center; margin-bottom: 16px; }
 .arena-header .arena-art { font-size: 3rem; margin-bottom: 6px; }
 .arena-header p { color: var(--text-dim); font-size: 0.8rem; font-style: italic; }
@@ -305,32 +284,22 @@ body::before {
 .rank-Gold { color: #ffd700; border-color: #ffd700; background: rgba(255,215,0,0.1); }
 .rank-Diamond { color: #b9f2ff; border-color: #b9f2ff; background: rgba(185,242,255,0.1); text-shadow: 0 0 10px rgba(185,242,255,0.5); }
 .rank-Legend { color: #ff6b6b; border-color: #ff6b6b; background: rgba(255,107,107,0.1); text-shadow: 0 0 10px rgba(255,107,107,0.5); animation: mythicGlow 2s infinite; }
-
 .mp-status-bar { display: flex; justify-content: space-between; align-items: center; background: var(--bg-panel-accent); border: 1px solid var(--border-gold-dim); border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; font-size: 0.75rem; }
 .mp-queue-box { background: var(--bg-panel-accent); border: 2px solid var(--arena-purple); border-radius: 12px; padding: 24px; margin-bottom: 16px; text-align: center; animation: arenaGlow 2s infinite; }
 .mp-queue-searching { display: flex; flex-direction: column; align-items: center; }
 .mp-search-spinner { width: 40px; height: 40px; border: 4px solid rgba(142,68,173,0.3); border-top-color: var(--arena-purple); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 16px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* Poprawione style przycisków PvP */
 .btn-pvp { padding: 12px 24px; border-radius: 8px; font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; border: 2px solid; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
-
 .btn-pvp-export { background: linear-gradient(135deg, rgba(142,68,173,0.3), rgba(142,68,173,0.1)); color: #bb86fc; border-color: rgba(142,68,173,0.6); }
 .btn-pvp-export:hover { background: rgba(142,68,173,0.5); transform: translateY(-3px); box-shadow: 0 0 20px rgba(142,68,173,0.4); border-color: var(--arena-purple); }
-
 .btn-pvp-import { background: linear-gradient(135deg, rgba(39,174,96,0.3), rgba(39,174,96,0.1)); color: #2ecc71; border-color: rgba(39,174,96,0.6); }
 .btn-pvp-import:hover { background: rgba(39,174,96,0.5); transform: translateY(-3px); box-shadow: 0 0 20px rgba(39,174,96,0.4); border-color: var(--heal-green); }
-
 .btn-pvp-fight { background: linear-gradient(135deg, rgba(231,76,60,0.3), rgba(231,76,60,0.1)); color: #e74c3c; border-color: rgba(231,76,60,0.6); font-size: 1.1rem; padding: 16px 32px; }
 .btn-pvp-fight:hover { background: rgba(231,76,60,0.5); transform: translateY(-4px); box-shadow: 0 0 25px rgba(231,76,60,0.5); border-color: var(--hp-red); }
-
 .btn-arena-back { background: linear-gradient(135deg, rgba(200,168,78,0.2), rgba(200,168,78,0.05)); color: var(--gold); border: 2px solid var(--border-gold-dim); padding: 12px 24px; border-radius: 8px; font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; margin-top: 14px; box-shadow: var(--shadow); }
 .btn-arena-back:hover { background: rgba(200,168,78,0.3); border-color: var(--border-gold); transform: translateY(-3px); box-shadow: 0 0 20px rgba(200,168,78,0.4); }
-
 .btn-arena-fight { background: linear-gradient(135deg, rgba(142,68,173,0.4), rgba(142,68,173,0.1)); color: var(--gold-bright); border: 2px solid var(--arena-purple); padding: 16px 32px; border-radius: 8px; font-family: 'MedievalSharp', cursive; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 2px; box-shadow: var(--shadow), 0 0 15px rgba(142,68,173,0.3); }
 .btn-arena-fight:hover:not(:disabled) { background: rgba(142,68,173,0.6); transform: translateY(-4px); box-shadow: 0 0 30px rgba(142,68,173,0.6); border-color: var(--gold); }
 .btn-arena-fight:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
-
 .arena-battle-result { text-align: center; padding: 24px; border-radius: 12px; margin-bottom: 16px; border: 2px solid; }
 .arena-battle-result.win { border-color: var(--heal-green); background: rgba(39,174,96,0.1); animation: victoryBanner 0.8s ease-out forwards; }
 .arena-battle-result.lose { border-color: var(--hp-red); background: rgba(192,57,43,0.1); animation: defeatBanner 0.8s ease-out forwards; }
@@ -338,7 +307,6 @@ body::before {
 .arena-result-title.win { color: var(--heal-green); text-shadow: 0 0 20px rgba(39,174,96,0.5); }
 .arena-result-title.lose { color: var(--hp-red); text-shadow: 0 0 20px rgba(192,57,43,0.5); }
 .arena-result-details { font-size: 0.9rem; line-height: 1.8; margin: 12px 0; }
-
 .mp-chat-box { background: var(--bg-panel-accent); border: 1px solid var(--border-gold-dim); border-radius: 8px; padding: 14px; margin-top: 16px; }
 .mp-chat-messages { height: 150px; overflow-y: auto; background: var(--bg-dark); border: 1px solid var(--border-gold-dim); border-radius: 6px; padding: 10px; font-size: 0.7rem; margin-bottom: 8px; }
 .chat-msg { padding: 2px 0; }
@@ -348,11 +316,9 @@ body::before {
 .mp-chat-input-row { display: flex; gap: 6px; }
 .mp-chat-input { flex: 1; padding: 8px; background: var(--bg-dark); border: 1px solid var(--border-gold-dim); border-radius: 4px; color: var(--text-bright); font-family: 'Cinzel', serif; font-size: 0.7rem; }
 .mp-chat-input:focus { outline: none; border-color: var(--border-gold); }
-
 .mp-battle-arena { animation: fadeIn 0.5s ease-out; }
-.mp-turn-indicator { text-align: center; padding: 8px; background: var(--bg-dark); border: 1px solid var(--border-gold-dim); border-radius: 20px; margin-bottom: 16px; font-size: 0.85rem; }
-.combat-log { background: var(--bg-dark); border: 1px solid var(--border-gold-dim); border-radius: 8px; padding: 12px; max-height: 200px; overflow-y: auto; margin-top: 16px; }
-
+.mp-turn-indicator { text-align: center; padding: 10px; background: var(--bg-dark); border: 2px solid var(--border-gold-dim); border-radius: 20px; margin-bottom: 16px; font-size: 0.9rem; font-family: 'MedievalSharp', cursive; }
+.mp-turn-indicator.my-turn { border-color: var(--gold); box-shadow: var(--glow-gold); animation: glow 1.5s infinite; }
 .leaderboard-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
 .leaderboard-table th { text-align: left; padding: 8px 10px; border-bottom: 2px solid var(--border-gold-dim); color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
 .leaderboard-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.04); }
@@ -361,7 +327,6 @@ body::before {
 .leaderboard-table tr.lb-you td { color: var(--gold-bright); font-weight: 700; }
 .lb-rank { font-weight: 700; width: 40px; }
 .lb-rank-1 { color: #ffd700; } .lb-rank-2 { color: #c0c0c0; } .lb-rank-3 { color: #cd7f32; }
-
 .online-players-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-top: 8px; max-height: 300px; overflow-y: auto; }
 .online-player-card { background: var(--bg-panel-accent); border: 1px solid var(--border-gold-dim); border-radius: 6px; padding: 8px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; }
 .online-player-card:hover { border-color: var(--border-gold); transform: translateY(-2px); }
@@ -372,27 +337,23 @@ body::before {
 .online-player-class { font-size: 0.6rem; color: var(--text-dim); }
 .online-player-status { font-size: 0.6rem; color: var(--text-dim); display: flex; align-items: center; gap: 2px; }
 .online-status-dot { font-size: 0.7rem; }
-
 .toast-container { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; }
 .toast { background: var(--bg-panel); border: 1px solid var(--border-gold); border-radius: 8px; padding: 12px 18px; color: var(--text); font-family: 'Cinzel', serif; font-size: 0.8rem; box-shadow: var(--shadow), var(--glow-gold); animation: slideInRight 0.3s ease-out; max-width: 320px; }
 .toast.toast-success { border-color: var(--heal-green); } .toast.toast-error { border-color: var(--hp-red); }
 .toast.toast-info { border-color: var(--xp-blue); } .toast.toast-epic { border-color: var(--epic); }
 .toast.toast-mythic { border-color: var(--mythic); box-shadow: var(--shadow), 0 0 20px rgba(231,76,60,0.4); }
 .toast.toast-arena { border-color: var(--arena-purple); }
-
 .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 500; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.3s; }
 .modal-box { background: var(--bg-panel); border: 2px solid var(--border-gold); border-radius: 12px; padding: 24px; max-width: 420px; width: 90%; text-align: center; box-shadow: var(--shadow), var(--glow-gold); animation: bounceIn 0.5s ease-out; }
 .modal-box h2 { font-family: 'MedievalSharp', cursive; color: var(--gold); margin-bottom: 12px; font-size: 1.4rem; }
 .modal-box p { font-size: 0.85rem; margin-bottom: 8px; line-height: 1.5; }
 .modal-box .btn-quest { margin-top: 14px; }
-
 .game-footer { text-align: center; padding: 12px; color: var(--text-dim); font-size: 0.6rem; border-top: 1px solid var(--border-gold-dim); margin-top: 12px; }
 .shortcut-bar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 8px; padding: 6px 0; }
 .shortcut-hint { font-size: 0.6rem; color: var(--text-dim); display: flex; align-items: center; gap: 3px; }
 .shortcut-key { display: inline-block; background: var(--bg-panel-accent); border: 1px solid var(--border-gold-dim); border-radius: 3px; padding: 1px 5px; font-size: 0.6rem; color: var(--gold); font-family: monospace; font-weight: 700; min-width: 18px; text-align: center; }
 .btn-reset-save { background: none; border: 1px solid rgba(192,57,43,0.3); color: #e74c3c; padding: 4px 12px; border-radius: 4px; font-family: 'Cinzel', serif; font-size: 0.6rem; cursor: pointer; margin-top: 6px; transition: all 0.2s; }
 .btn-reset-save:hover { background: rgba(192,57,43,0.2); }
-
 @media (max-width: 768px) {
   .game-title { font-size: 1.5rem; }
   .char-grid { grid-template-columns: 1fr; }
@@ -445,7 +406,6 @@ body::before {
       <button class="btn-create" onclick="createCharacter()">Begin Your Journey</button>
     </div>
   </div>
-
   <div id="game-screen" style="display:none;">
     <div class="game-header">
       <div class="game-title">⚔️ Realm of Shadows</div>
@@ -455,17 +415,16 @@ body::before {
       <div><div class="status-name" id="status-name">Hero</div><div class="status-class" id="status-class">Warrior · Lv.1</div></div>
       <div><div class="bar-container"><div class="bar-fill hp" id="hp-bar" style="width:100%"></div><div class="bar-text" id="hp-text">100/100 HP</div></div></div>
       <div><div class="bar-container xp-bar"><div class="bar-fill xp" id="xp-bar" style="width:0%"></div><div class="bar-text" id="xp-text">0/100 XP</div></div></div>
-      <div class="status-resources"><span>🪙 <b id="gold-display">0</b></span><span>⭐ <b id="level-display">1</b></span></div>
+      <div class="status-resources"><span>💰 <b id="gold-display">0</b></span><span>⭐ <b id="level-display">1</b></span></div>
     </div>
     <div class="nav-bar">
       <button class="nav-btn active" onclick="showPanel('character')" data-panel="character"><span class="nav-icon">👤</span> Character</button>
       <button class="nav-btn" onclick="showPanel('combat')" data-panel="combat"><span class="nav-icon">⚔️</span> Combat</button>
       <button class="nav-btn" onclick="showPanel('inventory')" data-panel="inventory"><span class="nav-icon">🎒</span> Inventory</button>
       <button class="nav-btn" onclick="showPanel('tavern')" data-panel="tavern"><span class="nav-icon">🍺</span> Tavern</button>
-      <button class="nav-btn" onclick="showPanel('shop')" data-panel="shop"><span class="nav-icon">🏪</span> Shop</button>
+      <button class="nav-btn" onclick="showPanel('shop')" data-panel="shop"><span class="nav-icon">🛒</span> Shop</button>
       <button class="nav-btn" onclick="showPanel('arena')" data-panel="arena"><span class="nav-icon">🏟️</span> PvP Arena</button>
     </div>
-
     <div class="panel active" id="panel-character">
       <div id="stat-points-area"></div>
       <div class="char-grid">
@@ -473,20 +432,18 @@ body::before {
         <div class="panel-box"><div class="panel-title"><span class="icon">🛡️</span> Equipment</div><div class="equip-slots" id="equip-slots"></div></div>
       </div>
     </div>
-
     <div class="panel" id="panel-combat">
       <div class="panel-box">
         <div class="panel-title"><span class="icon">⚔️</span> Battle Arena</div>
         <div id="combat-area">
           <div style="text-align:center; padding:40px; color:var(--text-dim);">
-            <div style="font-size:3rem; margin-bottom:12px;">⚔️</div>
+            <div style="font-size:3rem; margin-bottom:12px;">🗺️</div>
             <p>No enemy in sight. Seek a foe to battle!</p>
             <button class="btn-combat btn-new-enemy" onclick="findEnemy()" style="margin-top:16px; max-width:250px;">🔍 Find Enemy</button>
           </div>
         </div>
       </div>
     </div>
-
     <div class="panel" id="panel-inventory">
       <div class="panel-box">
         <div class="panel-title"><span class="icon">🎒</span> Inventory</div>
@@ -494,7 +451,6 @@ body::before {
         <div class="inventory-grid" id="inventory-grid"></div>
       </div>
     </div>
-
     <div class="panel" id="panel-tavern">
       <div class="panel-box">
         <div class="tavern-header"><div class="tavern-art">🍺</div><p>"Welcome, adventurer! Pick a quest and prove your worth."</p></div>
@@ -503,17 +459,15 @@ body::before {
         <button class="btn-quest" onclick="rerollQuests()" style="margin-top:14px;">🎲 Reroll Quests</button>
       </div>
     </div>
-
     <div class="panel" id="panel-shop">
       <div class="panel-box">
-        <div class="panel-title"><span class="icon">🏪</span> Merchant's Wares</div>
+        <div class="panel-title"><span class="icon">🛒</span> Merchant's Wares</div>
         <p style="font-size:0.75rem; color:var(--text-dim); margin-bottom:14px; font-style:italic;">"I've got the finest goods in the realm... for the right price!"</p>
         <div id="shop-toolbar-area"></div>
         <div class="shop-grid" id="shop-grid"></div>
         <button class="btn-quest" onclick="refreshShop()" style="margin-top:14px;">🔄 Refresh Stock (R)</button>
       </div>
     </div>
-
     <div class="panel" id="panel-arena">
       <div class="panel-box">
         <div class="arena-header">
@@ -523,7 +477,6 @@ body::before {
         <div id="arena-content"></div>
       </div>
     </div>
-
     <div class="game-footer">
       Realm of Shadows · Auto-saves every 30s
       <div class="shortcut-bar">
@@ -540,12 +493,11 @@ body::before {
   <div class="toast-container" id="toast-container"></div>
   <div id="modal-container"></div>
 </div>
-
 <script src="/socket.io/socket.io.js"></script>
 <script>
 // =====================================================
 // REALM OF SHADOWS - Multiplayer PvP RPG
-// COMPLETE CLIENT CODE (poprawione przyciski i animacje)
+// FIXED: PvP turn system - attack buttons work correctly
 // =====================================================
 
 // ---- CONSTANTS ----
@@ -554,7 +506,6 @@ const CLASS_DATA = {
   Mage:    { str: 4, dex: 5, int: 13, hp: 90, lck: 6, icon: '🔮', maxDefense: 30 },
   Rogue:   { str: 6, dex: 13, int: 4, hp: 110, lck: 10, icon: '🗡️', maxDefense: 40 }
 };
-
 const STAT_INFO = {
   str: { name: 'Strength', icon: '💪', desc: 'Raw physical power. Increases melee damage and defense.', perPoint: '+1' },
   dex: { name: 'Dexterity', icon: '🏃', desc: 'Agility and reflexes. Boosts flee chance and Rogue damage.', perPoint: '+1' },
@@ -562,24 +513,21 @@ const STAT_INFO = {
   hp:  { name: 'Max Health', icon: '❤️', desc: 'Total hit points. More HP = more survival.', perPoint: '+10' },
   lck: { name: 'Luck', icon: '🍀', desc: 'Critical hit chance = Luck x 2 (max 60%). Crits deal 2x damage.', perPoint: '+1' }
 };
-
 const ALL_SLOTS = ['weapon', 'armor', 'helmet', 'boots', 'amulet', 'ring'];
 const SLOT_LABELS = {
   all: { icon: '🎒', label: 'All' },
   weapon: { icon: '⚔️', label: 'Weapon' }, armor: { icon: '🛡️', label: 'Armor' },
-  helmet: { icon: '⛑️', label: 'Helmet' }, boots: { icon: '🥾', label: 'Boots' },
+  helmet: { icon: '⛑️', label: 'Helmet' }, boots: { icon: '👢', label: 'Boots' },
   amulet: { icon: '📿', label: 'Amulet' }, ring: { icon: '💍', label: 'Ring' }
 };
-
 const ITEM_TEMPLATES = {
-  weapon: [{name:'Iron Sword',icon:'🗡️'},{name:'Battle Axe',icon:'🪓'},{name:'Mystic Staff',icon:'🪄'},{name:'Shadow Dagger',icon:'🔪'},{name:'War Hammer',icon:'🔨'},{name:'Crystal Wand',icon:'✨'},{name:'Flame Blade',icon:'🔥'},{name:'Frost Edge',icon:'❄️'},{name:'Thunder Pike',icon:'⚡'},{name:'Venom Fang',icon:'🐍'},{name:'Blood Cleaver',icon:'🩸'},{name:'Soul Reaper',icon:'💀'}],
-  armor: [{name:'Chainmail',icon:'🛡️'},{name:'Plate Armor',icon:'🪖'},{name:'Leather Vest',icon:'🦺'},{name:'Mage Robes',icon:'👘'},{name:'Dragon Scale',icon:'🐉'},{name:'Shadow Cloak',icon:'🧥'},{name:'Bone Armor',icon:'🦴'},{name:'Crystal Shell',icon:'💎'},{name:'Frost Mantle',icon:'❄️'}],
-  helmet: [{name:'Iron Helm',icon:'⛑️'},{name:'Crown of Thorns',icon:'👑'},{name:'Wizard Hat',icon:'🎩'},{name:'Shadow Hood',icon:'🪖'},{name:'Dragon Visage',icon:'🐲'},{name:'Skull Mask',icon:'💀'},{name:'Horned Helm',icon:'🐂'},{name:'Crystal Tiara',icon:'💎'},{name:'Phantom Cowl',icon:'👻'}],
-  boots: [{name:'Iron Greaves',icon:'🥾'},{name:'Shadow Steps',icon:'👢'},{name:'Wind Runners',icon:'💨'},{name:'Flame Treads',icon:'🔥'},{name:'Frost Walkers',icon:'❄️'},{name:'Thunder Striders',icon:'⚡'},{name:'Titan Stompers',icon:'🦶'},{name:'Scout Boots',icon:'🏃'},{name:'Phantom Treads',icon:'👻'}],
-  amulet: [{name:'Dragon Tooth Amulet',icon:'🐉'},{name:'Moonstone Pendant',icon:'🌙'},{name:'Sunfire Medallion',icon:'☀️'},{name:'Shadow Locket',icon:'🖤'},{name:'Crystal Necklace',icon:'💎'},{name:'Blood Charm',icon:'🩸'},{name:'Star Pendant',icon:'⭐'},{name:'Phoenix Amulet',icon:'🔥'},{name:'Frost Heart',icon:'❄️'}],
-  ring: [{name:'Ruby Ring',icon:'💍'},{name:'Sapphire Band',icon:'💎'},{name:'Emerald Loop',icon:'🟢'},{name:'Skull Ring',icon:'💀'},{name:'Moon Signet',icon:'🌙'},{name:'Sun Band',icon:'☀️'},{name:'Star Ring',icon:'⭐'},{name:'Shadow Ring',icon:'🖤'},{name:'Phoenix Ring',icon:'🔥'},{name:'Frost Band',icon:'❄️'},{name:'Thunder Loop',icon:'⚡'}]
+  weapon: [{name:'Iron Sword',icon:'⚔️'},{name:'Battle Axe',icon:'🪓'},{name:'Mystic Staff',icon:'🔮'},{name:'Shadow Dagger',icon:'🗡️'},{name:'War Hammer',icon:'🔨'},{name:'Crystal Wand',icon:'✨'},{name:'Flame Blade',icon:'🔥'},{name:'Frost Edge',icon:'❄️'},{name:'Thunder Pike',icon:'⚡'},{name:'Venom Fang',icon:'🐍'},{name:'Blood Cleaver',icon:'🩸'},{name:'Soul Reaper',icon:'💀'}],
+  armor: [{name:'Chainmail',icon:'⛓️'},{name:'Plate Armor',icon:'🛡️'},{name:'Leather Vest',icon:'🦺'},{name:'Mage Robes',icon:'👘'},{name:'Dragon Scale',icon:'🐉'},{name:'Shadow Cloak',icon:'🌑'},{name:'Bone Armor',icon:'🦴'},{name:'Crystal Shell',icon:'💎'},{name:'Frost Mantle',icon:'❄️'}],
+  helmet: [{name:'Iron Helm',icon:'⛑️'},{name:'Crown of Thorns',icon:'👑'},{name:'Wizard Hat',icon:'🎩'},{name:'Shadow Hood',icon:'🌑'},{name:'Dragon Visage',icon:'🐉'},{name:'Skull Mask',icon:'💀'},{name:'Horned Helm',icon:'🦌'},{name:'Crystal Tiara',icon:'💎'},{name:'Phantom Cowl',icon:'👻'}],
+  boots: [{name:'Iron Greaves',icon:'🦵'},{name:'Shadow Steps',icon:'👟'},{name:'Wind Runners',icon:'💨'},{name:'Flame Treads',icon:'🔥'},{name:'Frost Walkers',icon:'❄️'},{name:'Thunder Striders',icon:'⚡'},{name:'Titan Stompers',icon:'🦶'},{name:'Scout Boots',icon:'🥾'},{name:'Phantom Treads',icon:'👻'}],
+  amulet: [{name:'Dragon Tooth Amulet',icon:'🦷'},{name:'Moonstone Pendant',icon:'🌙'},{name:'Sunfire Medallion',icon:'☀️'},{name:'Shadow Locket',icon:'🌑'},{name:'Crystal Necklace',icon:'💎'},{name:'Blood Charm',icon:'🩸'},{name:'Star Pendant',icon:'⭐'},{name:'Phoenix Amulet',icon:'🦅'},{name:'Frost Heart',icon:'❄️'}],
+  ring: [{name:'Ruby Ring',icon:'💍'},{name:'Sapphire Band',icon:'💙'},{name:'Emerald Loop',icon:'💚'},{name:'Skull Ring',icon:'💀'},{name:'Moon Signet',icon:'🌙'},{name:'Sun Band',icon:'☀️'},{name:'Star Ring',icon:'⭐'},{name:'Shadow Ring',icon:'🌑'},{name:'Phoenix Ring',icon:'🦅'},{name:'Frost Band',icon:'❄️'},{name:'Thunder Loop',icon:'⚡'}]
 };
-
 const RARITY_DATA = {
   Common:    { mult: 1.0, chance: 50, color: '#b0b0b0' },
   Rare:      { mult: 1.8, chance: 27, color: '#3498db' },
@@ -594,20 +542,28 @@ const RARITY_PREFIXES = {
 };
 const RARITY_ORDER = { Mythic: 0, Legendary: 1, Epic: 2, Rare: 3, Common: 4 };
 const ALL_RARITIES = ['Common','Rare','Epic','Legendary','Mythic'];
-
 const ENEMY_TEMPLATES = [
-  {name:'Goblin',icon:'👺',baseHP:60,baseDmg:8,xpMult:1,goldMult:1},{name:'Skeleton',icon:'💀',baseHP:75,baseDmg:10,xpMult:1.2,goldMult:1.1},
-  {name:'Wolf',icon:'🐺',baseHP:65,baseDmg:12,xpMult:1.1,goldMult:0.9},{name:'Orc',icon:'👹',baseHP:100,baseDmg:13,xpMult:1.4,goldMult:1.3},
-  {name:'Dark Mage',icon:'🧙',baseHP:70,baseDmg:16,xpMult:1.5,goldMult:1.4},{name:'Spider Queen',icon:'🕷️',baseHP:85,baseDmg:14,xpMult:1.3,goldMult:1.2},
-  {name:'Troll',icon:'🧌',baseHP:130,baseDmg:12,xpMult:1.6,goldMult:1.5},{name:'Vampire',icon:'🧛',baseHP:90,baseDmg:15,xpMult:1.5,goldMult:1.6},
-  {name:'Dragon Whelp',icon:'🐲',baseHP:120,baseDmg:18,xpMult:1.8,goldMult:1.8},{name:'Wraith',icon:'👻',baseHP:80,baseDmg:19,xpMult:1.7,goldMult:1.3},
-  {name:'Minotaur',icon:'🐂',baseHP:150,baseDmg:16,xpMult:1.9,goldMult:1.7},{name:'Lich',icon:'☠️',baseHP:110,baseDmg:20,xpMult:2.0,goldMult:2.0},
-  {name:'Demon Knight',icon:'😈',baseHP:140,baseDmg:18,xpMult:2.1,goldMult:2.1},{name:'Shadow Assassin',icon:'🥷',baseHP:75,baseDmg:24,xpMult:2.0,goldMult:1.8},
-  {name:'Golem',icon:'🗿',baseHP:180,baseDmg:14,xpMult:1.8,goldMult:1.6},{name:'Hydra',icon:'🐍',baseHP:160,baseDmg:17,xpMult:2.2,goldMult:2.2},
-  {name:'Frost Giant',icon:'🥶',baseHP:170,baseDmg:19,xpMult:2.3,goldMult:2.0},{name:'Fire Elemental',icon:'🔥',baseHP:95,baseDmg:22,xpMult:2.0,goldMult:1.9},
-  {name:'Death Knight',icon:'⚰️',baseHP:135,baseDmg:21,xpMult:2.4,goldMult:2.3},{name:'Abyssal Horror',icon:'🦑',baseHP:145,baseDmg:20,xpMult:2.5,goldMult:2.5}
+  {name:'Goblin',icon:'👺',baseHP:60,baseDmg:8,xpMult:1,goldMult:1},
+  {name:'Skeleton',icon:'💀',baseHP:75,baseDmg:10,xpMult:1.2,goldMult:1.1},
+  {name:'Wolf',icon:'🐺',baseHP:65,baseDmg:12,xpMult:1.1,goldMult:0.9},
+  {name:'Orc',icon:'👹',baseHP:100,baseDmg:13,xpMult:1.4,goldMult:1.3},
+  {name:'Dark Mage',icon:'🧙',baseHP:70,baseDmg:16,xpMult:1.5,goldMult:1.4},
+  {name:'Spider Queen',icon:'🕷️',baseHP:85,baseDmg:14,xpMult:1.3,goldMult:1.2},
+  {name:'Troll',icon:'👾',baseHP:130,baseDmg:12,xpMult:1.6,goldMult:1.5},
+  {name:'Vampire',icon:'🧛',baseHP:90,baseDmg:15,xpMult:1.5,goldMult:1.6},
+  {name:'Dragon Whelp',icon:'🐲',baseHP:120,baseDmg:18,xpMult:1.8,goldMult:1.8},
+  {name:'Wraith',icon:'👻',baseHP:80,baseDmg:19,xpMult:1.7,goldMult:1.3},
+  {name:'Minotaur',icon:'🐂',baseHP:150,baseDmg:16,xpMult:1.9,goldMult:1.7},
+  {name:'Lich',icon:'💀',baseHP:110,baseDmg:20,xpMult:2.0,goldMult:2.0},
+  {name:'Demon Knight',icon:'😈',baseHP:140,baseDmg:18,xpMult:2.1,goldMult:2.1},
+  {name:'Shadow Assassin',icon:'🌑',baseHP:75,baseDmg:24,xpMult:2.0,goldMult:1.8},
+  {name:'Golem',icon:'🗿',baseHP:180,baseDmg:14,xpMult:1.8,goldMult:1.6},
+  {name:'Hydra',icon:'🐉',baseHP:160,baseDmg:17,xpMult:2.2,goldMult:2.2},
+  {name:'Frost Giant',icon:'🏔️',baseHP:170,baseDmg:19,xpMult:2.3,goldMult:2.0},
+  {name:'Fire Elemental',icon:'🔥',baseHP:95,baseDmg:22,xpMult:2.0,goldMult:1.9},
+  {name:'Death Knight',icon:'⚔️',baseHP:135,baseDmg:21,xpMult:2.4,goldMult:2.3},
+  {name:'Abyssal Horror',icon:'🌀',baseHP:145,baseDmg:20,xpMult:2.5,goldMult:2.5}
 ];
-
 const QUEST_TEMPLATES = [
   {name:'Rat Extermination',desc:'Clear the cellar of giant rats.',difficulty:'easy',duration:15,xp:30,gold:20,itemChance:0.2},
   {name:'Herb Gathering',desc:'Collect herbs from the forest.',difficulty:'easy',duration:20,xp:35,gold:25,itemChance:0.15},
@@ -625,14 +581,12 @@ const QUEST_TEMPLATES = [
   {name:'Chaos Contract',desc:'Sign a chaotic magic contract.',difficulty:'random',durationRange:[5,130],xpRange:[10,320],goldRange:[5,280],itemChanceRange:[0.05,0.95]},
   {name:'Goblin Lottery',desc:'The goblins are running a quest lottery.',difficulty:'random',durationRange:[8,80],xpRange:[18,220],goldRange:[12,170],itemChanceRange:[0.1,0.8]}
 ];
-
-// ---- ARENA RANKS ----
 const ARENA_RANKS = [
   { name: 'Bronze', icon: '🥉', minRating: 0, color: '#cd7f32' },
   { name: 'Silver', icon: '🥈', minRating: 1200, color: '#c0c0c0' },
   { name: 'Gold', icon: '🥇', minRating: 1500, color: '#ffd700' },
   { name: 'Diamond', icon: '💎', minRating: 1800, color: '#b9f2ff' },
-  { name: 'Legend', icon: '🔥', minRating: 2200, color: '#ff6b6b' }
+  { name: 'Legend', icon: '👑', minRating: 2200, color: '#ff6b6b' }
 ];
 
 // ---- STATE ----
@@ -666,30 +620,27 @@ function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 function randPick(arr){return arr[Math.floor(Math.random()*arr.length)];}
 function uid(){return 'i_'+(++_uid);}
 function xpForLevel(lv){return lv*100;}
-function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
-
+function escapeHtml(text){const div=document.createElement('div');div.textContent=text;return div.innerHTML;}
 function rollRarity(){
-  let r=Math.random()*100,c=0;
-  let keys=Object.keys(RARITY_DATA);
+  let r=Math.random()*100,c=0,keys=Object.keys(RARITY_DATA);
   for(let i=0;i<keys.length;i++){c+=RARITY_DATA[keys[i]].chance;if(r<=c)return keys[i];}
   return 'Common';
 }
-
 function showToast(msg,type,dur){
   type=type||'info';dur=dur||3000;
   let el=document.createElement('div');el.className='toast toast-'+type;el.textContent=msg;
   document.getElementById('toast-container').appendChild(el);
   setTimeout(function(){el.style.transition='opacity .3s';el.style.opacity='0';setTimeout(function(){el.remove();},300);},dur);
 }
-
 function showModal(title,body,btn,cb){
   document.getElementById('modal-container').innerHTML='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h2>'+title+'</h2>'+body+'<button class="btn-quest" onclick="closeModal();'+(cb?cb+'()':'')+'">'+(btn||'OK')+'</button></div></div>';
 }
 function closeModal(){document.getElementById('modal-container').innerHTML='';}
-
 function playSound(type){
   try{
-    let ctx=new(window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);g.gain.value=0.1;
+    let ctx=new(window.AudioContext||window.webkitAudioContext)();
+    let o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);g.gain.value=0.1;
     if(type==='hit'){o.frequency.value=200;o.type='sawtooth';g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.15);o.start();o.stop(ctx.currentTime+0.15);}
     else if(type==='crit'){o.frequency.value=400;o.type='square';g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.2);o.start();o.stop(ctx.currentTime+0.2);}
     else if(type==='levelup'){o.frequency.value=523;o.type='sine';g.gain.value=0.15;o.start();setTimeout(function(){o.frequency.value=659;},100);setTimeout(function(){o.frequency.value=784;},200);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.5);o.stop(ctx.currentTime+0.5);}
@@ -705,34 +656,27 @@ function playSound(type){
 // =====================================================
 // SOCKET.IO CONNECTION HANDLING
 // =====================================================
-
 socket.on('connect', () => {
   isConnected = true;
-  console.log('[WS] Connected to server');
+  mySocketId = socket.id;
+  console.log('[WS] Connected:', socket.id);
   updateConnectionStatus();
-  if (gameState && gameState.name) {
-    registerFighter();
-  }
+  if (gameState && gameState.name) registerFighter();
 });
-
 socket.on('disconnect', () => {
   isConnected = false;
   isRegistered = false;
   inQueue = false;
   inBattle = false;
   currentBattle = null;
-  console.log('[WS] Disconnected from server');
+  console.log('[WS] Disconnected');
   updateConnectionStatus();
-  if (getActivePanel() === 'arena') {
-    renderArena();
-  }
+  if (getActivePanel() === 'arena') renderArena();
 });
-
 socket.on('welcome', (data) => {
   mySocketId = data.id;
-  console.log('[WS] Welcome:', data.message, '| Online:', data.onlineCount);
+  console.log('[WS] Welcome:', data.message);
 });
-
 socket.on('error', (data) => {
   console.error('[WS] Error:', data.message);
   showToast(data.message, 'error');
@@ -741,27 +685,20 @@ socket.on('error', (data) => {
 // ---- REGISTRATION ----
 socket.on('registered', (data) => {
   isRegistered = true;
-  console.log('[WS] Registered:', data.message);
-  // USUNIĘTO showToast - brak powiadomienia o rejestracji
+  console.log('[WS] Registered');
   updateConnectionStatus();
-  if (getActivePanel() === 'arena') {
-    renderArena();
-  }
+  if (getActivePanel() === 'arena') renderArena();
 });
 
 // ---- PLAYER LIST ----
 socket.on('playerList', (list) => {
   onlinePlayers = list;
   updateOnlinePlayersList();
-  // NIE wywołuj renderArena() tutaj - tylko aktualizuj listę i leaderboard
   const lbEl = document.getElementById('arena-leaderboard-container');
-  if (lbEl && getActivePanel() === 'arena') {
-    lbEl.innerHTML = renderLeaderboard();
-  }
+  if (lbEl && getActivePanel() === 'arena') lbEl.innerHTML = renderLeaderboard();
   const countEl = document.getElementById('online-count');
   if (countEl) countEl.textContent = list.length;
 });
-
 socket.on('onlineCount', (count) => {
   const el = document.getElementById('online-count');
   if (el) el.textContent = count;
@@ -770,19 +707,12 @@ socket.on('onlineCount', (count) => {
 // ---- QUEUE ----
 socket.on('queueJoined', (data) => {
   inQueue = true;
-  console.log('[WS] Queue joined:', data.message);
   showToast('🔍 ' + data.message, 'arena');
-  if (getActivePanel() === 'arena') {
-    renderArena();
-  }
+  if (getActivePanel() === 'arena') renderArena();
 });
-
 socket.on('queueLeft', (data) => {
   inQueue = false;
-  console.log('[WS] Queue left:', data.message);
-  if (getActivePanel() === 'arena') {
-    renderArena();
-  }
+  if (getActivePanel() === 'arena') renderArena();
 });
 
 // ---- BATTLE EVENTS ----
@@ -797,17 +727,23 @@ socket.on('battleStart', (data) => {
     currentTurn: data.currentTurn,
     currentTurnName: data.currentTurnName,
     turns: 0,
-    log: []
+    log: [],
+    finished: false
   };
-  console.log('[WS] Battle started! vs', data.opponent.name);
+  console.log('[WS] Battle started! vs', data.opponent.name, '| MyTurn:', isMyTurn);
   showToast('⚔️ PvP Battle! vs ' + data.opponent.name, 'arena', 4000);
   playSound('arena');
-  if (showPanel) showPanel('arena');
+  showPanel('arena');
   renderArena();
 });
 
+// =====================================================
+// FIX GLOWNY: battleUpdate - aktualizuj HP i log bez re-renderowania calej areny
+// =====================================================
 socket.on('battleUpdate', (data) => {
-  if (!currentBattle) return;
+  if (!currentBattle || currentBattle.finished) return;
+
+  // Aktualizuj HP
   if (currentBattle.you.name === data.player1.name) {
     currentBattle.you.currentHP = data.player1.currentHP;
     currentBattle.opponent.currentHP = data.player2.currentHP;
@@ -815,119 +751,36 @@ socket.on('battleUpdate', (data) => {
     currentBattle.you.currentHP = data.player2.currentHP;
     currentBattle.opponent.currentHP = data.player1.currentHP;
   }
-  if (data.log) {
-    currentBattle.log.push(data.log);
-  }
+
+  if (data.log) currentBattle.log.push(data.log);
   currentBattle.turns = data.turns;
-  
-function updateBattleUI() {
-  if (!currentBattle || currentBattle.finished) return;
-  
-  // Update HP bars
-  const you = currentBattle.you;
-  const opp = currentBattle.opponent;
-  
-  const youHpPct = Math.max(0, (you.currentHP / you.maxHP) * 100);
-  const oppHpPct = Math.max(0, (opp.currentHP / opp.maxHP) * 100);
-  
-  // Update your HP bar
-  const youEl = document.getElementById('mp-you');
-  if (youEl) {
-    const hpBar = youEl.querySelector('.bar-fill');
-    const hpText = youEl.querySelector('.bar-text');
-    if (hpBar) {
-      hpBar.style.width = youHpPct + '%';
-      if (youHpPct < 25) hpBar.style.animation = 'pulse .5s infinite';
-      else hpBar.style.animation = '';
-    }
-    if (hpText) hpText.textContent = you.currentHP + '/' + you.maxHP;
-    
-    // Shake animation on hit
-    if (currentBattle.log.length > 0) {
-      const lastLog = currentBattle.log[currentBattle.log.length - 1];
-      if (lastLog.defender === you.name) {
-        youEl.classList.add('animate-shake');
-        setTimeout(() => youEl.classList.remove('animate-shake'), 400);
-      }
-    }
-  }
-  
-  // Update opponent HP bar
-  const oppEl = document.getElementById('mp-opp');
-  if (oppEl) {
-    const hpBar = oppEl.querySelector('.bar-fill');
-    const hpText = oppEl.querySelector('.bar-text');
-    if (hpBar) {
-      hpBar.style.width = oppHpPct + '%';
-      if (oppHpPct < 25) {
-        hpBar.style.animation = 'pulse .5s infinite';
-        hpBar.style.background = 'linear-gradient(90deg,#e74c3c,#ff6b6b)';
-      } else {
-        hpBar.style.animation = '';
-      }
-    }
-    if (hpText) hpText.textContent = opp.currentHP + '/' + opp.maxHP;
-    
-    if (currentBattle.log.length > 0) {
-      const lastLog = currentBattle.log[currentBattle.log.length - 1];
-      if (lastLog.defender === opp.name) {
-        oppEl.classList.add('animate-shake');
-        setTimeout(() => oppEl.classList.remove('animate-shake'), 400);
-      }
-    }
-  }
-  
-  // Update combat log
-  const logEl = document.getElementById('mp-combat-log');
-  if (logEl && currentBattle.log.length > 0) {
-    const lastLog = currentBattle.log[currentBattle.log.length - 1];
-    let logHtml = '';
-    if (lastLog.type === 'attack') {
-      const cls = lastLog.crit ? 'log-crit' : (lastLog.attacker === currentBattle.you.name ? 'log-player' : 'log-enemy');
-      logHtml = '<div class="log-entry ' + cls + '">';
-      logHtml += (lastLog.crit ? '⚡ CRIT! ' : '') + lastLog.attacker + ' hits ' + lastLog.defender + ' for ' + lastLog.damage + ' dmg (' + lastLog.blocked + ' blocked)';
-      logHtml += ' — ' + lastLog.defender + ': ' + lastLog.defenderHP + '/' + lastLog.defenderMaxHP + ' HP';
-      logHtml += '</div>';
-    } else {
-      logHtml = '<div class="log-entry log-system">' + (lastLog.message || lastLog.type) + '</div>';
-    }
-    logEl.insertAdjacentHTML('beforeend', logHtml);
-    logEl.scrollTop = logEl.scrollHeight;
-  }
-}
 
-function updateTurnUI() {
-  const indicator = document.querySelector('.mp-turn-indicator');
-  if (indicator) {
-    if (isMyTurn) {
-      indicator.innerHTML = '<span style="color:var(--gold-bright);font-weight:700;">⚔️ YOUR TURN — Attack!</span>';
-    } else {
-      indicator.innerHTML = '<span style="color:var(--text-dim);">⏳ ' + currentBattle.currentTurnName + '\'s turn...</span>';
-    }
+  // Efekty dzwiekowe
+  if (data.log) {
+    if (data.log.crit) playSound('crit');
+    else playSound('hit');
   }
-  
-  // Update attack button
-  const atkBtn = document.querySelector('.btn-fight');
-  if (atkBtn) {
-    atkBtn.disabled = !isMyTurn;
-    atkBtn.innerHTML = '⚔️ Attack' + (!isMyTurn ? ' (Wait...)' : '');
-  }
-}
 
-  // Zamiast renderArena() - aktualizuj tylko HP i log
-  updateBattleUI();
-  
-  if (data.log && data.log.crit) playSound('crit');
-  else if (data.log) playSound('hit');
+  // Aktualizuj tylko elementy UI - NIE wywoluj renderArena()
+  updateBattleHP();
+  appendBattleLog(data.log);
 });
 
+// =====================================================
+// FIX GLOWNY: turnChange - zaktualizuj isMyTurn i przyciski
+// =====================================================
 socket.on('turnChange', (data) => {
-  if (!currentBattle) return;
+  if (!currentBattle || currentBattle.finished) return;
+
   currentBattle.currentTurn = data.currentTurn;
   currentBattle.currentTurnName = data.currentTurnName;
   isMyTurn = (data.currentTurn === mySocketId);
-  // Aktualizuj tylko turn indicator i przyciski
-  updateTurnUI();
+
+  console.log('[WS] Turn change - myTurn:', isMyTurn, '| currentTurn:', data.currentTurn, '| myId:', mySocketId);
+
+  // Aktualizuj wskaznik tury i przyciski bez re-renderowania
+  updateTurnIndicator();
+  updateAttackButton();
 });
 
 socket.on('battleEnd', (data) => {
@@ -946,37 +799,18 @@ socket.on('battleEnd', (data) => {
       gameState.statPoints += 3;
       gameState.currentHP = getTotalStat('hp');
     }
-    gameState.arena.history.push({
-      won: true,
-      oppName: data.loserName + ' (Online PvP)',
-      oppLevel: 0,
-      oppClass: '',
-      ratingChange: data.winnerRatingChange,
-      time: Date.now()
-    });
+    gameState.arena.history.push({ won: true, oppName: data.loserName + ' (Online PvP)', oppLevel: 0, oppClass: '', ratingChange: data.winnerRatingChange, time: Date.now() });
   } else if (!won && gameState) {
     gameState.arena.rating = data.loserNewRating;
     gameState.arena.losses++;
     gameState.arena.streak = 0;
-    gameState.arena.history.push({
-      won: false,
-      oppName: data.winnerName + ' (Online PvP)',
-      oppLevel: 0,
-      oppClass: '',
-      ratingChange: data.loserRatingChange,
-      time: Date.now()
-    });
+    gameState.arena.history.push({ won: false, oppName: data.winnerName + ' (Online PvP)', oppLevel: 0, oppClass: '', ratingChange: data.loserRatingChange, time: Date.now() });
   }
 
   playSound(won ? 'levelup' : 'death');
-  showToast(won ? '⚔️ VICTORY! +' + data.winnerRatingChange + ' rating, +' + data.goldReward + ' gold!' : '💀 DEFEAT! ' + data.loserRatingChange + ' rating', won ? 'arena' : 'error', 5000);
+  showToast(won ? '🏆 VICTORY! +' + data.winnerRatingChange + ' rating, +' + data.goldReward + ' gold!' : '💀 DEFEAT! ' + data.loserRatingChange + ' rating', won ? 'arena' : 'error', 5000);
 
-  currentBattle = {
-    ...currentBattle,
-    finished: true,
-    result: data
-  };
-
+  currentBattle = { ...currentBattle, finished: true, result: data };
   updateStatusBar();
   renderCharacterPanel();
   saveGame();
@@ -991,72 +825,142 @@ socket.on('chatMessage', (data) => {
 });
 
 // =====================================================
-// REGISTRATION FUNCTIONS
+// POMOCNICZE FUNKCJE DO AKTUALIZACJI BATTLE UI
+// (zdefiniowane globalnie - dostepne z turnChange i battleUpdate)
 // =====================================================
 
+// Aktualizuje paski HP obu walczacych
+function updateBattleHP() {
+  if (!currentBattle || currentBattle.finished) return;
+  const you = currentBattle.you;
+  const opp = currentBattle.opponent;
+
+  const youHpPct = Math.max(0, Math.min(100, (you.currentHP / you.maxHP) * 100));
+  const oppHpPct = Math.max(0, Math.min(100, (opp.currentHP / opp.maxHP) * 100));
+
+  const youEl = document.getElementById('mp-you');
+  if (youEl) {
+    const hpBar = youEl.querySelector('.bar-fill');
+    const hpText = youEl.querySelector('.bar-text');
+    if (hpBar) { hpBar.style.width = youHpPct + '%'; hpBar.style.animation = youHpPct < 25 ? 'pulse .5s infinite' : ''; }
+    if (hpText) hpText.textContent = you.currentHP + '/' + you.maxHP;
+    // Shake animation gdy trafiony
+    if (currentBattle.log.length > 0) {
+      const lastLog = currentBattle.log[currentBattle.log.length - 1];
+      if (lastLog && lastLog.defender === you.name) {
+        youEl.classList.add('animate-shake');
+        setTimeout(() => youEl.classList.remove('animate-shake'), 400);
+      }
+    }
+  }
+
+  const oppEl = document.getElementById('mp-opp');
+  if (oppEl) {
+    const hpBar = oppEl.querySelector('.bar-fill');
+    const hpText = oppEl.querySelector('.bar-text');
+    if (hpBar) {
+      hpBar.style.width = oppHpPct + '%';
+      if (oppHpPct < 25) { hpBar.style.animation = 'pulse .5s infinite'; hpBar.style.background = 'linear-gradient(90deg,#e74c3c,#ff6b6b)'; }
+      else { hpBar.style.animation = ''; hpBar.style.background = ''; }
+    }
+    if (hpText) hpText.textContent = opp.currentHP + '/' + opp.maxHP;
+    if (currentBattle.log.length > 0) {
+      const lastLog = currentBattle.log[currentBattle.log.length - 1];
+      if (lastLog && lastLog.defender === opp.name) {
+        oppEl.classList.add('animate-shake');
+        setTimeout(() => oppEl.classList.remove('animate-shake'), 400);
+      }
+    }
+  }
+}
+
+// Dopisuje nowy wpis do logu walki bez przeladowania
+function appendBattleLog(log) {
+  if (!log) return;
+  const logEl = document.getElementById('mp-combat-log');
+  if (!logEl) return;
+
+  let logHtml = '';
+  if (log.type === 'attack') {
+    const cls = log.crit ? 'log-crit' : (log.attacker === currentBattle.you.name ? 'log-player' : 'log-enemy');
+    logHtml = '<div class="log-entry ' + cls + '">';
+    logHtml += (log.crit ? '💥 CRIT! ' : '') + log.attacker + ' hits ' + log.defender + ' for ' + log.damage + ' dmg (' + log.blocked + ' blocked)';
+    logHtml += ' — ' + log.defender + ': ' + log.defenderHP + '/' + log.defenderMaxHP + ' HP';
+    logHtml += '</div>';
+  } else {
+    logHtml = '<div class="log-entry log-system">' + escapeHtml(log.message || log.type) + '</div>';
+  }
+  logEl.insertAdjacentHTML('beforeend', logHtml);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+// Aktualizuje wskaznik czyja tura
+function updateTurnIndicator() {
+  const indicator = document.getElementById('mp-turn-indicator');
+  if (!indicator) return;
+  if (isMyTurn) {
+    indicator.className = 'mp-turn-indicator my-turn';
+    indicator.innerHTML = '<span style="color:var(--gold-bright);font-weight:700;">⚔️ YOUR TURN — Attack!</span>';
+  } else {
+    indicator.className = 'mp-turn-indicator';
+    indicator.innerHTML = '<span style="color:var(--text-dim);">⏳ ' + escapeHtml(currentBattle.currentTurnName) + '\'s turn...</span>';
+  }
+}
+
+// Aktualizuje stan przycisku ataku
+function updateAttackButton() {
+  const atkBtn = document.getElementById('pvp-attack-btn');
+  if (!atkBtn) return;
+  atkBtn.disabled = !isMyTurn;
+  atkBtn.innerHTML = '⚔️ Attack' + (!isMyTurn ? ' (Wait...)' : '');
+  console.log('[UI] Attack button disabled:', !isMyTurn);
+}
+
+// =====================================================
+// REGISTRATION FUNCTIONS
+// =====================================================
 function registerFighter() {
   if (!isConnected || !gameState) return;
-
   const fighterData = {
     name: gameState.name,
     class: gameState.class,
     level: gameState.level,
-    stats: {
-      str: getTotalStat('str'),
-      dex: getTotalStat('dex'),
-      int: getTotalStat('int'),
-      hp: getTotalStat('hp'),
-      lck: getTotalStat('lck')
-    },
+    stats: { str: getTotalStat('str'), dex: getTotalStat('dex'), int: getTotalStat('int'), hp: getTotalStat('hp'), lck: getTotalStat('lck') },
     arena: gameState.arena || { rating: 1000, wins: 0, losses: 0 },
     equipment: []
   };
-
   for (let i = 0; i < ALL_SLOTS.length; i++) {
     const item = gameState.equipment[ALL_SLOTS[i]];
-    if (item) {
-      fighterData.equipment.push({
-        slot: item.slot,
-        name: item.name,
-        icon: item.icon,
-        rarity: item.rarity
-      });
-    }
+    if (item) fighterData.equipment.push({ slot: item.slot, name: item.name, icon: item.icon, rarity: item.rarity });
   }
-
   socket.emit('registerFighter', fighterData);
 }
-
 function updateFighterRegistration() {
-  if (isConnected && isRegistered && gameState) {
-    registerFighter();
-  }
+  if (isConnected && isRegistered && gameState) registerFighter();
 }
 
 // =====================================================
 // PVP QUEUE FUNCTIONS
 // =====================================================
-
 function joinPvpQueue() {
   if (!isConnected) { showToast('Not connected to server!', 'error'); return; }
-  if (!isRegistered) {
-    registerFighter();
-    setTimeout(joinPvpQueue, 500);
-    return;
-  }
+  if (!isRegistered) { registerFighter(); setTimeout(joinPvpQueue, 500); return; }
   if (inBattle) { showToast('Already in a battle!', 'error'); return; }
   if (gameState.currentHP <= 0) { showToast('Heal first!', 'error'); return; }
-
-  registerFighter(); // Update stats before queueing
+  registerFighter();
   socket.emit('joinQueue');
 }
-
-function leavePvpQueue() {
-  socket.emit('leaveQueue');
-}
+function leavePvpQueue() { socket.emit('leaveQueue'); }
 
 function pvpAttack() {
-  if (!inBattle || !isMyTurn) return;
+  if (!inBattle || !isMyTurn) {
+    console.log('[PvP] Attack blocked - inBattle:', inBattle, 'isMyTurn:', isMyTurn);
+    return;
+  }
+  console.log('[PvP] Sending attack');
+  // Natychmiast zablokuj przycisk by zapobiec podwojnemu klikaniu
+  const btn = document.getElementById('pvp-attack-btn');
+  if (btn) btn.disabled = true;
   socket.emit('battleAction', { action: 'attack' });
 }
 
@@ -1069,7 +973,6 @@ function pvpForfeit() {
 // =====================================================
 // CHAT FUNCTIONS
 // =====================================================
-
 function sendChat() {
   const input = document.getElementById('chat-input');
   if (!input) return;
@@ -1080,7 +983,6 @@ function sendChat() {
   socket.emit('chatMessage', { message: msg });
   input.value = '';
 }
-
 function updateChatDisplay() {
   const el = document.getElementById('chat-messages');
   if (!el) return;
@@ -1088,10 +990,10 @@ function updateChatDisplay() {
   const start = Math.max(0, chatMessages.length - 30);
   for (let i = start; i < chatMessages.length; i++) {
     const m = chatMessages[i];
-    const icon = CLASS_ICONS[m.class] || '👤';
+    const icon = CLASS_ICONS[m.class] || '';
     const isMe = gameState && m.name === gameState.name;
     html += '<div class="chat-msg' + (isMe ? ' chat-msg-me' : '') + '">';
-    html += '<span class="chat-name" style="color:' + (isMe ? 'var(--gold)' : 'var(--arena-purple)') + '">' + icon + ' ' + m.name + ':</span> ';
+    html += '<span class="chat-name" style="color:' + (isMe ? 'var(--gold)' : 'var(--arena-purple)') + '">' + icon + ' ' + escapeHtml(m.name) + ':</span> ';
     html += '<span class="chat-text">' + escapeHtml(m.message) + '</span>';
     html += '</div>';
   }
@@ -1102,473 +1004,417 @@ function updateChatDisplay() {
 // =====================================================
 // CHARACTER CREATION
 // =====================================================
-
-function selectClass(cls){
-  selectedClass=cls;
-  document.querySelectorAll('.class-card').forEach(function(c){c.classList.toggle('selected',c.dataset.class===cls);});
-  let d=CLASS_DATA[cls];document.getElementById('stats-preview').style.display='grid';
-  document.getElementById('preview-str').textContent=d.str;document.getElementById('preview-dex').textContent=d.dex;
-  document.getElementById('preview-int').textContent=d.int;document.getElementById('preview-hp').textContent=d.hp;
-  document.getElementById('preview-lck').textContent=d.lck;
+function selectClass(cls) {
+  selectedClass = cls;
+  document.querySelectorAll('.class-card').forEach(function(c) { c.classList.toggle('selected', c.dataset.class === cls); });
+  let d = CLASS_DATA[cls];
+  document.getElementById('stats-preview').style.display = 'grid';
+  document.getElementById('preview-str').textContent = d.str;
+  document.getElementById('preview-dex').textContent = d.dex;
+  document.getElementById('preview-int').textContent = d.int;
+  document.getElementById('preview-hp').textContent = d.hp;
+  document.getElementById('preview-lck').textContent = d.lck;
 }
-
-function createCharacter(){
-  let name=document.getElementById('char-name').value.trim();
-  if(!name){showToast('Enter a name!','error');return;}
-  if(!selectedClass){showToast('Choose a class!','error');return;}
-  let b=CLASS_DATA[selectedClass];
-  gameState={
-    name:name,class:selectedClass,level:1,xp:0,gold:50,statPoints:0,
-    stats:{str:b.str,dex:b.dex,int:b.int,hp:b.hp,lck:b.lck},currentHP:b.hp,
-    equipment:{weapon:null,armor:null,helmet:null,boots:null,amulet:null,ring:null},
-    inventory:[],activeQuest:null,monstersKilled:0,questsCompleted:0,
-    arena:{rating:1000,wins:0,losses:0,lastFight:0,history:[],streak:0,bestStreak:0}
+function createCharacter() {
+  let name = document.getElementById('char-name').value.trim();
+  if (!name) { showToast('Enter a name!', 'error'); return; }
+  if (!selectedClass) { showToast('Choose a class!', 'error'); return; }
+  let b = CLASS_DATA[selectedClass];
+  gameState = {
+    name: name, class: selectedClass, level: 1, xp: 0, gold: 50, statPoints: 0,
+    stats: { str: b.str, dex: b.dex, int: b.int, hp: b.hp, lck: b.lck }, currentHP: b.hp,
+    equipment: { weapon: null, armor: null, helmet: null, boots: null, amulet: null, ring: null },
+    inventory: [], activeQuest: null, monstersKilled: 0, questsCompleted: 0,
+    arena: { rating: 1000, wins: 0, losses: 0, lastFight: 0, history: [], streak: 0, bestStreak: 0 }
   };
-  saveGame();startGame();
+  saveGame();
+  startGame();
 }
 
 // =====================================================
 // SAVE / LOAD
 // =====================================================
-
-function saveGame(){if(gameState)localStorage.setItem('ros_save',JSON.stringify(gameState));}
-function loadGame(){try{let d=localStorage.getItem('ros_save');if(d){gameState=JSON.parse(d);return true;}}catch(e){}return false;}
-function resetSave(){if(confirm('Erase all progress?')){localStorage.removeItem('ros_save');location.reload();}}
+function saveGame() { if (gameState) localStorage.setItem('ros_save', JSON.stringify(gameState)); }
+function loadGame() { try { let d = localStorage.getItem('ros_save'); if (d) { gameState = JSON.parse(d); return true; } } catch(e) {} return false; }
+function resetSave() { if (confirm('Erase all progress?')) { localStorage.removeItem('ros_save'); location.reload(); } }
 
 // =====================================================
 // GAME INIT
 // =====================================================
-
-function startGame(){
-  document.getElementById('creation-screen').style.display='none';
-  document.getElementById('game-screen').style.display='block';
-  for(let i=0;i<ALL_SLOTS.length;i++){if(gameState.equipment[ALL_SLOTS[i]]===undefined)gameState.equipment[ALL_SLOTS[i]]=null;}
-  if(!gameState.arena)gameState.arena={rating:1000,wins:0,losses:0,lastFight:0,history:[],streak:0,bestStreak:0};
-  if(!gameState.arena.streak)gameState.arena.streak=0;
-  if(!gameState.arena.bestStreak)gameState.arena.bestStreak=0;
-  updateStatusBar();renderCharacterPanel();renderInventory();generateTavernQuests();renderQuests();refreshShop();
-  if(gameState.activeQuest&&gameState.activeQuest.endTime)resumeQuestTimer();
-  if(autoSaveInterval)clearInterval(autoSaveInterval);
-  autoSaveInterval=setInterval(saveGame,30000);
+function startGame() {
+  document.getElementById('creation-screen').style.display = 'none';
+  document.getElementById('game-screen').style.display = 'block';
+  for (let i = 0; i < ALL_SLOTS.length; i++) { if (gameState.equipment[ALL_SLOTS[i]] === undefined) gameState.equipment[ALL_SLOTS[i]] = null; }
+  if (!gameState.arena) gameState.arena = { rating: 1000, wins: 0, losses: 0, lastFight: 0, history: [], streak: 0, bestStreak: 0 };
+  if (!gameState.arena.streak) gameState.arena.streak = 0;
+  if (!gameState.arena.bestStreak) gameState.arena.bestStreak = 0;
+  updateStatusBar();
+  renderCharacterPanel();
+  renderInventory();
+  generateTavernQuests();
+  renderQuests();
+  refreshShop();
+  if (gameState.activeQuest && gameState.activeQuest.endTime) resumeQuestTimer();
+  if (autoSaveInterval) clearInterval(autoSaveInterval);
+  autoSaveInterval = setInterval(saveGame, 30000);
 }
 
 // =====================================================
 // STATUS BAR
 // =====================================================
-
-function updateStatusBar(){
-  let p=gameState,maxHP=getTotalStat('hp'),xpN=xpForLevel(p.level);
-  p.currentHP=Math.min(p.currentHP,maxHP);
-  document.getElementById('status-name').textContent=CLASS_DATA[p.class].icon+' '+p.name;
-  document.getElementById('status-class').textContent=p.class+' · Lv.'+p.level;
-  document.getElementById('hp-bar').style.width=((p.currentHP/maxHP)*100)+'%';
-  document.getElementById('hp-text').textContent=p.currentHP+'/'+maxHP+' HP';
-  document.getElementById('xp-bar').style.width=((p.xp/xpN)*100)+'%';
-  document.getElementById('xp-text').textContent=p.xp+'/'+xpN+' XP';
-  document.getElementById('gold-display').textContent=p.gold;
-  document.getElementById('level-display').textContent=p.level;
+function updateStatusBar() {
+  let p = gameState, maxHP = getTotalStat('hp'), xpN = xpForLevel(p.level);
+  p.currentHP = Math.min(p.currentHP, maxHP);
+  document.getElementById('status-name').textContent = CLASS_DATA[p.class].icon + ' ' + p.name;
+  document.getElementById('status-class').textContent = p.class + ' · Lv.' + p.level;
+  document.getElementById('hp-bar').style.width = ((p.currentHP / maxHP) * 100) + '%';
+  document.getElementById('hp-text').textContent = p.currentHP + '/' + maxHP + ' HP';
+  document.getElementById('xp-bar').style.width = ((p.xp / xpN) * 100) + '%';
+  document.getElementById('xp-text').textContent = p.xp + '/' + xpN + ' XP';
+  document.getElementById('gold-display').textContent = p.gold;
+  document.getElementById('level-display').textContent = p.level;
 }
 
 // =====================================================
 // STAT CALCS
 // =====================================================
-
-function getTotalStat(stat){let t=gameState.stats[stat];for(let i=0;i<ALL_SLOTS.length;i++){let it=gameState.equipment[ALL_SLOTS[i]];if(it&&it.bonuses&&it.bonuses[stat])t+=it.bonuses[stat];}return t;}
-function getEquipBonus(stat){let b=0;for(let i=0;i<ALL_SLOTS.length;i++){let it=gameState.equipment[ALL_SLOTS[i]];if(it&&it.bonuses&&it.bonuses[stat])b+=it.bonuses[stat];}return b;}
-function calcPlayerDamage(){let c=gameState.class,s=getTotalStat('str'),d=getTotalStat('dex'),ii=getTotalStat('int');let dmg=c==='Warrior'?s*2+d*0.5:c==='Mage'?ii*2.2+d*0.3:d*1.8+s*0.6;dmg+=gameState.level*1.5;return Math.max(1,Math.round(dmg*(0.85+Math.random()*0.3)));}
-function isCritical(){return Math.random()*100<Math.min(60,getTotalStat('lck')*2);}
-function calcDefense(){let c=gameState.class,s=getTotalStat('str'),d=getTotalStat('dex'),ii=getTotalStat('int'),lv=gameState.level;let def;if(c==='Warrior')def=(s*0.8+d*0.2+lv*1.5)*0.65;else if(c==='Mage')def=(ii*0.3+d*0.2+lv*1.0)*0.5;else def=(d*0.6+s*0.2+lv*1.2)*0.55;return Math.min(CLASS_DATA[c].maxDefense,def);}
+function getTotalStat(stat) { let t = gameState.stats[stat]; for (let i = 0; i < ALL_SLOTS.length; i++) { let it = gameState.equipment[ALL_SLOTS[i]]; if (it && it.bonuses && it.bonuses[stat]) t += it.bonuses[stat]; } return t; }
+function getEquipBonus(stat) { let b = 0; for (let i = 0; i < ALL_SLOTS.length; i++) { let it = gameState.equipment[ALL_SLOTS[i]]; if (it && it.bonuses && it.bonuses[stat]) b += it.bonuses[stat]; } return b; }
+function calcPlayerDamage() { let c = gameState.class, s = getTotalStat('str'), d = getTotalStat('dex'), ii = getTotalStat('int'); let dmg = c === 'Warrior' ? s*2+d*0.5 : c === 'Mage' ? ii*2.2+d*0.3 : d*1.8+s*0.6; dmg += gameState.level * 1.5; return Math.max(1, Math.round(dmg * (0.85 + Math.random() * 0.3))); }
+function isCritical() { return Math.random() * 100 < Math.min(60, getTotalStat('lck') * 2); }
+function calcDefense() { let c = gameState.class, s = getTotalStat('str'), d = getTotalStat('dex'), ii = getTotalStat('int'), lv = gameState.level; let def; if (c === 'Warrior') def = (s*0.8+d*0.2+lv*1.5)*0.65; else if (c === 'Mage') def = (ii*0.3+d*0.2+lv*1.0)*0.5; else def = (d*0.6+s*0.2+lv*1.2)*0.55; return Math.min(CLASS_DATA[c].maxDefense, def); }
 
 // =====================================================
 // CHARACTER PANEL
 // =====================================================
-
-function renderCharacterPanel(){
-  let sp=document.getElementById('stat-points-area');
-  if(gameState.statPoints>0){sp.innerHTML='<div class="stat-points-banner animate-bounce"><span class="count">'+gameState.statPoints+'</span> stat points available!</div>';}else{sp.innerHTML='';}
-  let cb=CLASS_DATA[gameState.class],sl=document.getElementById('stats-list'),html='';
-  let statKeys=['str','dex','int','hp','lck'];
-  for(let si=0;si<statKeys.length;si++){
-    let key=statKeys[si],info=STAT_INFO[key],base=gameState.stats[key],bonus=getEquipBonus(key),total=base+bonus;
-    let classStart=cb[key],alloc=key==='hp'?Math.round((base-classStart)/10):base-classStart,allocDisp=key==='hp'?alloc*10:alloc;
-    let bonusStr=bonus>0?'<span class="stat-bonus">(+'+bonus+')</span>':'';
-    let btns='';if(gameState.statPoints>0){btns='<button class="stat-point-btn" onclick="allocateStat(\''+key+'\',1)">+1</button><button class="stat-point-btn-10" onclick="allocateStat(\''+key+'\',10)"'+(gameState.statPoints<10?' disabled':'')+'>+10</button>';}
-    let tip='<div class="stat-tooltip"><div class="stat-tooltip-title">'+info.icon+' '+info.name+'</div><div class="stat-tooltip-desc">'+info.desc+'</div><div class="stat-tooltip-breakdown"><div class="stb-row"><span class="stb-label">Class Base ('+gameState.class+')</span><span class="stb-value">'+classStart+'</span></div><div class="stb-row"><span class="stb-label">Points Allocated</span><span class="stb-value stb-green">'+(alloc>0?'+'+allocDisp:'0')+'</span></div><div class="stb-row"><span class="stb-label">Equipment Bonus</span><span class="stb-value stb-green">'+(bonus>0?'+'+bonus:'0')+'</span></div><div class="stb-row" style="margin-top:2px;padding-top:4px;border-top:1px solid var(--border-gold-dim);"><span class="stb-label" style="font-weight:700;">Total</span><span class="stb-value stb-gold">'+total+'</span></div></div><div style="margin-top:6px;font-size:0.6rem;color:var(--text-dim);">Per point: '+info.perPoint+'</div></div>';
-    html+='<div class="stat-row"><span class="stat-name-wrap">'+info.icon+' '+info.name+tip+'</span><span style="display:flex;align-items:center;"><span class="stat-value">'+total+'</span>'+bonusStr+btns+'</span></div>';
+function renderCharacterPanel() {
+  let sp = document.getElementById('stat-points-area');
+  if (gameState.statPoints > 0) { sp.innerHTML = '<div class="stat-points-banner animate-bounce"><span class="count">' + gameState.statPoints + '</span> stat points available!</div>'; }
+  else { sp.innerHTML = ''; }
+  let cb = CLASS_DATA[gameState.class], sl = document.getElementById('stats-list'), html = '';
+  let statKeys = ['str', 'dex', 'int', 'hp', 'lck'];
+  for (let si = 0; si < statKeys.length; si++) {
+    let key = statKeys[si], info = STAT_INFO[key], base = gameState.stats[key], bonus = getEquipBonus(key), total = base + bonus;
+    let classStart = cb[key], alloc = key === 'hp' ? Math.round((base - classStart) / 10) : base - classStart, allocDisp = key === 'hp' ? alloc * 10 : alloc;
+    let bonusStr = bonus > 0 ? '<span class="stat-bonus">(+' + bonus + ')</span>' : '';
+    let btns = ''; if (gameState.statPoints > 0) { btns = '<button class="stat-point-btn" onclick="allocateStat(\'' + key + '\',1)">+1</button><button class="stat-point-btn-10" onclick="allocateStat(\'' + key + '\',10)"' + (gameState.statPoints < 10 ? ' disabled' : '') + '>+10</button>'; }
+    let tip = '<div class="stat-tooltip"><div class="stat-tooltip-title">' + info.icon + ' ' + info.name + '</div><div class="stat-tooltip-desc">' + info.desc + '</div><div class="stat-tooltip-breakdown"><div class="stb-row"><span class="stb-label">Class Base (' + gameState.class + ')</span><span class="stb-value">' + classStart + '</span></div><div class="stb-row"><span class="stb-label">Points Allocated</span><span class="stb-value stb-green">' + (alloc > 0 ? '+' + allocDisp : '0') + '</span></div><div class="stb-row"><span class="stb-label">Equipment Bonus</span><span class="stb-value stb-green">' + (bonus > 0 ? '+' + bonus : '0') + '</span></div><div class="stb-row" style="margin-top:2px;padding-top:4px;border-top:1px solid var(--border-gold-dim);"><span class="stb-label" style="font-weight:700;">Total</span><span class="stb-value stb-gold">' + total + '</span></div></div><div style="margin-top:6px;font-size:0.6rem;color:var(--text-dim);">Per point: ' + info.perPoint + '</div></div>';
+    html += '<div class="stat-row"><span class="stat-name-wrap">' + info.icon + ' ' + info.name + tip + '</span><span style="display:flex;align-items:center;"><span class="stat-value">' + total + '</span>' + bonusStr + btns + '</span></div>';
   }
-  let crit=Math.min(60,getTotalStat('lck')*2),def=calcDefense().toFixed(1);
-  html+='<div class="stat-row" style="border-left-color:var(--crit-orange);"><span class="stat-name">⚡ Crit Chance</span><span class="stat-value">'+crit+'%</span></div>';
-  html+='<div class="stat-row" style="border-left-color:var(--xp-blue);"><span class="stat-name">🛡️ Defense</span><span class="stat-value">'+def+'%</span></div>';
-  html+='<div class="stat-row" style="border-left-color:var(--arena-purple);"><span class="stat-name">🏟️ Arena Rating</span><span class="stat-value">'+gameState.arena.rating+'</span></div>';
-  html+='<div class="stat-row" style="border-left-color:var(--text-dim);"><span class="stat-name">☠️ Monsters Slain</span><span class="stat-value">'+gameState.monstersKilled+'</span></div>';
-  html+='<div class="stat-row" style="border-left-color:var(--text-dim);"><span class="stat-name">📜 Quests Done</span><span class="stat-value">'+gameState.questsCompleted+'</span></div>';
-  sl.innerHTML=html;
-  
-  let eq=document.getElementById('equip-slots'),eqHTML='';
-  for(let ei=0;ei<ALL_SLOTS.length;ei++){
-    let slot=ALL_SLOTS[ei],item=gameState.equipment[slot],si2=SLOT_LABELS[slot];
-    if(item){let bts=[];let bKeys=Object.keys(item.bonuses);for(let bi=0;bi<bKeys.length;bi++){if(item.bonuses[bKeys[bi]]>0)bts.push('+'+item.bonuses[bKeys[bi]]+' '+STAT_INFO[bKeys[bi]].name);}
-      eqHTML+='<div class="equip-slot filled" style="border-color:'+RARITY_DATA[item.rarity].color+'"><div class="slot-icon">'+item.icon+'</div><div class="slot-info"><div class="slot-label">'+si2.label+'</div><div class="slot-item" style="color:'+RARITY_DATA[item.rarity].color+'">'+item.name+'</div><div class="slot-stats">'+bts.join(', ')+'</div></div><button class="btn-unequip" onclick="unequipItem(\''+slot+'\')">Remove</button></div>';
-    }else{eqHTML+='<div class="equip-slot"><div class="slot-icon">'+si2.icon+'</div><div class="slot-info"><div class="slot-label">'+si2.label+'</div><div class="slot-item" style="color:var(--text-dim);">Empty</div></div></div>';}
+  let crit = Math.min(60, getTotalStat('lck') * 2), def = calcDefense().toFixed(1);
+  html += '<div class="stat-row" style="border-left-color:var(--crit-orange);"><span class="stat-name">💥 Crit Chance</span><span class="stat-value">' + crit + '%</span></div>';
+  html += '<div class="stat-row" style="border-left-color:var(--xp-blue);"><span class="stat-name">🛡️ Defense</span><span class="stat-value">' + def + '%</span></div>';
+  html += '<div class="stat-row" style="border-left-color:var(--arena-purple);"><span class="stat-name">🏟️ Arena Rating</span><span class="stat-value">' + gameState.arena.rating + '</span></div>';
+  html += '<div class="stat-row" style="border-left-color:var(--text-dim);"><span class="stat-name">💀 Monsters Slain</span><span class="stat-value">' + gameState.monstersKilled + '</span></div>';
+  html += '<div class="stat-row" style="border-left-color:var(--text-dim);"><span class="stat-name">📜 Quests Done</span><span class="stat-value">' + gameState.questsCompleted + '</span></div>';
+  sl.innerHTML = html;
+  let eq = document.getElementById('equip-slots'), eqHTML = '';
+  for (let ei = 0; ei < ALL_SLOTS.length; ei++) {
+    let slot = ALL_SLOTS[ei], item = gameState.equipment[slot], si2 = SLOT_LABELS[slot];
+    if (item) {
+      let bts = [], bKeys = Object.keys(item.bonuses);
+      for (let bi = 0; bi < bKeys.length; bi++) { if (item.bonuses[bKeys[bi]] > 0) bts.push('+' + item.bonuses[bKeys[bi]] + ' ' + STAT_INFO[bKeys[bi]].name); }
+      eqHTML += '<div class="equip-slot filled" style="border-color:' + RARITY_DATA[item.rarity].color + '"><div class="slot-icon">' + item.icon + '</div><div class="slot-info"><div class="slot-label">' + si2.label + '</div><div class="slot-item" style="color:' + RARITY_DATA[item.rarity].color + '">' + item.name + '</div><div class="slot-stats">' + bts.join(', ') + '</div></div><button class="btn-unequip" onclick="unequipItem(\'' + slot + '\')">Remove</button></div>';
+    } else {
+      eqHTML += '<div class="equip-slot"><div class="slot-icon">' + si2.icon + '</div><div class="slot-info"><div class="slot-label">' + si2.label + '</div><div class="slot-item" style="color:var(--text-dim);">Empty</div></div></div>';
+    }
   }
-  eq.innerHTML=eqHTML;
+  eq.innerHTML = eqHTML;
 }
-
-function allocateStat(stat,amt){amt=amt||1;let pts=Math.min(amt,gameState.statPoints);if(pts<=0)return;gameState.statPoints-=pts;if(stat==='hp'){gameState.stats.hp+=pts*10;gameState.currentHP+=pts*10;}else gameState.stats[stat]+=pts;playSound('equip');if(pts>1)showToast('+'+(stat==='hp'?pts*10:pts)+' '+STAT_INFO[stat].name+'!','success');updateStatusBar();renderCharacterPanel();saveGame();updateFighterRegistration();}
+function allocateStat(stat, amt) {
+  amt = amt || 1;
+  let pts = Math.min(amt, gameState.statPoints);
+  if (pts <= 0) return;
+  gameState.statPoints -= pts;
+  if (stat === 'hp') { gameState.stats.hp += pts * 10; gameState.currentHP += pts * 10; }
+  else gameState.stats[stat] += pts;
+  playSound('equip');
+  if (pts > 1) showToast('+' + (stat === 'hp' ? pts * 10 : pts) + ' ' + STAT_INFO[stat].name + '!', 'success');
+  updateStatusBar();
+  renderCharacterPanel();
+  saveGame();
+  updateFighterRegistration();
+}
 
 // =====================================================
 // ITEM GENERATION
 // =====================================================
-
-function generateItem(forcedRarity,levelScale,forcedSlot){
-  let level=levelScale||gameState.level,slot=forcedSlot||randPick(ALL_SLOTS),template=randPick(ITEM_TEMPLATES[slot]);
-  let rarity=forcedRarity||rollRarity(),mult=RARITY_DATA[rarity].mult,prefix=randPick(RARITY_PREFIXES[rarity]);
-  let bonuses={str:0,dex:0,int:0,hp:0,lck:0},numStats;
-  if(rarity==='Common')numStats=1;else if(rarity==='Rare')numStats=2;else if(rarity==='Epic')numStats=3;else if(rarity==='Legendary')numStats=4;else numStats=5;
-  let statKeys=Object.keys(bonuses),chosen=[],pool=statKeys.slice();
-  while(chosen.length<Math.min(numStats,pool.length)){let idx=randInt(0,pool.length-1);chosen.push(pool[idx]);pool.splice(idx,1);}
-  let dominantIdx=randInt(0,chosen.length-1),dominant=chosen[dominantIdx],secondary=null;
-  if(chosen.length>=3){let secIdx=randInt(0,chosen.length-1);while(secIdx===dominantIdx)secIdx=randInt(0,chosen.length-1);secondary=chosen[secIdx];}
-  for(let ci=0;ci<chosen.length;ci++){let st=chosen[ci],isDom=(st===dominant),isSec=(st===secondary);
-    if(st==='hp'){let baseHP=randInt(5,15)+level*2,hpMult2=isDom?(2+Math.random()):isSec?(1.2+Math.random()*0.5):(0.4+Math.random()*0.4);bonuses[st]=Math.max(1,Math.round(baseHP*mult*hpMult2));}
-    else{let baseVal=randInt(1,3)+Math.floor(level*0.5),valMult=isDom?(2+Math.random()*1.5):isSec?(1+Math.random()*0.5):(0.3+Math.random()*0.5);bonuses[st]=Math.max(1,Math.round(baseVal*mult*valMult));}
+function generateItem(forcedRarity, levelScale, forcedSlot) {
+  let level = levelScale || gameState.level, slot = forcedSlot || randPick(ALL_SLOTS), template = randPick(ITEM_TEMPLATES[slot]);
+  let rarity = forcedRarity || rollRarity(), mult = RARITY_DATA[rarity].mult, prefix = randPick(RARITY_PREFIXES[rarity]);
+  let bonuses = { str: 0, dex: 0, int: 0, hp: 0, lck: 0 }, numStats;
+  if (rarity === 'Common') numStats = 1; else if (rarity === 'Rare') numStats = 2; else if (rarity === 'Epic') numStats = 3; else if (rarity === 'Legendary') numStats = 4; else numStats = 5;
+  let statKeys = Object.keys(bonuses), chosen = [], pool = statKeys.slice();
+  while (chosen.length < Math.min(numStats, pool.length)) { let idx = randInt(0, pool.length - 1); chosen.push(pool[idx]); pool.splice(idx, 1); }
+  let dominantIdx = randInt(0, chosen.length - 1), dominant = chosen[dominantIdx], secondary = null;
+  if (chosen.length >= 3) { let secIdx = randInt(0, chosen.length - 1); while (secIdx === dominantIdx) secIdx = randInt(0, chosen.length - 1); secondary = chosen[secIdx]; }
+  for (let ci = 0; ci < chosen.length; ci++) {
+    let st = chosen[ci], isDom = (st === dominant), isSec = (st === secondary);
+    if (st === 'hp') { let baseHP = randInt(5, 15) + level * 2, hpMult2 = isDom ? (2 + Math.random()) : isSec ? (1.2 + Math.random() * 0.5) : (0.4 + Math.random() * 0.4); bonuses[st] = Math.max(1, Math.round(baseHP * mult * hpMult2)); }
+    else { let baseVal = randInt(1, 3) + Math.floor(level * 0.5), valMult = isDom ? (2 + Math.random() * 1.5) : isSec ? (1 + Math.random() * 0.5) : (0.3 + Math.random() * 0.5); bonuses[st] = Math.max(1, Math.round(baseVal * mult * valMult)); }
   }
-  let total=0;for(let ti=0;ti<statKeys.length;ti++)total+=bonuses[statKeys[ti]];
-  let priceMult=rarity==='Mythic'?5:rarity==='Legendary'?3:rarity==='Epic'?2:1;
-  return {id:uid(),name:prefix+' '+template.name,icon:template.icon,slot:slot,rarity:rarity,bonuses:bonuses,sellPrice:Math.max(1,Math.round(total*1.5*priceMult)),level:level};
+  let total = 0; for (let ti = 0; ti < statKeys.length; ti++) total += bonuses[statKeys[ti]];
+  let priceMult = rarity === 'Mythic' ? 5 : rarity === 'Legendary' ? 3 : rarity === 'Epic' ? 2 : 1;
+  return { id: uid(), name: prefix + ' ' + template.name, icon: template.icon, slot: slot, rarity: rarity, bonuses: bonuses, sellPrice: Math.max(1, Math.round(total * 1.5 * priceMult)), level: level };
 }
 
 // =====================================================
 // INVENTORY
 // =====================================================
-
-function getUnequipped(){let eqIds={};for(let i=0;i<ALL_SLOTS.length;i++){let it=gameState.equipment[ALL_SLOTS[i]];if(it)eqIds[it.id]=true;}return gameState.inventory.filter(function(item){return !eqIds[item.id];});}
-function isEquipped(itemId){for(let i=0;i<ALL_SLOTS.length;i++){if(gameState.equipment[ALL_SLOTS[i]]&&gameState.equipment[ALL_SLOTS[i]].id===itemId)return true;}return false;}
-
-function renderInvToolbar(){
-  let area=document.getElementById('inv-toolbar-area');if(!gameState.inventory.length){area.innerHTML='';return;}
-  let uneq=getUnequipped(),totalVal=0;for(let i=0;i<uneq.length;i++)totalVal+=uneq[i].sellPrice;
-  let rfb='<button class="inv-filter-btn '+(invFilter==='all'?'active':'')+'" onclick="setInvFilter(\'all\')">All ('+gameState.inventory.length+')</button>';
-  for(let ri=0;ri<ALL_RARITIES.length;ri++){let r=ALL_RARITIES[ri];let cnt=gameState.inventory.filter(function(x){return x.rarity===r;}).length;if(cnt>0)rfb+='<button class="inv-filter-btn '+(invFilter===r?'active':'')+'" onclick="setInvFilter(\''+r+'\')" style="color:'+RARITY_DATA[r].color+';'+(invFilter===r?'border-color:'+RARITY_DATA[r].color:'')+'">'+r+' ('+cnt+')</button>';}
-  let sfb='',slotKeys=['all'].concat(ALL_SLOTS);
-  for(let ski=0;ski<slotKeys.length;ski++){let sk=slotKeys[ski],sl2=SLOT_LABELS[sk],scnt=sk==='all'?gameState.inventory.length:gameState.inventory.filter(function(x){return x.slot===sk;}).length;if(scnt>0||sk==='all')sfb+='<button class="inv-filter-btn '+(invSlotFilter===sk?'active':'')+'" onclick="setInvSlotFilter(\''+sk+'\')">'+sl2.icon+' '+sl2.label+(sk!=='all'?' ('+scnt+')':'')+'</button>';}
-  let sortBtns='<button class="inv-filter-btn '+(invSort==='rarity'?'active':'')+'" onclick="setInvSort(\'rarity\')">⬆ Rarity</button><button class="inv-filter-btn '+(invSort==='value'?'active':'')+'" onclick="setInvSort(\'value\')">💰 Value</button><button class="inv-filter-btn '+(invSort==='name'?'active':'')+'" onclick="setInvSort(\'name\')">🔤 Name</button>';
-  let sellBtns='',sellRarities=['Common','Rare','Epic'];
-  for(let sri=0;sri<sellRarities.length;sri++){let sr=sellRarities[sri],sellItems=uneq.filter(function(x){return x.rarity===sr;});if(sellItems.length){let sv=0;for(let svi=0;svi<sellItems.length;svi++)sv+=sellItems[svi].sellPrice;sellBtns+='<button class="inv-sell-btn" onclick="sellAllRarity(\''+sr+'\')">Sell '+sr+' ('+sellItems.length+') 🪙'+sv+'</button>';}}
-  if(uneq.length)sellBtns+='<button class="inv-sell-btn" onclick="sellAllItems()" style="border-color:rgba(231,76,60,0.6);">💀 Sell ALL ('+uneq.length+') 🪙'+totalVal+'</button>';
-  area.innerHTML='<div class="inv-toolbar"><span class="inv-toolbar-label">Rarity:</span>'+rfb+'<div class="inv-toolbar-sep"></div><span class="inv-toolbar-label">Sort:</span>'+sortBtns+'</div><div class="inv-toolbar"><span class="inv-toolbar-label">Slot:</span>'+sfb+'</div><div class="inv-toolbar"><span class="inv-toolbar-label">Quick Sell:</span>'+(sellBtns||'<span style="font-size:0.7rem;color:var(--text-dim);font-style:italic;">Nothing to sell</span>')+'</div>';
+function getUnequipped() { let eqIds = {}; for (let i = 0; i < ALL_SLOTS.length; i++) { let it = gameState.equipment[ALL_SLOTS[i]]; if (it) eqIds[it.id] = true; } return gameState.inventory.filter(function(item) { return !eqIds[item.id]; }); }
+function isEquipped(itemId) { for (let i = 0; i < ALL_SLOTS.length; i++) { if (gameState.equipment[ALL_SLOTS[i]] && gameState.equipment[ALL_SLOTS[i]].id === itemId) return true; } return false; }
+function renderInvToolbar() {
+  let area = document.getElementById('inv-toolbar-area'); if (!gameState.inventory.length) { area.innerHTML = ''; return; }
+  let uneq = getUnequipped(), totalVal = 0; for (let i = 0; i < uneq.length; i++) totalVal += uneq[i].sellPrice;
+  let rfb = '<button class="inv-filter-btn ' + (invFilter === 'all' ? 'active' : '') + '" onclick="setInvFilter(\'all\')">All (' + gameState.inventory.length + ')</button>';
+  for (let ri = 0; ri < ALL_RARITIES.length; ri++) { let r = ALL_RARITIES[ri]; let cnt = gameState.inventory.filter(function(x) { return x.rarity === r; }).length; if (cnt > 0) rfb += '<button class="inv-filter-btn ' + (invFilter === r ? 'active' : '') + '" onclick="setInvFilter(\'' + r + '\')" style="color:' + RARITY_DATA[r].color + ';' + (invFilter === r ? 'border-color:' + RARITY_DATA[r].color : '') + '">' + r + ' (' + cnt + ')</button>'; }
+  let sfb = '', slotKeys = ['all'].concat(ALL_SLOTS);
+  for (let ski = 0; ski < slotKeys.length; ski++) { let sk = slotKeys[ski], sl2 = SLOT_LABELS[sk], scnt = sk === 'all' ? gameState.inventory.length : gameState.inventory.filter(function(x) { return x.slot === sk; }).length; if (scnt > 0 || sk === 'all') sfb += '<button class="inv-filter-btn ' + (invSlotFilter === sk ? 'active' : '') + '" onclick="setInvSlotFilter(\'' + sk + '\')">' + sl2.icon + ' ' + sl2.label + (sk !== 'all' ? ' (' + scnt + ')' : '') + '</button>'; }
+  let sortBtns = '<button class="inv-filter-btn ' + (invSort === 'rarity' ? 'active' : '') + '" onclick="setInvSort(\'rarity\')">⭐ Rarity</button><button class="inv-filter-btn ' + (invSort === 'value' ? 'active' : '') + '" onclick="setInvSort(\'value\')">💰 Value</button><button class="inv-filter-btn ' + (invSort === 'name' ? 'active' : '') + '" onclick="setInvSort(\'name\')">🔤 Name</button>';
+  let sellBtns = '', sellRarities = ['Common', 'Rare', 'Epic'];
+  for (let sri = 0; sri < sellRarities.length; sri++) { let sr = sellRarities[sri], sellItems = uneq.filter(function(x) { return x.rarity === sr; }); if (sellItems.length) { let sv = 0; for (let svi = 0; svi < sellItems.length; svi++) sv += sellItems[svi].sellPrice; sellBtns += '<button class="inv-sell-btn" onclick="sellAllRarity(\'' + sr + '\')">Sell ' + sr + ' (' + sellItems.length + ') 💰' + sv + '</button>'; } }
+  if (uneq.length) sellBtns += '<button class="inv-sell-btn" onclick="sellAllItems()" style="border-color:rgba(231,76,60,0.6);">🔥 Sell ALL (' + uneq.length + ') 💰' + totalVal + '</button>';
+  area.innerHTML = '<div class="inv-toolbar"><span class="inv-toolbar-label">Rarity:</span>' + rfb + '<div class="inv-toolbar-sep"></div><span class="inv-toolbar-label">Sort:</span>' + sortBtns + '</div><div class="inv-toolbar"><span class="inv-toolbar-label">Slot:</span>' + sfb + '</div><div class="inv-toolbar"><span class="inv-toolbar-label">Quick Sell:</span>' + (sellBtns || '<span style="font-size:0.7rem;color:var(--text-dim);font-style:italic;">Nothing to sell</span>') + '</div>';
 }
-function setInvFilter(f){invFilter=f;renderInventory();}
-function setInvSlotFilter(s){invSlotFilter=s;renderInventory();}
-function setInvSort(s){invSort=s;renderInventory();}
-
-function sellAllRarity(r){let toSell=getUnequipped().filter(function(x){return x.rarity===r;});if(!toSell.length){showToast('No '+r+' items!','info');return;}let gold=0;for(let i=0;i<toSell.length;i++)gold+=toSell[i].sellPrice;if(!confirm('Sell '+toSell.length+' '+r+' items for '+gold+' gold?'))return;let ids={};for(let j=0;j<toSell.length;j++)ids[toSell[j].id]=true;gameState.gold+=gold;gameState.inventory=gameState.inventory.filter(function(x){return !ids[x.id];});playSound('coin');showToast('Sold '+toSell.length+' '+r+' items for '+gold+' gold!','success');updateStatusBar();renderInventory();saveGame();}
-function sellAllItems(){let uneq=getUnequipped();if(!uneq.length){showToast('Nothing to sell!','info');return;}let gold=0;for(let i=0;i<uneq.length;i++)gold+=uneq[i].sellPrice;if(!confirm('Sell ALL '+uneq.length+' items for '+gold+' gold?'))return;let ids={};for(let j=0;j<uneq.length;j++)ids[uneq[j].id]=true;gameState.gold+=gold;gameState.inventory=gameState.inventory.filter(function(x){return !ids[x.id];});playSound('coin');showToast('Sold all for '+gold+' gold!','success');updateStatusBar();renderInventory();saveGame();}
-
-function renderInventory(){
-  renderInvToolbar();let grid=document.getElementById('inventory-grid');
-  if(!gameState.inventory.length){grid.innerHTML='<div class="empty-inv">🎒 Empty!</div>';return;}
-  let items=gameState.inventory.slice();
-  if(invFilter!=='all')items=items.filter(function(x){return x.rarity===invFilter;});
-  if(invSlotFilter!=='all')items=items.filter(function(x){return x.slot===invSlotFilter;});
-  if(invSort==='rarity')items.sort(function(a,b){return RARITY_ORDER[a.rarity]-RARITY_ORDER[b.rarity];});
-  else if(invSort==='value')items.sort(function(a,b){return b.sellPrice-a.sellPrice;});
-  else items.sort(function(a,b){return a.name.localeCompare(b.name);});
-  if(!items.length){grid.innerHTML='<div class="empty-inv">No matching items.</div>';return;}
-  let html='';for(let i=0;i<items.length;i++)html+=buildItemCard(items[i]);grid.innerHTML=html;
+function setInvFilter(f) { invFilter = f; renderInventory(); }
+function setInvSlotFilter(s) { invSlotFilter = s; renderInventory(); }
+function setInvSort(s) { invSort = s; renderInventory(); }
+function sellAllRarity(r) { let toSell = getUnequipped().filter(function(x) { return x.rarity === r; }); if (!toSell.length) { showToast('No ' + r + ' items!', 'info'); return; } let gold = 0; for (let i = 0; i < toSell.length; i++) gold += toSell[i].sellPrice; if (!confirm('Sell ' + toSell.length + ' ' + r + ' items for ' + gold + ' gold?')) return; let ids = {}; for (let j = 0; j < toSell.length; j++) ids[toSell[j].id] = true; gameState.gold += gold; gameState.inventory = gameState.inventory.filter(function(x) { return !ids[x.id]; }); playSound('coin'); showToast('Sold ' + toSell.length + ' ' + r + ' items for ' + gold + ' gold!', 'success'); updateStatusBar(); renderInventory(); saveGame(); }
+function sellAllItems() { let uneq = getUnequipped(); if (!uneq.length) { showToast('Nothing to sell!', 'info'); return; } let gold = 0; for (let i = 0; i < uneq.length; i++) gold += uneq[i].sellPrice; if (!confirm('Sell ALL ' + uneq.length + ' items for ' + gold + ' gold?')) return; let ids = {}; for (let j = 0; j < uneq.length; j++) ids[uneq[j].id] = true; gameState.gold += gold; gameState.inventory = gameState.inventory.filter(function(x) { return !ids[x.id]; }); playSound('coin'); showToast('Sold all for ' + gold + ' gold!', 'success'); updateStatusBar(); renderInventory(); saveGame(); }
+function renderInventory() {
+  renderInvToolbar();
+  let grid = document.getElementById('inventory-grid');
+  if (!gameState.inventory.length) { grid.innerHTML = '<div class="empty-inv">🎒 Empty!</div>'; return; }
+  let items = gameState.inventory.slice();
+  if (invFilter !== 'all') items = items.filter(function(x) { return x.rarity === invFilter; });
+  if (invSlotFilter !== 'all') items = items.filter(function(x) { return x.slot === invSlotFilter; });
+  if (invSort === 'rarity') items.sort(function(a, b) { return RARITY_ORDER[a.rarity] - RARITY_ORDER[b.rarity]; });
+  else if (invSort === 'value') items.sort(function(a, b) { return b.sellPrice - a.sellPrice; });
+  else items.sort(function(a, b) { return a.name.localeCompare(b.name); });
+  if (!items.length) { grid.innerHTML = '<div class="empty-inv">No matching items.</div>'; return; }
+  let html = ''; for (let i = 0; i < items.length; i++) html += buildItemCard(items[i]);
+  grid.innerHTML = html;
 }
-
-function buildItemCard(item){
-  let stats=[],maxV=0,bKeys=Object.keys(item.bonuses);
-  for(let i=0;i<bKeys.length;i++){if(item.bonuses[bKeys[i]]>0){stats.push({key:bKeys[i],val:item.bonuses[bKeys[i]]});if(item.bonuses[bKeys[i]]>maxV)maxV=item.bonuses[bKeys[i]];}}
-  let bonusHTML='';for(let j=0;j<stats.length;j++){let isDom=stats[j].val===maxV&&stats.length>1;bonusHTML+='<span'+(isDom?' class="item-dominant"':'')+'>+'+stats[j].val+' '+STAT_INFO[stats[j].key].icon+' '+STAT_INFO[stats[j].key].name+'</span><br>';}
-  let isEq=isEquipped(item.id),slotLabel=SLOT_LABELS[item.slot]?SLOT_LABELS[item.slot].label:item.slot;
-  let c='<div class="item-card rarity-'+item.rarity+' animate-fade"><div class="item-header"><span class="item-icon">'+item.icon+'</span><div><div class="item-name">'+item.name+'</div><span class="item-rarity">'+item.rarity+'</span></div></div><div class="item-stats">'+bonusHTML+'</div><div class="item-type">'+slotLabel+' · Lv.'+item.level+' · 🪙'+item.sellPrice+'</div>';
-  if(isEq)c+='<button class="btn-equip" disabled>Equipped</button>';
-  else{c+='<button class="btn-equip" onclick="equipItem(\''+item.id+'\')">Equip</button>';c+='<button class="btn-sell" onclick="sellItem(\''+item.id+'\')">Sell 🪙'+item.sellPrice+'</button>';}
-  return c+'</div>';
+function buildItemCard(item) {
+  let stats = [], maxV = 0, bKeys = Object.keys(item.bonuses);
+  for (let i = 0; i < bKeys.length; i++) { if (item.bonuses[bKeys[i]] > 0) { stats.push({ key: bKeys[i], val: item.bonuses[bKeys[i]] }); if (item.bonuses[bKeys[i]] > maxV) maxV = item.bonuses[bKeys[i]]; } }
+  let bonusHTML = ''; for (let j = 0; j < stats.length; j++) { let isDom = stats[j].val === maxV && stats.length > 1; bonusHTML += '<span' + (isDom ? ' class="item-dominant"' : '') + '>+' + stats[j].val + ' ' + STAT_INFO[stats[j].key].icon + ' ' + STAT_INFO[stats[j].key].name + '</span><br>'; }
+  let isEq = isEquipped(item.id), slotLabel = SLOT_LABELS[item.slot] ? SLOT_LABELS[item.slot].label : item.slot;
+  let c = '<div class="item-card rarity-' + item.rarity + ' animate-fade"><div class="item-header"><span class="item-icon">' + item.icon + '</span><div><div class="item-name">' + item.name + '</div><span class="item-rarity">' + item.rarity + '</span></div></div><div class="item-stats">' + bonusHTML + '</div><div class="item-type">' + slotLabel + ' · Lv.' + item.level + ' · 💰' + item.sellPrice + '</div>';
+  if (isEq) c += '<button class="btn-equip" disabled>Equipped</button>';
+  else { c += '<button class="btn-equip" onclick="equipItem(\'' + item.id + '\')">Equip</button>'; c += '<button class="btn-sell" onclick="sellItem(\'' + item.id + '\')">Sell 💰' + item.sellPrice + '</button>'; }
+  return c + '</div>';
 }
-
-function equipItem(id){let item=null;for(let i=0;i<gameState.inventory.length;i++){if(gameState.inventory[i].id===id){item=gameState.inventory[i];break;}}if(!item)return;let prev=gameState.equipment[item.slot];gameState.equipment[item.slot]=item;gameState.inventory=gameState.inventory.filter(function(x){return x.id!==id;});if(prev)gameState.inventory.push(prev);let mx=getTotalStat('hp');if(gameState.currentHP>mx)gameState.currentHP=mx;playSound('equip');showToast('Equipped '+item.name+'!','success');updateStatusBar();renderCharacterPanel();renderInventory();saveGame();updateFighterRegistration();}
-function unequipItem(slot){let item=gameState.equipment[slot];if(!item)return;gameState.equipment[slot]=null;gameState.inventory.push(item);let mx=getTotalStat('hp');if(gameState.currentHP>mx)gameState.currentHP=mx;playSound('equip');showToast('Unequipped '+item.name,'info');updateStatusBar();renderCharacterPanel();renderInventory();saveGame();updateFighterRegistration();}
-function sellItem(id){let item=null;for(let i=0;i<gameState.inventory.length;i++){if(gameState.inventory[i].id===id){item=gameState.inventory[i];break;}}if(!item)return;gameState.gold+=item.sellPrice;gameState.inventory=gameState.inventory.filter(function(x){return x.id!==id;});playSound('coin');showToast('Sold '+item.name+' for '+item.sellPrice+' gold','success');updateStatusBar();renderInventory();saveGame();}
+function equipItem(id) { let item = null; for (let i = 0; i < gameState.inventory.length; i++) { if (gameState.inventory[i].id === id) { item = gameState.inventory[i]; break; } } if (!item) return; let prev = gameState.equipment[item.slot]; gameState.equipment[item.slot] = item; gameState.inventory = gameState.inventory.filter(function(x) { return x.id !== id; }); if (prev) gameState.inventory.push(prev); let mx = getTotalStat('hp'); if (gameState.currentHP > mx) gameState.currentHP = mx; playSound('equip'); showToast('Equipped ' + item.name + '!', 'success'); updateStatusBar(); renderCharacterPanel(); renderInventory(); saveGame(); updateFighterRegistration(); }
+function unequipItem(slot) { let item = gameState.equipment[slot]; if (!item) return; gameState.equipment[slot] = null; gameState.inventory.push(item); let mx = getTotalStat('hp'); if (gameState.currentHP > mx) gameState.currentHP = mx; playSound('equip'); showToast('Unequipped ' + item.name, 'info'); updateStatusBar(); renderCharacterPanel(); renderInventory(); saveGame(); updateFighterRegistration(); }
+function sellItem(id) { let item = null; for (let i = 0; i < gameState.inventory.length; i++) { if (gameState.inventory[i].id === id) { item = gameState.inventory[i]; break; } } if (!item) return; gameState.gold += item.sellPrice; gameState.inventory = gameState.inventory.filter(function(x) { return x.id !== id; }); playSound('coin'); showToast('Sold ' + item.name + ' for ' + item.sellPrice + ' gold', 'success'); updateStatusBar(); renderInventory(); saveGame(); }
 
 // =====================================================
 // COMBAT (PvE)
 // =====================================================
-
-function generateEnemy(){let t=randPick(ENEMY_TEMPLATES),lv=Math.max(1,gameState.level+randInt(-1,2)),m=1+(lv-1)*0.4+Math.pow(lv,1.15)*0.05;return{name:t.name,icon:t.icon,level:lv,maxHP:Math.round(t.baseHP*m),currentHP:Math.round(t.baseHP*m),damage:Math.round(t.baseDmg*m),xpReward:Math.round(t.xpMult*25*lv),goldReward:Math.round(t.goldMult*18*lv),itemDropChance:0.25+lv*0.02,critChance:0.08+lv*0.005};}
-function findEnemy(){if(gameState.currentHP<=0){showToast('Heal first!','error');return;}combatState={enemy:generateEnemy(),log:[],turn:0,finished:false};addLog('A wild '+combatState.enemy.icon+' '+combatState.enemy.name+' (Lv.'+combatState.enemy.level+') appears!','system');renderCombat();}
-
-function renderCombat(){
-  let area=document.getElementById('combat-area');
-  if(!combatState||!combatState.enemy){area.innerHTML='<div style="text-align:center;padding:40px;color:var(--text-dim);"><div style="font-size:3rem;margin-bottom:12px;">⚔️</div><p>No enemy. Find one!</p><button class="btn-combat btn-new-enemy" onclick="findEnemy()" style="margin-top:16px;max-width:250px;">🔍 Find Enemy</button></div>';return;}
-  let e=combatState.enemy,p=gameState,mx=getTotalStat('hp'),fin=combatState.finished,healCost=Math.round(mx*0.3);
-  let logHTML='';for(let i=0;i<combatState.log.length;i++)logHTML+='<div class="log-entry log-'+combatState.log[i].c+'">'+combatState.log[i].t+'</div>';
-  area.innerHTML='<div class="combat-arena"><div class="combatant animate-slide-left" id="player-c"><div class="avatar">'+CLASS_DATA[p.class].icon+'</div><div class="name">'+p.name+'</div><div class="level-badge">Lv.'+p.level+' '+p.class+'</div><div class="combat-hp-bar"><div class="bar-container"><div class="bar-fill hp" style="width:'+((p.currentHP/mx)*100)+'%"></div><div class="bar-text">'+p.currentHP+'/'+mx+'</div></div></div></div><div class="combat-vs">⚔️</div><div class="combatant animate-slide-right" id="enemy-c"><div class="avatar">'+e.icon+'</div><div class="name">'+e.name+'</div><div class="level-badge">Lv.'+e.level+' · ATK:'+e.damage+'</div><div class="combat-hp-bar"><div class="bar-container"><div class="bar-fill hp" style="width:'+((e.currentHP/e.maxHP)*100)+'%;'+(e.currentHP/e.maxHP<0.3?'animation:pulse .5s infinite':'')+'"></div><div class="bar-text">'+e.currentHP+'/'+e.maxHP+'</div></div></div></div></div><div class="combat-controls"><button class="btn-combat btn-fight" onclick="combatAttack()"'+(fin?' disabled':'')+'>⚔️ Attack</button><button class="btn-combat btn-heal" onclick="combatHeal()"'+(fin||p.gold<healCost?' disabled':'')+'>💚 Heal (🪙'+healCost+')</button><button class="btn-combat btn-flee" onclick="combatFlee()"'+(fin?' disabled':'')+'>🏃 Flee</button><button class="btn-combat btn-new-enemy" onclick="findEnemy()"'+(!fin?' disabled':'')+'>🔍 New Enemy</button></div><div class="combat-log" id="combat-log">'+logHTML+'</div>';
-  let cl=document.getElementById('combat-log');cl.scrollTop=cl.scrollHeight;
+function generateEnemy() { let t = randPick(ENEMY_TEMPLATES), lv = Math.max(1, gameState.level + randInt(-1, 2)), m = 1 + (lv - 1) * 0.4 + Math.pow(lv, 1.15) * 0.05; return { name: t.name, icon: t.icon, level: lv, maxHP: Math.round(t.baseHP * m), currentHP: Math.round(t.baseHP * m), damage: Math.round(t.baseDmg * m), xpReward: Math.round(t.xpMult * 25 * lv), goldReward: Math.round(t.goldMult * 18 * lv), itemDropChance: 0.25 + lv * 0.02, critChance: 0.08 + lv * 0.005 }; }
+function findEnemy() { if (gameState.currentHP <= 0) { showToast('Heal first!', 'error'); return; } combatState = { enemy: generateEnemy(), log: [], turn: 0, finished: false }; addLog('A wild ' + combatState.enemy.icon + ' ' + combatState.enemy.name + ' (Lv.' + combatState.enemy.level + ') appears!', 'system'); renderCombat(); }
+function renderCombat() {
+  let area = document.getElementById('combat-area');
+  if (!combatState || !combatState.enemy) { area.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-dim);"><div style="font-size:3rem;margin-bottom:12px;">🗺️</div><p>No enemy. Find one!</p><button class="btn-combat btn-new-enemy" onclick="findEnemy()" style="margin-top:16px;max-width:250px;">🔍 Find Enemy</button></div>'; return; }
+  let e = combatState.enemy, p = gameState, mx = getTotalStat('hp'), fn = combatState.finished, healCost = Math.round(mx * 0.3);
+  let logHTML = ''; for (let i = 0; i < combatState.log.length; i++) logHTML += '<div class="log-entry log-' + combatState.log[i].c + '">' + combatState.log[i].t + '</div>';
+  area.innerHTML = '<div class="combat-arena"><div class="combatant animate-slide-left" id="player-c"><div class="avatar">' + CLASS_DATA[p.class].icon + '</div><div class="name">' + p.name + '</div><div class="level-badge">Lv.' + p.level + ' ' + p.class + '</div><div class="combat-hp-bar"><div class="bar-container"><div class="bar-fill hp" style="width:' + ((p.currentHP / mx) * 100) + '%"></div><div class="bar-text">' + p.currentHP + '/' + mx + '</div></div></div></div><div class="combat-vs">⚔️</div><div class="combatant animate-slide-right" id="enemy-c"><div class="avatar">' + e.icon + '</div><div class="name">' + e.name + '</div><div class="level-badge">Lv.' + e.level + ' · ATK:' + e.damage + '</div><div class="combat-hp-bar"><div class="bar-container"><div class="bar-fill hp" style="width:' + ((e.currentHP / e.maxHP) * 100) + '%;' + (e.currentHP / e.maxHP < 0.3 ? 'animation:pulse .5s infinite' : '') + '"></div><div class="bar-text">' + e.currentHP + '/' + e.maxHP + '</div></div></div></div></div><div class="combat-controls"><button class="btn-combat btn-fight" onclick="combatAttack()"' + (fn ? ' disabled' : '') + '>⚔️ Attack</button><button class="btn-combat btn-heal" onclick="combatHeal()"' + (fn || p.gold < healCost ? ' disabled' : '') + '>💊 Heal (' + healCost + '💰)</button><button class="btn-combat btn-flee" onclick="combatFlee()"' + (fn ? ' disabled' : '') + '>🏃 Flee</button><button class="btn-combat btn-new-enemy" onclick="findEnemy()"' + (!fn ? ' disabled' : '') + '>🔍 New Enemy</button></div><div class="combat-log" id="combat-log">' + logHTML + '</div>';
+  let cl = document.getElementById('combat-log'); cl.scrollTop = cl.scrollHeight;
 }
-
-function addLog(t,c){if(combatState)combatState.log.push({t:t,c:c||''});}
-
-function enemyAttack(){let e=combatState.enemy,dmg=Math.round(e.damage*(0.8+Math.random()*0.4)),def=calcDefense(),red=Math.round(dmg*(def/100));dmg=Math.max(1,dmg-red);if(Math.random()<(e.critChance||0.08)){dmg=Math.round(dmg*1.8);addLog('💥 '+e.name+' CRITS for '+dmg+'!','crit');}else{addLog(e.icon+' '+e.name+' hits for '+dmg+'. ('+red+' blocked)','enemy');}gameState.currentHP=Math.max(0,gameState.currentHP-dmg);setTimeout(function(){let el=document.getElementById('player-c');if(el){el.classList.add('animate-shake');setTimeout(function(){el.classList.remove('animate-shake');},400);}},50);if(gameState.currentHP<=0){combatDefeat();return true;}return false;}
-
-function combatAttack(){if(!combatState||combatState.finished)return;combatState.turn++;let dmg=calcPlayerDamage(),crit=isCritical();if(crit){dmg=Math.round(dmg*2);addLog('⚡ CRIT! '+dmg+' damage!','crit');playSound('crit');}else{addLog('You hit '+combatState.enemy.name+' for '+dmg+'.','player');playSound('hit');}combatState.enemy.currentHP=Math.max(0,combatState.enemy.currentHP-dmg);setTimeout(function(){let el=document.getElementById('enemy-c');if(el){el.classList.add('animate-shake');setTimeout(function(){el.classList.remove('animate-shake');},400);}},50);if(combatState.enemy.currentHP<=0){combatVictory();renderCombat();return;}enemyAttack();renderCombat();updateStatusBar();}
-
-function combatVictory(){
-  combatState.finished=true;let e=combatState.enemy;gameState.gold+=e.goldReward;gameState.monstersKilled++;
-  addLog('🎉 Defeated '+e.icon+' '+e.name+'!','system');addLog('🪙 +'+e.goldReward+' Gold','gold');addXP(e.xpReward);
-  if(Math.random()<e.itemDropChance){let dropSlot=randPick(ALL_SLOTS),item=generateItem(null,null,dropSlot);gameState.inventory.push(item);let slotName=SLOT_LABELS[item.slot].label;addLog('✨ '+slotName+' drop: '+item.icon+' '+item.name+' ('+item.rarity+')!','item');if(item.rarity==='Mythic'){showToast('🔥 MYTHIC: '+item.name+'!','mythic',5000);playSound('mythic');}else showToast('🎁 '+item.name+' ('+item.rarity+')!',item.rarity==='Legendary'?'epic':'success');}
-  if(gameState.level>=5&&Math.random()<e.itemDropChance*0.3){let bi=generateItem(null,null,randPick(ALL_SLOTS));gameState.inventory.push(bi);addLog('✨ Bonus: '+bi.icon+' '+bi.name+' ('+bi.rarity+')!','item');showToast('🎁 Bonus: '+bi.name+'!','success');}
-  playSound('coin');updateStatusBar();renderCharacterPanel();renderInventory();saveGame();updateFighterRegistration();
+function addLog(t, c) { if (combatState) combatState.log.push({ t: t, c: c || '' }); }
+function enemyAttack() { let e = combatState.enemy, dmg = Math.round(e.damage * (0.8 + Math.random() * 0.4)), def = calcDefense(), red = Math.round(dmg * (def / 100)); dmg = Math.max(1, dmg - red); if (Math.random() < (e.critChance || 0.08)) { dmg = Math.round(dmg * 1.8); addLog('💥 ' + e.name + ' CRITS for ' + dmg + '!', 'crit'); } else { addLog(e.icon + ' ' + e.name + ' hits for ' + dmg + '. (' + red + ' blocked)', 'enemy'); } gameState.currentHP = Math.max(0, gameState.currentHP - dmg); setTimeout(function() { let el = document.getElementById('player-c'); if (el) { el.classList.add('animate-shake'); setTimeout(function() { el.classList.remove('animate-shake'); }, 400); } }, 50); if (gameState.currentHP <= 0) { combatDefeat(); return true; } return false; }
+function combatAttack() { if (!combatState || combatState.finished) return; combatState.turn++; let dmg = calcPlayerDamage(), crit = isCritical(); if (crit) { dmg = Math.round(dmg * 2); addLog('💥 CRIT! ' + dmg + ' damage!', 'crit'); playSound('crit'); } else { addLog('You hit ' + combatState.enemy.name + ' for ' + dmg + '.', 'player'); playSound('hit'); } combatState.enemy.currentHP = Math.max(0, combatState.enemy.currentHP - dmg); setTimeout(function() { let el = document.getElementById('enemy-c'); if (el) { el.classList.add('animate-shake'); setTimeout(function() { el.classList.remove('animate-shake'); }, 400); } }, 50); if (combatState.enemy.currentHP <= 0) { combatVictory(); renderCombat(); return; } enemyAttack(); renderCombat(); updateStatusBar(); }
+function combatVictory() {
+  combatState.finished = true; let e = combatState.enemy; gameState.gold += e.goldReward; gameState.monstersKilled++;
+  addLog('✅ Defeated ' + e.icon + ' ' + e.name + '!', 'system'); addLog('💰 +' + e.goldReward + ' Gold', 'gold'); addXP(e.xpReward);
+  if (Math.random() < e.itemDropChance) { let dropSlot = randPick(ALL_SLOTS), item = generateItem(null, null, dropSlot); gameState.inventory.push(item); let slotName = SLOT_LABELS[item.slot].label; addLog('🎁 ' + slotName + ' drop: ' + item.icon + ' ' + item.name + ' (' + item.rarity + ')!', 'item'); if (item.rarity === 'Mythic') { showToast('🌟 MYTHIC: ' + item.name + '!', 'mythic', 5000); playSound('mythic'); } else showToast('🎁 ' + item.name + ' (' + item.rarity + ')!', item.rarity === 'Legendary' ? 'epic' : 'success'); }
+  if (gameState.level >= 5 && Math.random() < e.itemDropChance * 0.3) { let bi = generateItem(null, null, randPick(ALL_SLOTS)); gameState.inventory.push(bi); addLog('🎁 Bonus: ' + bi.icon + ' ' + bi.name + ' (' + bi.rarity + ')!', 'item'); showToast('🎁 Bonus: ' + bi.name + '!', 'success'); }
+  playSound('coin'); updateStatusBar(); renderCharacterPanel(); renderInventory(); saveGame(); updateFighterRegistration();
 }
-
-function combatDefeat(){combatState.finished=true;let loss=Math.round(gameState.gold*0.15);gameState.gold=Math.max(0,gameState.gold-loss);gameState.currentHP=0;addLog('💀 Defeated...','enemy');if(loss)addLog('Lost 🪙'+loss+' gold.','gold');playSound('death');updateStatusBar();saveGame();}
-function combatHeal(){if(!combatState||combatState.finished)return;let mx=getTotalStat('hp'),cost=Math.round(mx*0.3),heal=Math.round(mx*0.4);if(gameState.gold<cost){showToast('Not enough gold!','error');return;}gameState.gold-=cost;gameState.currentHP=Math.min(mx,gameState.currentHP+heal);addLog('💚 Healed '+heal+' HP! (🪙'+cost+')','heal');playSound('heal');combatState.turn++;enemyAttack();renderCombat();updateStatusBar();saveGame();}
-function combatFlee(){if(!combatState||combatState.finished)return;if(Math.random()*100<Math.min(90,60+getTotalStat('dex')*0.5)){combatState.finished=true;addLog('🏃 You fled!','system');showToast('Escaped!','info');}else{addLog('🏃 Failed to flee!','system');enemyAttack();}renderCombat();updateStatusBar();}
-
-function addXP(amt){gameState.xp+=amt;addLog('⭐ +'+amt+' XP','xp');let leveled=false;while(gameState.xp>=xpForLevel(gameState.level)){gameState.xp-=xpForLevel(gameState.level);gameState.level++;gameState.statPoints+=3;gameState.currentHP=getTotalStat('hp');leveled=true;addLog('🎊 LEVEL UP! Lv.'+gameState.level+'!','system');}if(leveled){playSound('levelup');showToast('🎊 Level '+gameState.level+'!','epic',4000);let sb=document.getElementById('status-bar');sb.classList.add('animate-level-up');setTimeout(function(){sb.classList.remove('animate-level-up');},800);updateFighterRegistration();}updateStatusBar();renderCharacterPanel();}
+function combatDefeat() { combatState.finished = true; let loss = Math.round(gameState.gold * 0.15); gameState.gold = Math.max(0, gameState.gold - loss); gameState.currentHP = 0; addLog('💀 Defeated...', 'enemy'); if (loss) addLog('Lost ' + loss + ' gold.', 'gold'); playSound('death'); updateStatusBar(); saveGame(); }
+function combatHeal() { if (!combatState || combatState.finished) return; let mx = getTotalStat('hp'), cost = Math.round(mx * 0.3), heal = Math.round(mx * 0.4); if (gameState.gold < cost) { showToast('Not enough gold!', 'error'); return; } gameState.gold -= cost; gameState.currentHP = Math.min(mx, gameState.currentHP + heal); addLog('💊 Healed ' + heal + ' HP! (' + cost + '💰)', 'heal'); playSound('heal'); combatState.turn++; enemyAttack(); renderCombat(); updateStatusBar(); saveGame(); }
+function combatFlee() { if (!combatState || combatState.finished) return; if (Math.random() * 100 < Math.min(90, 60 + getTotalStat('dex') * 0.5)) { combatState.finished = true; addLog('🏃 You fled!', 'system'); showToast('Escaped!', 'info'); } else { addLog('❌ Failed to flee!', 'system'); enemyAttack(); } renderCombat(); updateStatusBar(); }
+function addXP(amt) { gameState.xp += amt; addLog('⭐ +' + amt + ' XP', 'xp'); let leveled = false; while (gameState.xp >= xpForLevel(gameState.level)) { gameState.xp -= xpForLevel(gameState.level); gameState.level++; gameState.statPoints += 3; gameState.currentHP = getTotalStat('hp'); leveled = true; addLog('🎉 LEVEL UP! Lv.' + gameState.level + '!', 'system'); } if (leveled) { playSound('levelup'); showToast('🎉 Level ' + gameState.level + '!', 'epic', 4000); let sb = document.getElementById('status-bar'); sb.classList.add('animate-level-up'); setTimeout(function() { sb.classList.remove('animate-level-up'); }, 800); updateFighterRegistration(); } updateStatusBar(); renderCharacterPanel(); }
 
 // =====================================================
 // QUESTS
 // =====================================================
-
-let tavernQuests=[];
-function generateTavernQuests(){let easy=QUEST_TEMPLATES.filter(function(q){return q.difficulty==='easy';}),med=QUEST_TEMPLATES.filter(function(q){return q.difficulty==='medium';}),hard=QUEST_TEMPLATES.filter(function(q){return q.difficulty==='hard';}),rnd=QUEST_TEMPLATES.filter(function(q){return q.difficulty==='random';});tavernQuests=[randPick(easy),randPick(med),randPick(hard),resolveRandom(randPick(rnd))];if(Math.random()<0.3&&rnd.length)tavernQuests.push(resolveRandom(randPick(rnd)));}
-function resolveRandom(t){return{name:t.name,desc:t.desc,difficulty:'random',duration:randInt(t.durationRange[0],t.durationRange[1]),xp:randInt(t.xpRange[0],t.xpRange[1]),gold:randInt(t.goldRange[0],t.goldRange[1]),itemChance:+(t.itemChanceRange[0]+Math.random()*(t.itemChanceRange[1]-t.itemChanceRange[0])).toFixed(2),_isRandom:true};}
-function rerollQuests(){if(gameState.activeQuest&&gameState.activeQuest.endTime){showToast('Finish active quest first!','error');return;}generateTavernQuests();renderQuests();showToast('New quests!','info');}
-
-function renderQuests(){
-  let list=document.getElementById('quest-list'),hasActive=gameState.activeQuest&&gameState.activeQuest.endTime;if(!tavernQuests.length)generateTavernQuests();
-  let html='';for(let i=0;i<tavernQuests.length;i++){let q=tavernQuests[i],sXP=Math.round(q.xp*(1+gameState.level*0.15)),sG=Math.round(q.gold*(1+gameState.level*0.1)),m=Math.floor(q.duration/60),s=q.duration%60,dur=m>0?m+'m '+s+'s':s+'s',isAct=hasActive&&gameState.activeQuest._questIndex===i;
-    html+='<div class="quest-card '+(isAct?'quest-active':'')+'"><span class="quest-diff '+q.difficulty+'">'+(q.difficulty==='random'?'???':q.difficulty)+'</span>';
-    if(q._isRandom)html+=' <span style="font-size:0.6rem;color:#bb86fc;">(Random!)</span>';
-    html+='<div class="quest-title">'+q.name+'</div><div class="quest-desc">'+q.desc+'</div><div class="quest-rewards"><span>⭐ '+sXP+'</span><span>🪙 '+sG+'</span><span>🎁 '+Math.round(q.itemChance*100)+'%</span></div>';
-    if(isAct)html+='<div class="quest-timer" id="quest-timer">⏳ ...</div>';else html+='<div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:8px;">⏱️ '+(q._isRandom?'???':dur)+'</div>';
-    html+='<button class="btn-quest" onclick="startQuest('+i+')"'+(hasActive?' disabled':'')+'>'+(isAct?'⏳ In Progress...':'📜 Start')+'</button></div>';}
-  list.innerHTML=html;if(hasActive)updateQuestTimer();
+let tavernQuests = [];
+function generateTavernQuests() { let easy = QUEST_TEMPLATES.filter(function(q) { return q.difficulty === 'easy'; }), med = QUEST_TEMPLATES.filter(function(q) { return q.difficulty === 'medium'; }), hard = QUEST_TEMPLATES.filter(function(q) { return q.difficulty === 'hard'; }), rnd = QUEST_TEMPLATES.filter(function(q) { return q.difficulty === 'random'; }); tavernQuests = [randPick(easy), randPick(med), randPick(hard), resolveRandom(randPick(rnd))]; if (Math.random() < 0.3 && rnd.length) tavernQuests.push(resolveRandom(randPick(rnd))); }
+function resolveRandom(t) { return { name: t.name, desc: t.desc, difficulty: 'random', duration: randInt(t.durationRange[0], t.durationRange[1]), xp: randInt(t.xpRange[0], t.xpRange[1]), gold: randInt(t.goldRange[0], t.goldRange[1]), itemChance: +(t.itemChanceRange[0] + Math.random() * (t.itemChanceRange[1] - t.itemChanceRange[0])).toFixed(2), _isRandom: true }; }
+function rerollQuests() { if (gameState.activeQuest && gameState.activeQuest.endTime) { showToast('Finish active quest first!', 'error'); return; } generateTavernQuests(); renderQuests(); showToast('New quests!', 'info'); }
+function renderQuests() {
+  let list = document.getElementById('quest-list'), hasActive = gameState.activeQuest && gameState.activeQuest.endTime; if (!tavernQuests.length) generateTavernQuests();
+  let html = ''; for (let i = 0; i < tavernQuests.length; i++) { let q = tavernQuests[i], sXP = Math.round(q.xp * (1 + gameState.level * 0.15)), sG = Math.round(q.gold * (1 + gameState.level * 0.1)), m = Math.floor(q.duration / 60), s = q.duration % 60, dur = m > 0 ? m + 'm ' + s + 's' : s + 's', isAct = hasActive && gameState.activeQuest._questIndex === i; html += '<div class="quest-card ' + (isAct ? 'quest-active' : '') + '"><span class="quest-diff ' + q.difficulty + '">' + (q.difficulty === 'random' ? '???' : q.difficulty) + '</span>'; if (q._isRandom) html += ' <span style="font-size:0.6rem;color:#bb86fc;">(Random!)</span>'; html += '<div class="quest-title">' + q.name + '</div><div class="quest-desc">' + q.desc + '</div><div class="quest-rewards"><span>⭐ ' + sXP + '</span><span>💰 ' + sG + '</span><span>🎁 ' + Math.round(q.itemChance * 100) + '%</span></div>'; if (isAct) html += '<div class="quest-timer" id="quest-timer">⏳ ...</div>'; else html += '<div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:8px;">⏱️ ' + (q._isRandom ? '???' : dur) + '</div>'; html += '<button class="btn-quest" onclick="startQuest(' + i + ')"' + (hasActive ? ' disabled' : '') + '>' + (isAct ? '⏳ In Progress...' : '▶️ Start') + '</button></div>'; }
+  list.innerHTML = html; if (hasActive) updateQuestTimer();
 }
-function startQuest(idx){if(gameState.activeQuest&&gameState.activeQuest.endTime){showToast('Already on a quest!','error');return;}let q=tavernQuests[idx];if(!q)return;gameState.activeQuest={name:q.name,difficulty:q.difficulty,xp:Math.round(q.xp*(1+gameState.level*0.15)),gold:Math.round(q.gold*(1+gameState.level*0.1)),itemChance:q.itemChance,endTime:Date.now()+q.duration*1000,_questIndex:idx,_isRandom:q._isRandom||false};showToast('Started: '+q.name,'info');saveGame();renderQuests();resumeQuestTimer();}
-function resumeQuestTimer(){if(questTimers.main)clearInterval(questTimers.main);questTimers.main=setInterval(function(){if(!gameState.activeQuest||!gameState.activeQuest.endTime){clearInterval(questTimers.main);return;}if(gameState.activeQuest.endTime-Date.now()<=0){clearInterval(questTimers.main);completeQuest();}else updateQuestTimer();},500);}
-function updateQuestTimer(){let el=document.getElementById('quest-timer');if(!el||!gameState.activeQuest)return;let rem=gameState.activeQuest.endTime-Date.now();if(rem<=0){el.textContent='✅ Complete!';return;}let s=Math.ceil(rem/1000),m=Math.floor(s/60);el.textContent='⏳ '+(m>0?m+'m ':'')+(s%60)+'s';}
-function completeQuest(){
-  if(!gameState.activeQuest)return;let q=gameState.activeQuest;gameState.gold+=q.gold;gameState.questsCompleted++;let html='<p>⭐ +'+q.xp+' XP</p><p>🪙 +'+q.gold+' Gold</p>';
-  if(Math.random()<q.itemChance){let item;if(q._isRandom&&Math.random()<0.08)item=generateItem('Mythic',null,randPick(ALL_SLOTS));else if((q.difficulty==='hard'||q._isRandom)&&Math.random()<0.3)item=generateItem('Epic',null,randPick(ALL_SLOTS));else item=generateItem(null,null,randPick(ALL_SLOTS));gameState.inventory.push(item);html+='<p style="color:'+RARITY_DATA[item.rarity].color+'">🎁 '+item.icon+' '+item.name+' ('+item.rarity+')</p>';if(item.rarity==='Mythic')playSound('mythic');}
-  if(q._isRandom&&Math.random()<0.25){let bg=randInt(20,100)*gameState.level;gameState.gold+=bg;html+='<p style="color:var(--gold)">🎰 Bonus: 🪙+'+bg+'!</p>';}
-  gameState.xp+=q.xp;let leveled=false;while(gameState.xp>=xpForLevel(gameState.level)){gameState.xp-=xpForLevel(gameState.level);gameState.level++;gameState.statPoints+=3;gameState.currentHP=getTotalStat('hp');leveled=true;}
-  if(leveled){html+='<p style="color:var(--gold-bright)">🎊 LEVEL UP! Lv.'+gameState.level+'!</p>';playSound('levelup');}
-  gameState.activeQuest=null;showModal('📜 Quest Complete!','<p style="margin-bottom:12px;color:var(--gold);">'+q.name+'</p>'+html,'Collect');playSound('coin');updateStatusBar();renderCharacterPanel();renderInventory();generateTavernQuests();renderQuests();saveGame();updateFighterRegistration();
+function startQuest(idx) { if (gameState.activeQuest && gameState.activeQuest.endTime) { showToast('Already on a quest!', 'error'); return; } let q = tavernQuests[idx]; if (!q) return; gameState.activeQuest = { name: q.name, difficulty: q.difficulty, xp: Math.round(q.xp * (1 + gameState.level * 0.15)), gold: Math.round(q.gold * (1 + gameState.level * 0.1)), itemChance: q.itemChance, endTime: Date.now() + q.duration * 1000, _questIndex: idx, _isRandom: q._isRandom || false }; showToast('Started: ' + q.name, 'info'); saveGame(); renderQuests(); resumeQuestTimer(); }
+function resumeQuestTimer() { if (questTimers.main) clearInterval(questTimers.main); questTimers.main = setInterval(function() { if (!gameState.activeQuest || !gameState.activeQuest.endTime) { clearInterval(questTimers.main); return; } if (gameState.activeQuest.endTime - Date.now() <= 0) { clearInterval(questTimers.main); completeQuest(); } else updateQuestTimer(); }, 500); }
+function updateQuestTimer() { let el = document.getElementById('quest-timer'); if (!el || !gameState.activeQuest) return; let rem = gameState.activeQuest.endTime - Date.now(); if (rem <= 0) { el.textContent = '✅ Complete!'; return; } let s = Math.ceil(rem / 1000), m = Math.floor(s / 60); el.textContent = '⏳ ' + (m > 0 ? m + 'm ' : '') + (s % 60) + 's'; }
+function completeQuest() {
+  if (!gameState.activeQuest) return; let q = gameState.activeQuest; gameState.gold += q.gold; gameState.questsCompleted++;
+  let html = '<p>⭐ +' + q.xp + ' XP</p><p>💰 +' + q.gold + ' Gold</p>';
+  if (Math.random() < q.itemChance) { let item; if (q._isRandom && Math.random() < 0.08) item = generateItem('Mythic', null, randPick(ALL_SLOTS)); else if ((q.difficulty === 'hard' || q._isRandom) && Math.random() < 0.3) item = generateItem('Epic', null, randPick(ALL_SLOTS)); else item = generateItem(null, null, randPick(ALL_SLOTS)); gameState.inventory.push(item); html += '<p style="color:' + RARITY_DATA[item.rarity].color + '">🎁 ' + item.icon + ' ' + item.name + ' (' + item.rarity + ')</p>'; if (item.rarity === 'Mythic') playSound('mythic'); }
+  if (q._isRandom && Math.random() < 0.25) { let bg = randInt(20, 100) * gameState.level; gameState.gold += bg; html += '<p style="color:var(--gold)">🎲 Bonus: +' + bg + '💰!</p>'; }
+  gameState.xp += q.xp; let leveled = false; while (gameState.xp >= xpForLevel(gameState.level)) { gameState.xp -= xpForLevel(gameState.level); gameState.level++; gameState.statPoints += 3; gameState.currentHP = getTotalStat('hp'); leveled = true; }
+  if (leveled) { html += '<p style="color:var(--gold-bright)">🎉 LEVEL UP! Lv.' + gameState.level + '!</p>'; playSound('levelup'); }
+  gameState.activeQuest = null; showModal('🎉 Quest Complete!', '<p style="margin-bottom:12px;color:var(--gold);">' + q.name + '</p>' + html, 'Collect'); playSound('coin'); updateStatusBar(); renderCharacterPanel(); renderInventory(); generateTavernQuests(); renderQuests(); saveGame(); updateFighterRegistration();
 }
 
 // =====================================================
 // SHOP
 // =====================================================
-
-function refreshShop(){shopItems=[];let slots=ALL_SLOTS.slice();for(let i=0;i<4;i++)slots.push(randPick(ALL_SLOTS));for(let j=0;j<slots.length;j++){let item=generateItem(null,null,slots[j]);item.buyPrice=Math.round(item.sellPrice*(3+Math.random()*2));shopItems.push(item);}shopSlotFilter='all';renderShop();}
-function setShopSlotFilter(s){shopSlotFilter=s;renderShop();}
-function renderShop(){
-  let filterHTML='<div class="inv-toolbar" style="margin-bottom:14px;"><span class="inv-toolbar-label">Filter:</span>',slotKeys=['all'].concat(ALL_SLOTS);
-  for(let fi=0;fi<slotKeys.length;fi++){let sk=slotKeys[fi],sl2=SLOT_LABELS[sk],cnt=sk==='all'?shopItems.length:shopItems.filter(function(x){return x.slot===sk;}).length;if(cnt>0||sk==='all')filterHTML+='<button class="inv-filter-btn '+(shopSlotFilter===sk?'active':'')+'" onclick="setShopSlotFilter(\''+sk+'\')">'+sl2.icon+' '+sl2.label+(sk!=='all'?' ('+cnt+')':'')+'</button>';}
-  filterHTML+='</div>';document.getElementById('shop-toolbar-area').innerHTML=filterHTML;
-  let grid=document.getElementById('shop-grid'),mx=getTotalStat('hp'),fullCost=Math.max(5,Math.round(mx*0.2)),minorCost=Math.max(3,Math.round(mx*0.08)),html='';
-  if(shopSlotFilter==='all'){html+='<div class="shop-item" style="border-color:var(--heal-green);"><div class="item-header"><span class="item-icon">🧪</span><div><div class="item-name" style="color:var(--heal-green);">Full Heal</div><span class="item-rarity" style="color:var(--heal-green);background:rgba(39,174,96,0.1);">Consumable</span></div></div><div class="item-stats" style="color:var(--heal-green);">Fully restores HP.</div><div class="shop-price">🪙 '+fullCost+'</div><button class="btn-buy" onclick="buyHeal('+fullCost+',1)"'+(gameState.gold<fullCost?' disabled':'')+'>Buy & Use</button></div>';
-    html+='<div class="shop-item" style="border-color:rgba(39,174,96,0.5);"><div class="item-header"><span class="item-icon">🫧</span><div><div class="item-name" style="color:#58d68d;">Minor Heal</div><span class="item-rarity" style="color:#58d68d;background:rgba(39,174,96,0.1);">Consumable</span></div></div><div class="item-stats" style="color:#58d68d;">Restores 25% HP.</div><div class="shop-price">🪙 '+minorCost+'</div><button class="btn-buy" onclick="buyHeal('+minorCost+',0.25)"'+(gameState.gold<minorCost?' disabled':'')+'>Buy & Use</button></div>';}
-  let filtered=shopSlotFilter==='all'?shopItems:shopItems.filter(function(x){return x.slot===shopSlotFilter;});
-  for(let i=0;i<filtered.length;i++){let item=filtered[i],ri=shopItems.indexOf(item),stats=[],maxV=0,bKeys=Object.keys(item.bonuses);for(let j=0;j<bKeys.length;j++){if(item.bonuses[bKeys[j]]>0){stats.push({key:bKeys[j],val:item.bonuses[bKeys[j]]});if(item.bonuses[bKeys[j]]>maxV)maxV=item.bonuses[bKeys[j]];}}
-    let bonusHTML='';for(let k=0;k<stats.length;k++){let isDom=stats[k].val===maxV&&stats.length>1;bonusHTML+='<span'+(isDom?' class="item-dominant"':'')+'>+'+stats[k].val+' '+STAT_INFO[stats[k].key].icon+' '+STAT_INFO[stats[k].key].name+'</span><br>';}
-    let slotLabel=SLOT_LABELS[item.slot]?SLOT_LABELS[item.slot].label:item.slot;
-    html+='<div class="shop-item rarity-'+item.rarity+'"><div class="item-header"><span class="item-icon">'+item.icon+'</span><div><div class="item-name">'+item.name+'</div><span class="item-rarity">'+item.rarity+'</span></div></div><div class="item-stats">'+bonusHTML+'</div><div class="item-type">'+slotLabel+' · Lv.'+item.level+'</div><div class="shop-price">🪙 '+item.buyPrice+'</div><button class="btn-buy" onclick="buyItem('+ri+')"'+(gameState.gold<item.buyPrice?' disabled':'')+'>Buy</button></div>';}
-  if(!filtered.length&&shopSlotFilter!=='all')html+='<div class="empty-inv">No '+SLOT_LABELS[shopSlotFilter].label+' items.</div>';
-  grid.innerHTML=html;
+function refreshShop() { shopItems = []; let slots = ALL_SLOTS.slice(); for (let i = 0; i < 4; i++) slots.push(randPick(ALL_SLOTS)); for (let j = 0; j < slots.length; j++) { let item = generateItem(null, null, slots[j]); item.buyPrice = Math.round(item.sellPrice * (3 + Math.random() * 2)); shopItems.push(item); } shopSlotFilter = 'all'; renderShop(); }
+function setShopSlotFilter(s) { shopSlotFilter = s; renderShop(); }
+function renderShop() {
+  let filterHTML = '<div class="inv-toolbar" style="margin-bottom:14px;"><span class="inv-toolbar-label">Filter:</span>', slotKeys = ['all'].concat(ALL_SLOTS);
+  for (let f = 0; f < slotKeys.length; f++) { let sk = slotKeys[f], sl2 = SLOT_LABELS[sk], cnt = sk === 'all' ? shopItems.length : shopItems.filter(function(x) { return x.slot === sk; }).length; if (cnt > 0 || sk === 'all') filterHTML += '<button class="inv-filter-btn ' + (shopSlotFilter === sk ? 'active' : '') + '" onclick="setShopSlotFilter(\'' + sk + '\')">' + sl2.icon + ' ' + sl2.label + (sk !== 'all' ? ' (' + cnt + ')' : '') + '</button>'; }
+  filterHTML += '</div>'; document.getElementById('shop-toolbar-area').innerHTML = filterHTML;
+  let grid = document.getElementById('shop-grid'), mx = getTotalStat('hp'), fullCost = Math.max(5, Math.round(mx * 0.2)), minorCost = Math.max(3, Math.round(mx * 0.08)), html = '';
+  if (shopSlotFilter === 'all') { html += '<div class="shop-item" style="border-color:var(--heal-green);"><div class="item-header"><span class="item-icon">💊</span><div><div class="item-name" style="color:var(--heal-green);">Full Heal</div><span class="item-rarity" style="color:var(--heal-green);background:rgba(39,174,96,0.1);">Consumable</span></div></div><div class="item-stats" style="color:var(--heal-green);">Fully restores HP.</div><div class="shop-price">💰 ' + fullCost + '</div><button class="btn-buy" onclick="buyHeal(' + fullCost + ',1)"' + (gameState.gold < fullCost ? ' disabled' : '') + '>Buy & Use</button></div>'; html += '<div class="shop-item" style="border-color:rgba(39,174,96,0.5);"><div class="item-header"><span class="item-icon">🧪</span><div><div class="item-name" style="color:#58d68d;">Minor Heal</div><span class="item-rarity" style="color:#58d68d;background:rgba(39,174,96,0.1);">Consumable</span></div></div><div class="item-stats" style="color:#58d68d;">Restores 25% HP.</div><div class="shop-price">💰 ' + minorCost + '</div><button class="btn-buy" onclick="buyHeal(' + minorCost + ',0.25)"' + (gameState.gold < minorCost ? ' disabled' : '') + '>Buy & Use</button></div>'; }
+  let filtered = shopSlotFilter === 'all' ? shopItems : shopItems.filter(function(x) { return x.slot === shopSlotFilter; });
+  for (let i = 0; i < filtered.length; i++) { let item = filtered[i], ri = shopItems.indexOf(item), stats = [], maxV = 0, bKeys = Object.keys(item.bonuses); for (let j = 0; j < bKeys.length; j++) { if (item.bonuses[bKeys[j]] > 0) { stats.push({ key: bKeys[j], val: item.bonuses[bKeys[j]] }); if (item.bonuses[bKeys[j]] > maxV) maxV = item.bonuses[bKeys[j]]; } } let bonusHTML = ''; for (let k = 0; k < stats.length; k++) { let isDom = stats[k].val === maxV && stats.length > 1; bonusHTML += '<span' + (isDom ? ' class="item-dominant"' : '') + '>+' + stats[k].val + ' ' + STAT_INFO[stats[k].key].icon + ' ' + STAT_INFO[stats[k].key].name + '</span><br>'; } let slotLabel = SLOT_LABELS[item.slot] ? SLOT_LABELS[item.slot].label : item.slot; html += '<div class="shop-item rarity-' + item.rarity + '"><div class="item-header"><span class="item-icon">' + item.icon + '</span><div><div class="item-name">' + item.name + '</div><span class="item-rarity">' + item.rarity + '</span></div></div><div class="item-stats">' + bonusHTML + '</div><div class="item-type">' + slotLabel + ' · Lv.' + item.level + '</div><div class="shop-price">💰 ' + item.buyPrice + '</div><button class="btn-buy" onclick="buyItem(' + ri + ')"' + (gameState.gold < item.buyPrice ? ' disabled' : '') + '>Buy</button></div>'; }
+  if (!filtered.length && shopSlotFilter !== 'all') html += '<div class="empty-inv">No ' + SLOT_LABELS[shopSlotFilter].label + ' items.</div>';
+  grid.innerHTML = html;
 }
-function buyItem(idx){let item=shopItems[idx];if(!item||gameState.gold<item.buyPrice){showToast('Not enough gold!','error');return;}gameState.gold-=item.buyPrice;let inv={},keys=Object.keys(item);for(let i=0;i<keys.length;i++){if(keys[i]!=='buyPrice')inv[keys[i]]=item[keys[i]];}gameState.inventory.push(inv);shopItems.splice(idx,1);playSound('coin');showToast('Bought '+item.name+'!','success');updateStatusBar();renderShop();renderInventory();saveGame();}
-function buyHeal(cost,frac){if(gameState.gold<cost){showToast('Not enough gold!','error');return;}let mx=getTotalStat('hp');if(gameState.currentHP>=mx){showToast('Full health!','info');return;}gameState.gold-=cost;let amt=Math.round(mx*frac);gameState.currentHP=Math.min(mx,gameState.currentHP+amt);playSound('heal');showToast('Healed '+amt+' HP!','success');updateStatusBar();renderShop();saveGame();}
+function buyItem(idx) { let item = shopItems[idx]; if (!item || gameState.gold < item.buyPrice) { showToast('Not enough gold!', 'error'); return; } gameState.gold -= item.buyPrice; let inv = {}, keys = Object.keys(item); for (let i = 0; i < keys.length; i++) { if (keys[i] !== 'buyPrice') inv[keys[i]] = item[keys[i]]; } gameState.inventory.push(inv); shopItems.splice(idx, 1); playSound('coin'); showToast('Bought ' + item.name + '!', 'success'); updateStatusBar(); renderShop(); renderInventory(); saveGame(); }
+function buyHeal(cost, frac) { if (gameState.gold < cost) { showToast('Not enough gold!', 'error'); return; } let mx = getTotalStat('hp'); if (gameState.currentHP >= mx) { showToast('Full health!', 'info'); return; } gameState.gold -= cost; let amt = Math.round(mx * frac); gameState.currentHP = Math.min(mx, gameState.currentHP + amt); playSound('heal'); showToast('Healed ' + amt + ' HP!', 'success'); updateStatusBar(); renderShop(); saveGame(); }
 
 // =====================================================
-// PVP ARENA (PURE PVP)
+// PVP ARENA
 // =====================================================
-
-function getArenaRank(rating){
-  for(let i=ARENA_RANKS.length-1;i>=0;i--){if(rating>=ARENA_RANKS[i].minRating)return ARENA_RANKS[i];}
+function getArenaRank(rating) {
+  for (let i = ARENA_RANKS.length - 1; i >= 0; i--) { if (rating >= ARENA_RANKS[i].minRating) return ARENA_RANKS[i]; }
   return ARENA_RANKS[0];
 }
-
 function renderArena() {
   let html = '';
-  
   // Connection status bar
   html += '<div class="mp-status-bar">';
   html += '<div id="connection-status">' + (isConnected ? '<span style="color:var(--heal-green);">🟢 Connected</span>' : '<span style="color:var(--hp-red);">🔴 Disconnected</span>') + '</div>';
-  html += '<div>🌐 Online: <b id="online-count">' + onlinePlayers.length + '</b></div>';
-  if (isConnected && !isRegistered && gameState) {
-    html += '<button class="btn-pvp btn-pvp-export" onclick="registerFighter()">📡 Register Fighter</button>';
-  } else if (isRegistered) {
-    html += '<div style="color:var(--heal-green);font-size:0.7rem;">✅ Fighter Registered</div>';
-  }
+  html += '<div>👥 Online: <b id="online-count">' + onlinePlayers.length + '</b></div>';
+  if (isConnected && !isRegistered && gameState) { html += '<button class="btn-pvp btn-pvp-export" onclick="registerFighter()">⚔️ Register Fighter</button>'; }
+  else if (isRegistered) { html += '<div style="color:var(--heal-green);font-size:0.7rem;">✅ Fighter Registered</div>'; }
   html += '</div>';
-
   // Arena Stats
   let a = gameState.arena, rank = getArenaRank(a.rating);
-  let nextRank = null; for(let i=0;i<ARENA_RANKS.length;i++){if(ARENA_RANKS[i].minRating>a.rating){nextRank=ARENA_RANKS[i];break;}}
-
+  let nextRank = null; for (let i = 0; i < ARENA_RANKS.length; i++) { if (ARENA_RANKS[i].minRating > a.rating) { nextRank = ARENA_RANKS[i]; break; } }
   html += '<div class="arena-stats-bar">';
-  html += '<div class="arena-stat-card"><div class="arena-stat-val"><span class="arena-rank-badge rank-'+rank.name+'">'+rank.icon+' '+rank.name+'</span></div><div class="arena-stat-label">Rank</div></div>';
-  html += '<div class="arena-stat-card"><div class="arena-stat-val" style="color:'+rank.color+'">'+a.rating+'</div><div class="arena-stat-label">Rating'+(nextRank?' ('+nextRank.minRating+' for '+nextRank.name+')':'')+'</div></div>';
-  html += '<div class="arena-stat-card"><div class="arena-stat-val" style="color:var(--heal-green);">'+a.wins+'W / <span style="color:var(--hp-red);">'+a.losses+'L</span></div><div class="arena-stat-label">Record (Streak: '+a.streak+')</div></div>';
-  html += '<div class="arena-stat-card"><div class="arena-stat-val">'+(a.wins+a.losses>0?Math.round(a.wins/(a.wins+a.losses)*100):0)+'%</div><div class="arena-stat-label">Win Rate</div></div>';
+  html += '<div class="arena-stat-card"><div class="arena-stat-val"><span class="arena-rank-badge rank-' + rank.name + '">' + rank.icon + ' ' + rank.name + '</span></div><div class="arena-stat-label">Rank</div></div>';
+  html += '<div class="arena-stat-card"><div class="arena-stat-val" style="color:' + rank.color + '">' + a.rating + '</div><div class="arena-stat-label">Rating' + (nextRank ? ' (' + nextRank.minRating + ' for ' + nextRank.name + ')' : '') + '</div></div>';
+  html += '<div class="arena-stat-card"><div class="arena-stat-val" style="color:var(--heal-green);">' + a.wins + 'W / <span style="color:var(--hp-red);">' + a.losses + 'L</span></div><div class="arena-stat-label">Record (Streak: ' + a.streak + ')</div></div>';
+  html += '<div class="arena-stat-card"><div class="arena-stat-val">' + (a.wins + a.losses > 0 ? Math.round(a.wins / (a.wins + a.losses) * 100) : 0) + '%</div><div class="arena-stat-label">Win Rate</div></div>';
   html += '</div>';
-
-  // ACTIVE BATTLE
-  if (inBattle && currentBattle && !currentBattle.finished) {
-    html += renderActiveBattle();
-  }
-  // BATTLE RESULT (animacja tylko raz - klasa animate-fade)
-  else if (currentBattle && currentBattle.finished && currentBattle.result) {
-    html += renderBattleResult();
-  }
-  // QUEUE / LOBBY
-  else {
-    html += renderLobby();
-  }
-
-  // LEADERBOARD (based on online players)
-html += '<div class="panel-title" style="margin-top:14px;"><span class="icon">🏆</span> Global Leaderboard</div>';
-html += '<div id="arena-leaderboard-container">';
-html += renderLeaderboard();
-html += '</div>';
-
-  // CHAT
+  // Battle / Queue / Result
+  if (inBattle && currentBattle && !currentBattle.finished) { html += renderActiveBattle(); }
+  else if (currentBattle && currentBattle.finished && currentBattle.result) { html += renderBattleResult(); }
+  else { html += renderLobby(); }
+  // Leaderboard
+  html += '<div class="panel-title" style="margin-top:14px;"><span class="icon">🏆</span> Global Leaderboard</div>';
+  html += '<div id="arena-leaderboard-container">' + renderLeaderboard() + '</div>';
+  // Chat
   html += renderChat();
-
-  // ONLINE PLAYERS
+  // Online Players
   html += '<div class="panel-title" style="margin-top:14px;"><span class="icon">👥</span> Online Players</div>';
-  html += '<div id="online-players-list">';
-  html += '<div style="text-align:center;color:var(--text-dim);padding:20px;">Loading...</div>';
-  html += '</div>';
-
+  html += '<div id="online-players-list"><div style="text-align:center;color:var(--text-dim);padding:20px;">Loading...</div></div>';
   document.getElementById('arena-content').innerHTML = html;
   updateOnlinePlayersList();
+  // Po re-renderze areny, jesli jestesmy w walce - przywroc stan przyciskow
+  if (inBattle && currentBattle && !currentBattle.finished) {
+    updateTurnIndicator();
+    updateAttackButton();
+  }
 }
 
 function renderActiveBattle() {
   let b = currentBattle;
-  let you = b.you;
-  let opp = b.opponent;
-  let youIcon = CLASS_ICONS[you.class] || '👤';
-  let oppIcon = CLASS_ICONS[opp.class] || '👤';
+  let you = b.you, opp = b.opponent;
+  let youIcon = CLASS_ICONS[you.class] || '⚔️', oppIcon = CLASS_ICONS[opp.class] || '⚔️';
   let youHpPct = Math.max(0, (you.currentHP / you.maxHP) * 100);
   let oppHpPct = Math.max(0, (opp.currentHP / opp.maxHP) * 100);
-  
   let html = '<div class="mp-battle-arena animate-fade">';
-  html += '<div class="mp-turn-indicator">';
-  if (isMyTurn) {
-    html += '<span style="color:var(--gold-bright);font-weight:700;">⚔️ YOUR TURN — Attack!</span>';
-  } else {
-    html += '<span style="color:var(--text-dim);">⏳ ' + b.currentTurnName + '\'s turn...</span>';
-  }
+  // Wskaznik tury - z ID dla pozniejszych aktualizacji
+  html += '<div class="mp-turn-indicator' + (isMyTurn ? ' my-turn' : '') + '" id="mp-turn-indicator">';
+  if (isMyTurn) { html += '<span style="color:var(--gold-bright);font-weight:700;">⚔️ YOUR TURN — Attack!</span>'; }
+  else { html += '<span style="color:var(--text-dim);">⏳ ' + escapeHtml(b.currentTurnName) + '\'s turn...</span>'; }
   html += '</div>';
-  
   html += '<div class="combat-arena">';
+  // Gracz
   html += '<div class="combatant" id="mp-you">';
   html += '<div class="avatar">' + youIcon + '</div>';
-  html += '<div class="name" style="color:var(--heal-green);">' + you.name + '</div>';
+  html += '<div class="name" style="color:var(--heal-green);">' + escapeHtml(you.name) + '</div>';
   html += '<div class="level-badge">Lv.' + you.level + ' ' + you.class + ' (You)</div>';
   html += '<div class="combat-hp-bar"><div class="bar-container"><div class="bar-fill hp" style="width:' + youHpPct + '%;' + (youHpPct < 25 ? 'animation:pulse .5s infinite;' : '') + '"></div><div class="bar-text">' + you.currentHP + '/' + you.maxHP + '</div></div></div>';
   html += '</div>';
   html += '<div class="combat-vs">⚔️</div>';
+  // Przeciwnik
   html += '<div class="combatant" id="mp-opp">';
   html += '<div class="avatar">' + oppIcon + '</div>';
-  html += '<div class="name" style="color:var(--hp-red);">' + opp.name + '</div>';
+  html += '<div class="name" style="color:var(--hp-red);">' + escapeHtml(opp.name) + '</div>';
   html += '<div class="level-badge">Lv.' + opp.level + ' ' + opp.class + '</div>';
   html += '<div class="combat-hp-bar"><div class="bar-container"><div class="bar-fill hp" style="width:' + oppHpPct + '%;' + (oppHpPct < 25 ? 'animation:pulse .5s infinite;background:linear-gradient(90deg,#e74c3c,#ff6b6b);' : '') + '"></div><div class="bar-text">' + opp.currentHP + '/' + opp.maxHP + '</div></div></div>';
   html += '</div>';
   html += '</div>';
-  
+  // Przyciski walki - z ID dla bezposredniej aktualizacji
   html += '<div class="combat-controls">';
-  html += '<button class="btn-combat btn-fight" onclick="pvpAttack()"' + (!isMyTurn ? ' disabled' : '') + '>⚔️ Attack' + (!isMyTurn ? ' (Wait...)' : '') + '</button>';
+  html += '<button class="btn-combat btn-fight" id="pvp-attack-btn" onclick="pvpAttack()"' + (!isMyTurn ? ' disabled' : '') + '>⚔️ Attack' + (!isMyTurn ? ' (Wait...)' : '') + '</button>';
   html += '<button class="btn-combat btn-flee" onclick="pvpForfeit()" style="flex:0.5;">🏳️ Forfeit</button>';
   html += '</div>';
-  
+  // Log walki
   html += '<div class="combat-log" id="mp-combat-log">';
-  if (b.log.length === 0) {
-    html += '<div class="log-entry log-system">⚔️ Battle started! Turn ' + (b.turns + 1) + '</div>';
-  }
+  if (b.log.length === 0) { html += '<div class="log-entry log-system">⚔️ Battle started! Turn 1</div>'; }
   for (let i = 0; i < b.log.length; i++) {
     let log = b.log[i];
     if (log.type === 'attack') {
       let cls = log.crit ? 'log-crit' : (log.attacker === b.you.name ? 'log-player' : 'log-enemy');
       html += '<div class="log-entry ' + cls + '">';
-      html += (log.crit ? '⚡ CRIT! ' : '') + log.attacker + ' hits ' + log.defender + ' for ' + log.damage + ' dmg (' + log.blocked + ' blocked)';
-      html += ' — ' + log.defender + ': ' + log.defenderHP + '/' + log.defenderMaxHP + ' HP';
+      html += (log.crit ? '💥 CRIT! ' : '') + escapeHtml(log.attacker) + ' hits ' + escapeHtml(log.defender) + ' for ' + log.damage + ' dmg (' + log.blocked + ' blocked)';
+      html += ' — ' + escapeHtml(log.defender) + ': ' + log.defenderHP + '/' + log.defenderMaxHP + ' HP';
       html += '</div>';
-    } else if (log.type === 'forfeit' || log.type === 'disconnect' || log.type === 'timeout') {
-      html += '<div class="log-entry log-system">' + (log.message || log.type) + '</div>';
-    }
+    } else { html += '<div class="log-entry log-system">' + escapeHtml(log.message || log.type) + '</div>'; }
   }
-  html += '</div>';
-  html += '</div>';
+  html += '</div></div>';
   return html;
 }
 
 function renderBattleResult() {
-  let r = currentBattle.result;
-  let won = r.youWon;
-  let html = '<div class="arena-battle-result ' + (won ? 'win' : 'lose') + ' animate-fade">'; // animate-fade zamiast animate-bounce
-  html += '<div class="arena-result-title ' + (won ? 'win' : 'lose') + '">' + (won ? '⚔️ VICTORY!' : '💀 DEFEAT') + '</div>';
+  let r = currentBattle.result, won = r.youWon;
+  let html = '<div class="arena-battle-result ' + (won ? 'win' : 'lose') + ' animate-fade">';
+  html += '<div class="arena-result-title ' + (won ? 'win' : 'lose') + '">' + (won ? '🏆 VICTORY!' : '💀 DEFEAT') + '</div>';
   html += '<div class="arena-result-details">';
-  html += '<p>' + r.winnerName + ' defeated ' + r.loserName + '</p>';
+  html += '<p>' + escapeHtml(r.winnerName) + ' defeated ' + escapeHtml(r.loserName) + '</p>';
   html += '<p>Battle lasted <b>' + r.turns + '</b> turns (' + r.reason + ')</p>';
-  if (won) {
-    html += '<p style="color:var(--heal-green);">Rating: +' + r.winnerRatingChange + ' → ' + r.winnerNewRating + '</p>';
-    html += '<p style="color:var(--gold);">🪙 +' + r.goldReward + ' Gold</p>';
-    html += '<p style="color:var(--xp-blue);">⭐ +' + r.xpReward + ' XP</p>';
-  } else {
-    html += '<p style="color:var(--hp-red);">Rating: ' + r.loserRatingChange + ' → ' + r.loserNewRating + '</p>';
-  }
+  if (won) { html += '<p style="color:var(--heal-green);">Rating: +' + r.winnerRatingChange + ' → ' + r.winnerNewRating + '</p>'; html += '<p style="color:var(--gold);">💰 +' + r.goldReward + ' Gold</p>'; html += '<p style="color:var(--xp-blue);">⭐ +' + r.xpReward + ' XP</p>'; }
+  else { html += '<p style="color:var(--hp-red);">Rating: ' + r.loserRatingChange + ' → ' + r.loserNewRating + '</p>'; }
   html += '</div>';
-  
   html += '<div class="combat-log" style="max-height:150px;margin-top:12px;">';
-  for (let i = 0; i < r.log.length; i++) {
-    let log = r.log[i];
-    if (log.type === 'attack') {
-      html += '<div class="log-entry ' + (log.crit ? 'log-crit' : 'log-system') + '">' + (log.crit ? '⚡ ' : '') + log.attacker + ' → ' + log.defender + ': ' + log.damage + ' dmg</div>';
-    } else {
-      html += '<div class="log-entry log-system">' + (log.message || '') + '</div>';
-    }
-  }
+  for (let i = 0; i < r.log.length; i++) { let log = r.log[i]; if (log.type === 'attack') { html += '<div class="log-entry ' + (log.crit ? 'log-crit' : 'log-system') + '">' + (log.crit ? '💥 ' : '') + escapeHtml(log.attacker) + ' → ' + escapeHtml(log.defender) + ': ' + log.damage + ' dmg</div>'; } else { html += '<div class="log-entry log-system">' + escapeHtml(log.message || '') + '</div>'; } }
   html += '</div>';
-  
   html += '<button class="btn-arena-back" onclick="currentBattle=null;renderArena();" style="margin-top:14px;">🔙 Back to Arena</button>';
   html += '</div>';
   return html;
 }
 
 function renderLobby() {
-  let html = '';
-  html += '<div class="mp-queue-box">';
+  let html = '<div class="mp-queue-box">';
   if (inQueue) {
-    html += '<div class="mp-queue-searching">';
-    html += '<div class="mp-search-spinner"></div>';
+    html += '<div class="mp-queue-searching"><div class="mp-search-spinner"></div>';
     html += '<div style="font-family:MedievalSharp,cursive;font-size:1.2rem;color:var(--arena-purple);margin-bottom:6px;">Searching for opponent...</div>';
     html += '<div style="font-size:0.75rem;color:var(--text-dim);">You will be matched when another player joins the queue.</div>';
-    html += '<button class="btn-pvp btn-pvp-fight" onclick="leavePvpQueue()" style="margin-top:14px;">✖ Cancel Search</button>';
+    html += '<button class="btn-pvp btn-pvp-fight" onclick="leavePvpQueue()" style="margin-top:14px;">❌ Cancel Search</button>';
     html += '</div>';
   } else {
-    html += '<div style="text-align:center;">';
-    html += '<div style="font-size:2.5rem;margin-bottom:8px;">⚔️</div>';
+    html += '<div style="text-align:center;"><div style="font-size:2.5rem;margin-bottom:8px;">⚔️</div>';
     html += '<div style="font-family:MedievalSharp,cursive;font-size:1.2rem;color:var(--gold);margin-bottom:8px;">Real-Time PvP Arena</div>';
     html += '<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:16px;line-height:1.5;">Fight real players in turn-based combat!<br>Your actual stats, equipment, and skills are used.</div>';
-    
     let buttonDisabled = !isConnected || !isRegistered || gameState.currentHP <= 0;
-    let buttonText = '🔍 Find Opponent';
+    let buttonText = '⚔️ Find Opponent';
     if (!isConnected) buttonText = '🔴 Connect First';
-    else if (!isRegistered) buttonText = '📡 Register First';
-    else if (gameState.currentHP <= 0) buttonText = '💀 Heal First';
-    
+    else if (!isRegistered) buttonText = '📝 Register First';
+    else if (gameState.currentHP <= 0) buttonText = '💊 Heal First';
     html += '<button class="btn-arena-fight" onclick="joinPvpQueue()" style="font-size:1.1rem;padding:16px 32px;"' + (buttonDisabled ? ' disabled' : '') + '>' + buttonText + '</button>';
-    if (!isConnected) {
-      html += '<div style="margin-top:10px;font-size:0.7rem;color:var(--hp-red);">⚠️ Not connected to server. Make sure the server is running!</div>';
-    }
+    if (!isConnected) { html += '<div style="margin-top:10px;font-size:0.7rem;color:var(--hp-red);">🔴 Not connected to server. Make sure the server is running!</div>'; }
     html += '</div>';
   }
   html += '</div>';
@@ -1576,58 +1422,29 @@ function renderLobby() {
 }
 
 function renderChat() {
-  let html = '<div class="mp-chat-box">';
-  html += '<div class="panel-title"><span class="icon">💬</span> Global Chat</div>';
+  let html = '<div class="mp-chat-box"><div class="panel-title"><span class="icon">💬</span> Global Chat</div>';
   html += '<div class="mp-chat-messages" id="chat-messages">';
-  if (chatMessages.length === 0) {
-    html += '<div style="text-align:center;color:var(--text-dim);padding:20px;font-size:0.75rem;font-style:italic;">No messages yet. Say hello!</div>';
-  } else {
+  if (chatMessages.length === 0) { html += '<div style="text-align:center;color:var(--text-dim);padding:20px;font-size:0.75rem;font-style:italic;">No messages yet. Say hello!</div>'; }
+  else {
     let start = Math.max(0, chatMessages.length - 30);
     for (let i = start; i < chatMessages.length; i++) {
-      let m = chatMessages[i];
-      let icon = CLASS_ICONS[m.class] || '👤';
-      let isMe = gameState && m.name === gameState.name;
-      html += '<div class="chat-msg' + (isMe ? ' chat-msg-me' : '') + '">';
-      html += '<span class="chat-name" style="color:' + (isMe ? 'var(--gold)' : 'var(--arena-purple)') + '">' + icon + ' ' + m.name + ':</span> ';
-      html += '<span class="chat-text">' + escapeHtml(m.message) + '</span>';
-      html += '</div>';
+      let m = chatMessages[i], icon = CLASS_ICONS[m.class] || '', isMe = gameState && m.name === gameState.name;
+      html += '<div class="chat-msg' + (isMe ? ' chat-msg-me' : '') + '"><span class="chat-name" style="color:' + (isMe ? 'var(--gold)' : 'var(--arena-purple)') + '">' + icon + ' ' + escapeHtml(m.name) + ':</span> <span class="chat-text">' + escapeHtml(m.message) + '</span></div>';
     }
   }
-  html += '</div>';
-  html += '<div class="mp-chat-input-row">';
-  html += '<input type="text" id="chat-input" class="mp-chat-input" placeholder="Type a message..." maxlength="200" onkeydown="if(event.key===\'Enter\')sendChat();" />';
-  html += '<button class="btn-pvp btn-pvp-export" onclick="sendChat()">Send</button>';
-  html += '</div>';
-  html += '</div>';
+  html += '</div><div class="mp-chat-input-row"><input type="text" id="chat-input" class="mp-chat-input" placeholder="Type a message..." maxlength="200" onkeydown="if(event.key===\'Enter\')sendChat();" /><button class="btn-pvp btn-pvp-export" onclick="sendChat()">Send</button></div></div>';
   return html;
 }
 
-function renderLeaderboard(){
-  // Sort online players by rating
+function renderLeaderboard() {
   let sorted = [...onlinePlayers].sort((a, b) => b.rating - a.rating);
-  
   let html = '<table class="leaderboard-table"><thead><tr><th>#</th><th>Player</th><th>Class</th><th>Lv</th><th>Rating</th><th>Record</th></tr></thead><tbody>';
-  
-  for(let i = 0; i < Math.min(sorted.length, 20); i++){
-    let p = sorted[i];
-    let rank = getArenaRank(p.rating);
-    let isMe = gameState && p.name === gameState.name;
+  for (let i = 0; i < Math.min(sorted.length, 20); i++) {
+    let p = sorted[i], rank = getArenaRank(p.rating), isMe = gameState && p.name === gameState.name;
     let rankClass = i === 0 ? 'lb-rank-1' : i === 1 ? 'lb-rank-2' : i === 2 ? 'lb-rank-3' : '';
-    
-    html += '<tr class="' + (isMe ? 'lb-you' : '') + '">';
-    html += '<td class="lb-rank ' + rankClass + '">' + (i+1) + '</td>';
-    html += '<td>' + (isMe ? '➤ ' : '') + p.name + '</td>';
-    html += '<td>' + (CLASS_ICONS[p.class] || '👤') + ' ' + p.class + '</td>';
-    html += '<td>' + p.level + '</td>';
-    html += '<td style="color:' + rank.color + '">' + rank.icon + ' ' + p.rating + '</td>';
-    html += '<td>' + p.wins + 'W/' + p.losses + 'L</td>';
-    html += '</tr>';
+    html += '<tr class="' + (isMe ? 'lb-you' : '') + '"><td class="lb-rank ' + rankClass + '">' + (i + 1) + '</td><td>' + (isMe ? '👤 ' : '') + escapeHtml(p.name) + '</td><td>' + (CLASS_ICONS[p.class] || '') + ' ' + p.class + '</td><td>' + p.level + '</td><td style="color:' + rank.color + '">' + rank.icon + ' ' + p.rating + '</td><td>' + p.wins + 'W/' + p.losses + 'L</td></tr>';
   }
-  
-  if(sorted.length === 0){
-    html += '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-dim);">No players online</td></tr>';
-  }
-  
+  if (sorted.length === 0) { html += '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--text-dim);">No players online</td></tr>'; }
   html += '</tbody></table>';
   return html;
 }
@@ -1635,33 +1452,14 @@ function renderLeaderboard(){
 function updateOnlinePlayersList() {
   let el = document.getElementById('online-players-list');
   if (!el) return;
-  
-  if (onlinePlayers.length === 0) {
-    el.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:20px;font-style:italic;">No players online</div>';
-    return;
-  }
-  
+  if (onlinePlayers.length === 0) { el.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:20px;font-style:italic;">No players online</div>'; return; }
   let html = '<div class="online-players-grid">';
   for (let i = 0; i < onlinePlayers.length; i++) {
-    let p = onlinePlayers[i];
-    let isMe = p.id === mySocketId;
-    let icon = CLASS_ICONS[p.class] || '👤';
+    let p = onlinePlayers[i], isMe = p.id === mySocketId, icon = CLASS_ICONS[p.class] || '';
     let statusIcon = p.inBattle ? '⚔️' : p.inQueue ? '🔍' : '🟢';
     let statusText = p.inBattle ? 'In Battle' : p.inQueue ? 'Searching...' : 'Online';
     let rank = getArenaRank(p.rating);
-    
-    html += '<div class="online-player-card' + (isMe ? ' online-player-you' : '') + '">';
-    html += '<div class="online-player-info">';
-    html += '<span class="online-player-icon">' + icon + '</span>';
-    html += '<div>';
-    html += '<div class="online-player-name">' + (isMe ? '➤ ' : '') + p.name + '</div>';
-    html += '<div class="online-player-class">Lv.' + p.level + ' ' + p.class + ' · ' + rank.icon + ' ' + p.rating + '</div>';
-    html += '</div>';
-    html += '</div>';
-    html += '<div class="online-player-status">';
-    html += '<span class="online-status-dot">' + statusIcon + '</span> ' + statusText;
-    html += '</div>';
-    html += '</div>';
+    html += '<div class="online-player-card' + (isMe ? ' online-player-you' : '') + '"><div class="online-player-info"><span class="online-player-icon">' + icon + '</span><div><div class="online-player-name">' + (isMe ? '👤 ' : '') + escapeHtml(p.name) + '</div><div class="online-player-class">Lv.' + p.level + ' ' + p.class + ' · ' + rank.icon + ' ' + p.rating + '</div></div></div><div class="online-player-status"><span class="online-status-dot">' + statusIcon + '</span> ' + statusText + '</div></div>';
   }
   html += '</div>';
   el.innerHTML = html;
@@ -1676,44 +1474,46 @@ function updateConnectionStatus() {
 // =====================================================
 // NAVIGATION
 // =====================================================
-
-function showPanel(name){
-  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.toggle('active',b.dataset.panel===name);});
-  document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('active',p.id==='panel-'+name);});
-  if(name==='character')renderCharacterPanel();else if(name==='combat')renderCombat();else if(name==='inventory')renderInventory();else if(name==='tavern')renderQuests();else if(name==='shop')renderShop();else if(name==='arena')renderArena();
+function showPanel(name) {
+  document.querySelectorAll('.nav-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.panel === name); });
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.toggle('active', p.id === 'panel-' + name); });
+  if (name === 'character') renderCharacterPanel();
+  else if (name === 'combat') renderCombat();
+  else if (name === 'inventory') renderInventory();
+  else if (name === 'tavern') renderQuests();
+  else if (name === 'shop') renderShop();
+  else if (name === 'arena') renderArena();
 }
-function getActivePanel(){let btn=document.querySelector('.nav-btn.active');return btn?btn.dataset.panel:'character';}
+function getActivePanel() { let btn = document.querySelector('.nav-btn.active'); return btn ? btn.dataset.panel : 'character'; }
 
 // =====================================================
 // KEYBOARD SHORTCUTS
 // =====================================================
-
-window.addEventListener('keydown',function(e){
-  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
-  if(document.querySelector('.modal-overlay'))return;if(!gameState)return;
-  let k=e.key.toLowerCase();
-  switch(k){
-    case '1':e.preventDefault();showPanel('character');break;
-    case '2':e.preventDefault();showPanel('combat');break;
-    case '3':e.preventDefault();showPanel('inventory');break;
-    case '4':e.preventDefault();showPanel('tavern');break;
-    case '5':e.preventDefault();showPanel('shop');break;
-    case '6':e.preventDefault();showPanel('arena');break;
-    case 'r':e.preventDefault();if(getActivePanel()==='shop'){refreshShop();showToast('Shop refreshed!','info');}else if(getActivePanel()==='tavern')rerollQuests();break;
-    case 'a':e.preventDefault();if(getActivePanel()==='combat'&&combatState&&!combatState.finished)combatAttack();break;
-    case 'h':e.preventDefault();if(getActivePanel()==='combat'&&combatState&&!combatState.finished)combatHeal();break;
-    case 'f':e.preventDefault();if(getActivePanel()==='combat'){if(!combatState||!combatState.enemy||combatState.finished)findEnemy();else combatFlee();}break;
-    case 'n':e.preventDefault();if(getActivePanel()==='combat'&&(!combatState||!combatState.enemy||combatState.finished))findEnemy();break;
-    case 's':if(e.ctrlKey||e.metaKey){e.preventDefault();saveGame();showToast('Saved!','success');}break;
+window.addEventListener('keydown', function(e) {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (document.querySelector('.modal-overlay')) return;
+  if (!gameState) return;
+  let k = e.key.toLowerCase();
+  switch (k) {
+    case '1': e.preventDefault(); showPanel('character'); break;
+    case '2': e.preventDefault(); showPanel('combat'); break;
+    case '3': e.preventDefault(); showPanel('inventory'); break;
+    case '4': e.preventDefault(); showPanel('tavern'); break;
+    case '5': e.preventDefault(); showPanel('shop'); break;
+    case '6': e.preventDefault(); showPanel('arena'); break;
+    case 'r': e.preventDefault(); if (getActivePanel() === 'shop') { refreshShop(); showToast('Shop refreshed!', 'info'); } else if (getActivePanel() === 'tavern') rerollQuests(); break;
+    case 'a': e.preventDefault(); if (getActivePanel() === 'combat' && combatState && !combatState.finished) combatAttack(); break;
+    case 'h': e.preventDefault(); if (getActivePanel() === 'combat' && combatState && !combatState.finished) combatHeal(); break;
+    case 'f': e.preventDefault(); if (getActivePanel() === 'combat') { if (!combatState || !combatState.enemy || combatState.finished) findEnemy(); else combatFlee(); } break;
+    case 'n': e.preventDefault(); if (getActivePanel() === 'combat' && (!combatState || !combatState.enemy || combatState.finished)) findEnemy(); break;
+    case 's': if (e.ctrlKey || e.metaKey) { e.preventDefault(); saveGame(); showToast('Saved!', 'success'); } break;
   }
 });
 
 // =====================================================
 // INIT
 // =====================================================
-
-window.addEventListener('DOMContentLoaded',function(){if(loadGame())startGame();});
-
+window.addEventListener('DOMContentLoaded', function() { if (loadGame()) startGame(); });
 </script>
 </body>
 </html>
