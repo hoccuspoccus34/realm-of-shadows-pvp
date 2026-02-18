@@ -2,8 +2,10 @@
 // REALM OF SHADOWS - Multiplayer PvP Client
 // Socket.IO WebSocket Client Logic
 // =====================================================
+
 // ---- SOCKET CONNECTION ----
 const socket = io();
+
 // ---- MULTIPLAYER STATE ----
 let mySocketId = null;
 let isConnected = false;
@@ -14,11 +16,14 @@ let currentBattle = null;
 let isMyTurn = false;
 let onlinePlayers = [];
 let chatMessages = [];
+
 // ---- CLASS ICONS ----
 const CLASS_ICONS = { Warrior: '⚔️', Mage: '🔮', Rogue: '🗡️' };
+
 // =====================================================
 // CONNECTION EVENTS
 // =====================================================
+
 socket.on('connect', () => {
   isConnected = true;
   console.log('[WS] Connected to server');
@@ -28,6 +33,7 @@ socket.on('connect', () => {
     registerFighter();
   }
 });
+
 socket.on('disconnect', () => {
   isConnected = false;
   isRegistered = false;
@@ -40,19 +46,24 @@ socket.on('disconnect', () => {
     renderArena();
   }
 });
+
 socket.on('welcome', (data) => {
   mySocketId = data.id;
   console.log('[WS] Welcome:', data.message, '| Online:', data.onlineCount);
 });
+
 socket.on('error', (data) => {
   console.error('[WS] Error:', data.message);
   if (typeof showToast === 'function') showToast(data.message, 'error');
 });
+
 // =====================================================
 // REGISTRATION
 // =====================================================
+
 function registerFighter() {
   if (!isConnected || typeof gameState === 'undefined' || !gameState) return;
+  
   // Build fighter data from current game state
   const fighterData = {
     name: gameState.name,
@@ -68,6 +79,7 @@ function registerFighter() {
     arena: gameState.arena || { rating: 1000, wins: 0, losses: 0 },
     equipment: []
   };
+
   // Include equipped gear names for display
   const ALL_SLOTS = ['weapon', 'armor', 'helmet', 'boots', 'amulet', 'ring'];
   for (let i = 0; i < ALL_SLOTS.length; i++) {
@@ -81,8 +93,19 @@ function registerFighter() {
       });
     }
   }
+  
   socket.emit('registerFighter', fighterData);
 }
+
+// =====================================================
+// DODATKOWA FUNKCJA - automatyczna rejestracja przy zmianie statystyk
+// =====================================================
+function updateFighterRegistration() {
+  if (isConnected && isRegistered && gameState) {
+    registerFighter();
+  }
+}
+
 socket.on('registered', (data) => {
   isRegistered = true;
   console.log('[WS] Registered:', data.message);
@@ -92,31 +115,41 @@ socket.on('registered', (data) => {
     renderArena();
   }
 });
+
 // =====================================================
 // PLAYER LIST
 // =====================================================
+
 socket.on('playerList', (list) => {
   onlinePlayers = list;
   updateOnlinePlayersList();
+  if (typeof getActivePanel === 'function' && getActivePanel() === 'arena') {
+    renderArena();
+  }
 });
+
 socket.on('onlineCount', (count) => {
   const el = document.getElementById('online-count');
   if (el) el.textContent = count;
 });
+
 function updateOnlinePlayersList() {
   const el = document.getElementById('online-players-list');
   if (!el) return;
+  
   if (onlinePlayers.length === 0) {
     el.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:20px;font-style:italic;">No players online</div>';
     return;
   }
-  let html = '';
+  
+  let html = '<div class="online-players-grid">';
   for (let i = 0; i < onlinePlayers.length; i++) {
     const p = onlinePlayers[i];
     const isMe = p.id === mySocketId;
     const icon = CLASS_ICONS[p.class] || '👤';
     const statusIcon = p.inBattle ? '⚔️' : p.inQueue ? '🔍' : '🟢';
     const statusText = p.inBattle ? 'In Battle' : p.inQueue ? 'Searching...' : 'Online';
+    
     html += '<div class="online-player-card' + (isMe ? ' online-player-you' : '') + '">';
     html += '<div class="online-player-info">';
     html += '<span class="online-player-icon">' + icon + '</span>';
@@ -130,11 +163,14 @@ function updateOnlinePlayersList() {
     html += '</div>';
     html += '</div>';
   }
+  html += '</div>';
   el.innerHTML = html;
 }
+
 // =====================================================
 // PVP QUEUE
 // =====================================================
+
 function joinPvpQueue() {
   if (!isConnected) { showToast('Not connected to server!', 'error'); return; }
   if (!isRegistered) {
@@ -144,13 +180,16 @@ function joinPvpQueue() {
   }
   if (inBattle) { showToast('Already in a battle!', 'error'); return; }
   if (gameState.currentHP <= 0) { showToast('Heal first!', 'error'); return; }
+  
   // Re-register to update stats before queueing
   registerFighter();
   socket.emit('joinQueue');
 }
+
 function leavePvpQueue() {
   socket.emit('leaveQueue');
 }
+
 socket.on('queueJoined', (data) => {
   inQueue = true;
   console.log('[WS] Queue joined:', data.message);
@@ -159,6 +198,7 @@ socket.on('queueJoined', (data) => {
     renderArena();
   }
 });
+
 socket.on('queueLeft', (data) => {
   inQueue = false;
   console.log('[WS] Queue left:', data.message);
@@ -166,9 +206,11 @@ socket.on('queueLeft', (data) => {
     renderArena();
   }
 });
+
 // =====================================================
 // BATTLE EVENTS
 // =====================================================
+
 socket.on('battleStart', (data) => {
   inQueue = false;
   inBattle = true;
@@ -189,8 +231,10 @@ socket.on('battleStart', (data) => {
   if (typeof showPanel === 'function') showPanel('arena');
   renderArena();
 });
+
 socket.on('battleUpdate', (data) => {
   if (!currentBattle) return;
+  
   // Update HP values
   if (currentBattle.you.name === data.player1.name) {
     currentBattle.you.currentHP = data.player1.currentHP;
@@ -199,18 +243,21 @@ socket.on('battleUpdate', (data) => {
     currentBattle.you.currentHP = data.player2.currentHP;
     currentBattle.opponent.currentHP = data.player1.currentHP;
   }
+  
   // Add log entry
   if (data.log) {
     currentBattle.log.push(data.log);
   }
   currentBattle.turns = data.turns;
   renderArena();
+  
   // Play sound effects
   if (data.log && typeof playSound === 'function') {
     if (data.log.crit) playSound('crit');
     else playSound('hit');
   }
 });
+
 socket.on('turnChange', (data) => {
   if (!currentBattle) return;
   currentBattle.currentTurn = data.currentTurn;
@@ -218,10 +265,12 @@ socket.on('turnChange', (data) => {
   isMyTurn = (data.currentTurn === mySocketId);
   renderArena();
 });
+
 socket.on('battleEnd', (data) => {
   inBattle = false;
   const won = data.youWon;
   console.log('[WS] Battle ended!', won ? 'VICTORY' : 'DEFEAT');
+  
   // Apply rewards locally
   if (won && typeof gameState !== 'undefined' && gameState) {
     gameState.gold += data.goldReward;
@@ -229,7 +278,6 @@ socket.on('battleEnd', (data) => {
     gameState.arena.wins++;
     // Add XP
     if (typeof addXP === 'function') {
-      // We'll handle XP manually since addXP may reference combat log
       gameState.xp += data.xpReward;
       while (gameState.xp >= xpForLevel(gameState.level)) {
         gameState.xp -= xpForLevel(gameState.level);
@@ -260,36 +308,44 @@ socket.on('battleEnd', (data) => {
       time: Date.now()
     });
   }
+  
   if (typeof playSound === 'function') playSound(won ? 'levelup' : 'death');
   if (typeof showToast === 'function') {
     showToast(won ? '⚔️ VICTORY! +' + data.winnerRatingChange + ' rating, +' + data.goldReward + ' gold!' : '💀 DEFEAT! ' + data.loserRatingChange + ' rating', won ? 'arena' : 'error', 5000);
   }
+  
   // Store result for display
   currentBattle = {
     ...currentBattle,
     finished: true,
     result: data
   };
+  
   if (typeof updateStatusBar === 'function') updateStatusBar();
   if (typeof renderCharacterPanel === 'function') renderCharacterPanel();
   if (typeof saveGame === 'function') saveGame();
   renderArena();
 });
+
 // =====================================================
 // BATTLE ACTIONS
 // =====================================================
+
 function pvpAttack() {
   if (!inBattle || !isMyTurn) return;
   socket.emit('battleAction', { action: 'attack' });
 }
+
 function pvpForfeit() {
   if (!inBattle) return;
   if (!confirm('Are you sure you want to forfeit?')) return;
   socket.emit('battleAction', { action: 'forfeit' });
 }
+
 // =====================================================
 // CHAT
 // =====================================================
+
 function sendChat() {
   const input = document.getElementById('chat-input');
   if (!input) return;
@@ -300,11 +356,13 @@ function sendChat() {
   socket.emit('chatMessage', { message: msg });
   input.value = '';
 }
+
 socket.on('chatMessage', (data) => {
   chatMessages.push(data);
   if (chatMessages.length > 100) chatMessages = chatMessages.slice(-100);
   updateChatDisplay();
 });
+
 function updateChatDisplay() {
   const el = document.getElementById('chat-messages');
   if (!el) return;
@@ -322,14 +380,17 @@ function updateChatDisplay() {
   el.innerHTML = html;
   el.scrollTop = el.scrollHeight;
 }
+
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
 }
+
 // =====================================================
 // UI HELPERS
 // =====================================================
+
 function updateConnectionStatus() {
   const el = document.getElementById('connection-status');
   if (!el) return;
@@ -339,11 +400,14 @@ function updateConnectionStatus() {
     el.innerHTML = '<span style="color:var(--hp-red);">🔴 Disconnected</span>';
   }
 }
+
 // =====================================================
 // RENDER ONLINE PVP ARENA
 // =====================================================
+
 function renderOnlinePvp() {
   let html = '';
+  
   // Connection status bar
   html += '<div class="mp-status-bar">';
   html += '<div id="connection-status">' + (isConnected ? '<span style="color:var(--heal-green);">🟢 Connected</span>' : '<span style="color:var(--hp-red);">🔴 Disconnected</span>') + '</div>';
@@ -354,6 +418,7 @@ function renderOnlinePvp() {
     html += '<div style="color:var(--heal-green);font-size:0.7rem;">✅ Fighter Registered</div>';
   }
   html += '</div>';
+  
   // === ACTIVE BATTLE ===
   if (inBattle && currentBattle && !currentBattle.finished) {
     html += renderActiveBattle();
@@ -366,15 +431,19 @@ function renderOnlinePvp() {
   else {
     html += renderLobby();
   }
+  
   // === CHAT ===
   html += renderChat();
+  
   // === ONLINE PLAYERS ===
   html += '<div class="panel-title" style="margin-top:14px;"><span class="icon">👥</span> Online Players</div>';
   html += '<div id="online-players-list">';
   html += '<div style="text-align:center;color:var(--text-dim);padding:20px;">Loading...</div>';
   html += '</div>';
+  
   return html;
 }
+
 function renderActiveBattle() {
   const b = currentBattle;
   const you = b.you;
@@ -383,6 +452,7 @@ function renderActiveBattle() {
   const oppIcon = CLASS_ICONS[opp.class] || '👤';
   const youHpPct = Math.max(0, (you.currentHP / you.maxHP) * 100);
   const oppHpPct = Math.max(0, (opp.currentHP / opp.maxHP) * 100);
+  
   let html = '<div class="mp-battle-arena animate-fade">';
   // Turn indicator
   html += '<div class="mp-turn-indicator">';
@@ -392,6 +462,7 @@ function renderActiveBattle() {
     html += '<span style="color:var(--text-dim);">⏳ ' + b.currentTurnName + '\'s turn...</span>';
   }
   html += '</div>';
+  
   // Fighters
   html += '<div class="combat-arena">';
   html += '<div class="combatant" id="mp-you">';
@@ -408,11 +479,13 @@ function renderActiveBattle() {
   html += '<div class="combat-hp-bar"><div class="bar-container"><div class="bar-fill hp" style="width:' + oppHpPct + '%;' + (oppHpPct < 25 ? 'animation:pulse .5s infinite;background:linear-gradient(90deg,#e74c3c,#ff6b6b);' : '') + '"></div><div class="bar-text">' + opp.currentHP + '/' + opp.maxHP + '</div></div></div>';
   html += '</div>';
   html += '</div>';
+  
   // Action buttons
   html += '<div class="combat-controls">';
   html += '<button class="btn-combat btn-fight" onclick="pvpAttack()"' + (!isMyTurn ? ' disabled' : '') + '>⚔️ Attack' + (!isMyTurn ? ' (Wait...)' : '') + '</button>';
   html += '<button class="btn-combat btn-flee" onclick="pvpForfeit()" style="flex:0.5;">🏳️ Forfeit</button>';
   html += '</div>';
+  
   // Combat log
   html += '<div class="combat-log" id="mp-combat-log">';
   if (b.log.length === 0) {
@@ -434,6 +507,7 @@ function renderActiveBattle() {
   html += '</div>';
   return html;
 }
+
 function renderBattleResult() {
   const r = currentBattle.result;
   const won = r.youWon;
@@ -450,6 +524,7 @@ function renderBattleResult() {
     html += '<p style="color:var(--hp-red);">Rating: ' + r.loserRatingChange + ' → ' + r.loserNewRating + '</p>';
   }
   html += '</div>';
+  
   // Show battle log
   html += '<div class="combat-log" style="max-height:150px;margin-top:12px;">';
   for (let i = 0; i < r.log.length; i++) {
@@ -461,12 +536,15 @@ function renderBattleResult() {
     }
   }
   html += '</div>';
+  
   html += '<button class="btn-arena-fight" onclick="currentBattle=null;renderArena();" style="margin-top:14px;">🔙 Back to Arena</button>';
   html += '</div>';
   return html;
 }
+
 function renderLobby() {
   let html = '';
+  
   // Queue controls
   html += '<div class="mp-queue-box">';
   if (inQueue) {
@@ -481,7 +559,15 @@ function renderLobby() {
     html += '<div style="font-size:2.5rem;margin-bottom:8px;">⚔️</div>';
     html += '<div style="font-family:MedievalSharp,cursive;font-size:1.2rem;color:var(--gold);margin-bottom:8px;">Real-Time PvP Arena</div>';
     html += '<div style="font-size:0.75rem;color:var(--text-dim);margin-bottom:16px;line-height:1.5;">Fight real players in turn-based combat!<br>Your actual stats, equipment, and skills are used.</div>';
-    html += '<button class="btn-arena-fight" onclick="joinPvpQueue()" style="font-size:1.1rem;padding:16px 32px;"' + (!isConnected ? ' disabled' : '') + (!isConnected ? ' title="Connect to server first"' : '') + '>🔍 Find Opponent</button>';
+    
+    let buttonDisabled = !isConnected || !isRegistered || gameState.currentHP <= 0;
+    let buttonText = '🔍 Find Opponent';
+    if (!isConnected) buttonText = '🔴 Connect First';
+    else if (!isRegistered) buttonText = '📡 Register First';
+    else if (gameState.currentHP <= 0) buttonText = '💀 Heal First';
+    
+    html += '<button class="btn-arena-fight" onclick="joinPvpQueue()" style="font-size:1.1rem;padding:16px 32px;"' + (buttonDisabled ? ' disabled' : '') + '>' + buttonText + '</button>';
+    
     if (!isConnected) {
       html += '<div style="margin-top:10px;font-size:0.7rem;color:var(--hp-red);">⚠️ Not connected to server. Make sure the server is running!</div>';
     }
@@ -490,6 +576,7 @@ function renderLobby() {
   html += '</div>';
   return html;
 }
+
 function renderChat() {
   let html = '<div class="mp-chat-box">';
   html += '<div class="panel-title"><span class="icon">💬</span> Global Chat</div>';
