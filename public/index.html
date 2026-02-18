@@ -71,6 +71,8 @@ body::before {
 @keyframes critFlash { 0% { filter: brightness(1); } 50% { filter: brightness(2.5); } 100% { filter: brightness(1); } }
 @keyframes levelUp { 0% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.2); filter: brightness(2); } 100% { transform: scale(1); filter: brightness(1); } }
 @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.1); } 70% { transform: scale(0.9); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes victoryBanner { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes defeatBanner { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
 @keyframes mythicGlow {
   0%   { box-shadow: 0 0 5px rgba(231,76,60,0.3), 0 0 10px rgba(231,76,60,0.1); }
   50%  { box-shadow: 0 0 15px rgba(231,76,60,0.6), 0 0 30px rgba(231,76,60,0.2); }
@@ -309,13 +311,33 @@ body::before {
 .mp-queue-searching { display: flex; flex-direction: column; align-items: center; }
 .mp-search-spinner { width: 40px; height: 40px; border: 4px solid rgba(142,68,173,0.3); border-top-color: var(--arena-purple); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 16px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.btn-pvp { padding: 10px 16px; border-radius: 6px; font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.3s; border: 1px solid; white-space: nowrap; }
-.btn-pvp-export { background: linear-gradient(135deg, rgba(142,68,173,0.3), rgba(142,68,173,0.1)); color: #bb86fc; border-color: rgba(142,68,173,0.5); }
-.btn-pvp-export:hover { background: rgba(142,68,173,0.4); transform: translateY(-2px); }
-.btn-pvp-import { background: linear-gradient(135deg, rgba(39,174,96,0.3), rgba(39,174,96,0.1)); color: #2ecc71; border-color: rgba(39,174,96,0.5); }
-.btn-pvp-import:hover { background: rgba(39,174,96,0.4); transform: translateY(-2px); }
-.btn-pvp-fight { background: linear-gradient(135deg, rgba(231,76,60,0.3), rgba(231,76,60,0.1)); color: #e74c3c; border-color: rgba(231,76,60,0.5); }
-.btn-pvp-fight:hover { background: rgba(231,76,60,0.4); transform: translateY(-2px); }
+
+/* Poprawione style przycisków PvP */
+.btn-pvp { padding: 12px 24px; border-radius: 8px; font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; border: 2px solid; text-transform: uppercase; letter-spacing: 1px; box-shadow: var(--shadow); }
+
+.btn-pvp-export { background: linear-gradient(135deg, rgba(142,68,173,0.3), rgba(142,68,173,0.1)); color: #bb86fc; border-color: rgba(142,68,173,0.6); }
+.btn-pvp-export:hover { background: rgba(142,68,173,0.5); transform: translateY(-3px); box-shadow: 0 0 20px rgba(142,68,173,0.4); border-color: var(--arena-purple); }
+
+.btn-pvp-import { background: linear-gradient(135deg, rgba(39,174,96,0.3), rgba(39,174,96,0.1)); color: #2ecc71; border-color: rgba(39,174,96,0.6); }
+.btn-pvp-import:hover { background: rgba(39,174,96,0.5); transform: translateY(-3px); box-shadow: 0 0 20px rgba(39,174,96,0.4); border-color: var(--heal-green); }
+
+.btn-pvp-fight { background: linear-gradient(135deg, rgba(231,76,60,0.3), rgba(231,76,60,0.1)); color: #e74c3c; border-color: rgba(231,76,60,0.6); font-size: 1.1rem; padding: 16px 32px; }
+.btn-pvp-fight:hover { background: rgba(231,76,60,0.5); transform: translateY(-4px); box-shadow: 0 0 25px rgba(231,76,60,0.5); border-color: var(--hp-red); }
+
+.btn-arena-back { background: linear-gradient(135deg, rgba(200,168,78,0.2), rgba(200,168,78,0.05)); color: var(--gold); border: 2px solid var(--border-gold-dim); padding: 12px 24px; border-radius: 8px; font-family: 'Cinzel', serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; margin-top: 14px; box-shadow: var(--shadow); }
+.btn-arena-back:hover { background: rgba(200,168,78,0.3); border-color: var(--border-gold); transform: translateY(-3px); box-shadow: 0 0 20px rgba(200,168,78,0.4); }
+
+.btn-arena-fight { background: linear-gradient(135deg, rgba(142,68,173,0.4), rgba(142,68,173,0.1)); color: var(--gold-bright); border: 2px solid var(--arena-purple); padding: 16px 32px; border-radius: 8px; font-family: 'MedievalSharp', cursive; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 2px; box-shadow: var(--shadow), 0 0 15px rgba(142,68,173,0.3); }
+.btn-arena-fight:hover:not(:disabled) { background: rgba(142,68,173,0.6); transform: translateY(-4px); box-shadow: 0 0 30px rgba(142,68,173,0.6); border-color: var(--gold); }
+.btn-arena-fight:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.arena-battle-result { text-align: center; padding: 24px; border-radius: 12px; margin-bottom: 16px; border: 2px solid; }
+.arena-battle-result.win { border-color: var(--heal-green); background: rgba(39,174,96,0.1); animation: victoryBanner 0.8s ease-out forwards; }
+.arena-battle-result.lose { border-color: var(--hp-red); background: rgba(192,57,43,0.1); animation: defeatBanner 0.8s ease-out forwards; }
+.arena-result-title { font-family: 'Uncial Antiqua', cursive; font-size: 2rem; margin-bottom: 12px; }
+.arena-result-title.win { color: var(--heal-green); text-shadow: 0 0 20px rgba(39,174,96,0.5); }
+.arena-result-title.lose { color: var(--hp-red); text-shadow: 0 0 20px rgba(192,57,43,0.5); }
+.arena-result-details { font-size: 0.9rem; line-height: 1.8; margin: 12px 0; }
 
 .mp-chat-box { background: var(--bg-panel-accent); border: 1px solid var(--border-gold-dim); border-radius: 8px; padding: 14px; margin-top: 16px; }
 .mp-chat-messages { height: 150px; overflow-y: auto; background: var(--bg-dark); border: 1px solid var(--border-gold-dim); border-radius: 6px; padding: 10px; font-size: 0.7rem; margin-bottom: 8px; }
@@ -524,7 +546,7 @@ body::before {
 <script>
 // =====================================================
 // REALM OF SHADOWS - Multiplayer PvP RPG
-// COMPLETE CLIENT CODE
+// COMPLETE CLIENT CODE (poprawione przyciski i animacje)
 // =====================================================
 
 // ---- CONSTANTS ----
@@ -1299,7 +1321,7 @@ function renderArena() {
   if (inBattle && currentBattle && !currentBattle.finished) {
     html += renderActiveBattle();
   }
-  // BATTLE RESULT
+  // BATTLE RESULT (animacja tylko raz - klasa animate-fade)
   else if (currentBattle && currentBattle.finished && currentBattle.result) {
     html += renderBattleResult();
   }
@@ -1388,7 +1410,7 @@ function renderActiveBattle() {
 function renderBattleResult() {
   let r = currentBattle.result;
   let won = r.youWon;
-  let html = '<div class="arena-battle-result ' + (won ? 'win' : 'lose') + ' animate-bounce">';
+  let html = '<div class="arena-battle-result ' + (won ? 'win' : 'lose') + ' animate-fade">'; // animate-fade zamiast animate-bounce
   html += '<div class="arena-result-title ' + (won ? 'win' : 'lose') + '">' + (won ? '⚔️ VICTORY!' : '💀 DEFEAT') + '</div>';
   html += '<div class="arena-result-details">';
   html += '<p>' + r.winnerName + ' defeated ' + r.loserName + '</p>';
@@ -1413,7 +1435,7 @@ function renderBattleResult() {
   }
   html += '</div>';
   
-  html += '<button class="btn-arena-fight" onclick="currentBattle=null;renderArena();" style="margin-top:14px;">🔙 Back to Arena</button>';
+  html += '<button class="btn-arena-back" onclick="currentBattle=null;renderArena();" style="margin-top:14px;">🔙 Back to Arena</button>';
   html += '</div>';
   return html;
 }
