@@ -239,6 +239,7 @@ function getRank(rating) {
   if (rating >= 1500) return { name: 'Gold', icon: '🥇' };
   if (rating >= 1200) return { name: 'Silver', icon: '🥈' };
   return { name: 'Bronze', icon: '🥉' };
+}
 
 function getPublicPlayerInfo(p) {
   if (!p || !p.fighter) return null;
