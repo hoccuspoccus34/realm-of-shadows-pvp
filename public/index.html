@@ -608,6 +608,7 @@ body::before {
         <span class="shortcut-hint"><span class="shortcut-key">N</span> New Enemy</span>
       </div>
       <button class="btn-reset-save" onclick="resetSave()">🗑️ Reset Save</button>
+      <button class="btn-reset-save" style="border-color:rgba(192,57,43,0.6);margin-left:6px;" onclick="deleteCharacter()">☠️ Delete Character</button>
     </div>
   </div>
 
@@ -623,9 +624,9 @@ body::before {
 
 // ---- CONSTANTS ----
 const CLASS_DATA = {
-  Warrior: { str: 12, dex: 6, int: 3, hp: 150, lck: 4, icon: '⚔️', maxDefense: 60 },
-  Mage:    { str: 4,  dex: 5, int: 13, hp: 90,  lck: 6, icon: '🧙', maxDefense: 30 },
-  Rogue:   { str: 6,  dex: 13, int: 4, hp: 110, lck: 10, icon: '🗡️', maxDefense: 40 }
+  Warrior: { str: 8,  dex: 4,  int: 2,  hp: 120, lck: 1, icon: '⚔️', maxDefense: 60 },
+  Mage:    { str: 2,  dex: 3,  int: 8,  hp: 80,  lck: 2, icon: '🧙', maxDefense: 30 },
+  Rogue:   { str: 4,  dex: 8,  int: 3,  hp: 90,  lck: 3, icon: '🗡️', maxDefense: 40 }
 };
 const STAT_INFO = {
   str: { name: 'Strength',    icon: '💪', desc: 'Raw physical power. Increases melee damage and defense.', perPoint: '+1' },
@@ -749,6 +750,9 @@ let guildBonuses = {};
 let guildList = [];
 let currentGuildTab = 'overview';
 
+// ---- PLAYER TOKEN (persistent identity) ----
+let playerToken = localStorage.getItem('ros_token') || null;
+
 // ---- MULTIPLAYER STATE ----
 const socket = io();
 let mySocketId = null;
@@ -820,6 +824,27 @@ socket.on('disconnect', () => {
 });
 socket.on('welcome', (data) => { mySocketId = data.id; });
 socket.on('error', (data) => { showToast(data.message, 'error'); });
+socket.on('assignToken', (data) => {
+  if (data.token) {
+    playerToken = data.token;
+    localStorage.setItem('ros_token', data.token);
+  }
+});
+socket.on('syncGameState', (data) => {
+  if (!data || !gameState) return;
+  // Overwrite server-authoritative fields on local gameState
+  gameState.level = data.level;
+  gameState.xp = data.xp;
+  gameState.stats = data.stats;
+  gameState.statPoints = data.statPoints;
+  gameState.gold = data.gold;
+  gameState.currentHP = data.currentHP;
+  gameState.arena = data.arena;
+  if (data.guildName !== undefined) gameState.guild = data.guildName;
+  saveGame();
+  updateStatusBar();
+  renderCharacterPanel();
+});
 
 socket.on('registered', (data) => {
   isRegistered = true;
@@ -882,30 +907,10 @@ socket.on('turnChange', (data) => {
 socket.on('battleEnd', (data) => {
   inBattle = false;
   const won = data.youWon;
-  if (won && gameState) {
-    gameState.gold += data.goldReward;
-    gameState.arena.rating = data.winnerNewRating;
-    gameState.arena.wins++;
-    gameState.xp += data.xpReward;
-    while (gameState.xp >= xpForLevel(gameState.level)) {
-      gameState.xp -= xpForLevel(gameState.level);
-      gameState.level++;
-      gameState.statPoints += 3;
-      gameState.currentHP = getTotalStat('hp');
-    }
-    gameState.arena.history.push({ won: true, oppName: data.loserName + ' (Online PvP)', oppLevel: 0, oppClass: '', ratingChange: data.winnerRatingChange, time: Date.now() });
-  } else if (!won && gameState) {
-    gameState.arena.rating = data.loserNewRating;
-    gameState.arena.losses++;
-    gameState.arena.streak = 0;
-    gameState.arena.history.push({ won: false, oppName: data.winnerName + ' (Online PvP)', oppLevel: 0, oppClass: '', ratingChange: data.loserRatingChange, time: Date.now() });
-  }
   playSound(won ? 'levelup' : 'death');
   showToast(won ? '🏆 VICTORY! +' + data.winnerRatingChange + ' rating, +' + data.goldReward + ' gold!' : '💀 DEFEAT! ' + data.loserRatingChange + ' rating', won ? 'arena' : 'error', 5000);
   currentBattle = { ...currentBattle, finished: true, result: data };
-  updateStatusBar();
-  renderCharacterPanel();
-  saveGame();
+  // Stats/gold/xp are applied server-side; syncGameState will update local state
   renderArena();
 });
 socket.on('chatMessage', (data) => {
@@ -919,10 +924,8 @@ socket.on('chatMessage', (data) => {
 // =====================================================
 socket.on('guildCreated', (data) => {
   guildData = data.guild;
-  gameState.gold -= data.cost;
   gameState.guild = guildData.name;
-  saveGame();
-  updateStatusBar();
+  // gold deducted server-side; syncGameState will update local gold
   showToast('⚔️ Guild "' + guildData.name + '" created!', 'success', 4000);
   if (getActivePanel() === 'guild') renderGuildPanel();
   renderGuildBonusBadge();
@@ -980,7 +983,7 @@ socket.on('guildSuccess', (data) => {
   if (getActivePanel() === 'guild') renderGuildPanel();
 });
 socket.on('guildDeposited', (data) => {
-  gameState.gold -= data.amount; saveGame(); updateStatusBar();
+  // gold deducted server-side; syncGameState will update local gold
   showToast('💰 ' + data.message, 'success');
   if (getActivePanel() === 'guild') renderGuildPanel();
 });
@@ -996,6 +999,18 @@ socket.on('guildChatMessage', (data) => {
 socket.on('guildListUpdate', (list) => {
   guildList = list;
   if (getActivePanel() === 'guild' && currentGuildTab === 'browse') renderGuildPanel();
+});
+
+socket.on('characterDeleted', (data) => {
+  showToast('🗑️ ' + (data.message || 'Character deleted.'), 'info', 4000);
+  playerToken = null;
+  localStorage.removeItem('ros_token');
+  localStorage.removeItem('ros_save');
+  gameState = null;
+  isRegistered = false;
+  guildData = null;
+  guildBonuses = {};
+  location.reload();
 });
 
 // =====================================================
@@ -1294,7 +1309,7 @@ function createGuild() {
   if (!name || name.length < 3) { showToast('Guild name must be 3-30 chars!', 'error'); return; }
   if (!tag  || tag.length  < 2) { showToast('Tag must be 2-5 chars!', 'error'); return; }
   if (gameState.gold < GUILD_CREATION_COST) { showToast('Need ' + GUILD_CREATION_COST + ' gold!', 'error'); return; }
-  socket.emit('createGuild', { name, tag, playerGold: gameState.gold });
+  socket.emit('createGuild', { name, tag });
 }
 
 function sendGuildInvite() {
@@ -1347,7 +1362,7 @@ function depositGuild() {
   const amount = parseInt(input?.value || '0');
   if (!amount || amount <= 0) { showToast('Enter a valid amount!', 'error'); return; }
   if (amount > gameState.gold) { showToast('Not enough gold!', 'error'); return; }
-  socket.emit('guildDeposit', { amount, playerGold: gameState.gold });
+  socket.emit('guildDeposit', { amount });
   if (input) input.value = '';
 }
 function buyGuildUpgrade(key) {
@@ -1439,18 +1454,7 @@ function updateAttackButton() {
 // =====================================================
 function registerFighter() {
   if (!isConnected || !gameState) return;
-  const fighterData = {
-    name: gameState.name, class: gameState.class, level: gameState.level,
-    stats: { str: getTotalStat('str'), dex: getTotalStat('dex'), int: getTotalStat('int'), hp: getTotalStat('hp'), lck: getTotalStat('lck') },
-    arena: gameState.arena || { rating: 1000, wins: 0, losses: 0 },
-    equipment: [],
-    guildName: gameState.guild || null
-  };
-  for (let i = 0; i < ALL_SLOTS.length; i++) {
-    const item = gameState.equipment[ALL_SLOTS[i]];
-    if (item) fighterData.equipment.push({ slot: item.slot, name: item.name, icon: item.icon, rarity: item.rarity });
-  }
-  socket.emit('registerFighter', fighterData);
+  socket.emit('registerFighter', { token: playerToken, name: gameState.name, class: gameState.class });
 }
 function updateFighterRegistration() { if (isConnected && isRegistered && gameState) registerFighter(); }
 
@@ -1526,7 +1530,7 @@ function createCharacter() {
   if (!selectedClass) { showToast('Choose a class!', 'error'); return; }
   let b = CLASS_DATA[selectedClass];
   gameState = {
-    name, class: selectedClass, level: 1, xp: 0, gold: 50, statPoints: 0,
+    name, class: selectedClass, level: 1, xp: 0, gold: 50, statPoints: 5,
     stats: { str: b.str, dex: b.dex, int: b.int, hp: b.hp, lck: b.lck },
     currentHP: b.hp,
     equipment: { weapon:null, armor:null, helmet:null, boots:null, amulet:null, ring:null },
@@ -1544,6 +1548,11 @@ function createCharacter() {
 function saveGame() { if (gameState) localStorage.setItem('ros_save', JSON.stringify(gameState)); }
 function loadGame() { try { let d = localStorage.getItem('ros_save'); if (d) { gameState = JSON.parse(d); return true; } } catch(e) {} return false; }
 function resetSave() { if (confirm('Erase all progress?')) { localStorage.removeItem('ros_save'); location.reload(); } }
+function deleteCharacter() {
+  if (!confirm('⚠️ Delete your character permanently? This cannot be undone!')) return;
+  if (!isConnected) { showToast('Not connected to server!', 'error'); return; }
+  socket.emit('deleteCharacter', { token: playerToken });
+}
 
 // =====================================================
 // GAME INIT
@@ -1644,14 +1653,22 @@ function renderCharacterPanel() {
 }
 function allocateStat(stat, amt) {
   amt = amt || 1;
-  let pts = Math.min(amt, gameState.statPoints);
-  if (pts <= 0) return;
-  gameState.statPoints -= pts;
-  if (stat === 'hp') { gameState.stats.hp += pts*10; gameState.currentHP += pts*10; }
-  else gameState.stats[stat] += pts;
-  playSound('equip');
-  if (pts > 1) showToast('+' + (stat==='hp'?pts*10:pts) + ' ' + STAT_INFO[stat].name + '!', 'success');
-  updateStatusBar(); renderCharacterPanel(); saveGame(); updateFighterRegistration();
+  if (!gameState || gameState.statPoints <= 0) return;
+  if (isConnected && isRegistered) {
+    // Server-authoritative: let server validate and apply, then sync back
+    socket.emit('allocateStat', { stat, amt });
+    playSound('equip');
+  } else {
+    // Offline fallback (local only, not anti-cheat protected)
+    let pts = Math.min(amt, gameState.statPoints);
+    if (pts <= 0) return;
+    gameState.statPoints -= pts;
+    if (stat === 'hp') { gameState.stats.hp += pts*10; gameState.currentHP += pts*10; }
+    else gameState.stats[stat] += pts;
+    playSound('equip');
+    if (pts > 1) showToast('+' + (stat==='hp'?pts*10:pts) + ' ' + STAT_INFO[stat].name + '!', 'success');
+    updateStatusBar(); renderCharacterPanel(); saveGame(); updateFighterRegistration();
+  }
 }
 
 // =====================================================
