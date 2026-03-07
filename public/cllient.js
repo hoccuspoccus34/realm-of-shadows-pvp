@@ -3,6 +3,9 @@
 // Socket.IO WebSocket Client Logic
 // =====================================================
 
+// ---- PLAYER TOKEN (persistent identity) ----
+let playerToken = localStorage.getItem('ros_token') || null;
+
 // ---- SOCKET CONNECTION ----
 const socket = io();
 
@@ -57,48 +60,49 @@ socket.on('error', (data) => {
   if (typeof showToast === 'function') showToast(data.message, 'error');
 });
 
+socket.on('assignToken', (data) => {
+  if (data.token) {
+    playerToken = data.token;
+    localStorage.setItem('ros_token', data.token);
+    console.log('[WS] Token assigned:', data.token.slice(0, 8) + '...');
+  }
+});
+
+socket.on('syncGameState', (data) => {
+  if (!data || typeof gameState === 'undefined' || !gameState) return;
+  gameState.level = data.level;
+  gameState.xp = data.xp;
+  gameState.stats = data.stats;
+  gameState.statPoints = data.statPoints;
+  gameState.gold = data.gold;
+  gameState.currentHP = data.currentHP;
+  gameState.arena = data.arena;
+  if (data.guildName !== undefined) gameState.guild = data.guildName;
+  if (typeof saveGame === 'function') saveGame();
+  if (typeof updateStatusBar === 'function') updateStatusBar();
+  if (typeof renderCharacterPanel === 'function') renderCharacterPanel();
+});
+
+socket.on('characterDeleted', (data) => {
+  if (typeof showToast === 'function') showToast('🗑️ ' + (data.message || 'Character deleted.'), 'info', 4000);
+  playerToken = null;
+  localStorage.removeItem('ros_token');
+  localStorage.removeItem('ros_save');
+  location.reload();
+});
+
 // =====================================================
 // REGISTRATION
 // =====================================================
 
 function registerFighter() {
   if (!isConnected || typeof gameState === 'undefined' || !gameState) return;
-  
-  // Build fighter data from current game state
-  const fighterData = {
-    name: gameState.name,
-    class: gameState.class,
-    level: gameState.level,
-    stats: {
-      str: getTotalStat('str'),
-      dex: getTotalStat('dex'),
-      int: getTotalStat('int'),
-      hp: getTotalStat('hp'),
-      lck: getTotalStat('lck')
-    },
-    arena: gameState.arena || { rating: 1000, wins: 0, losses: 0 },
-    equipment: []
-  };
-
-  // Include equipped gear names for display
-  const ALL_SLOTS = ['weapon', 'armor', 'helmet', 'boots', 'amulet', 'ring'];
-  for (let i = 0; i < ALL_SLOTS.length; i++) {
-    const item = gameState.equipment[ALL_SLOTS[i]];
-    if (item) {
-      fighterData.equipment.push({
-        slot: item.slot,
-        name: item.name,
-        icon: item.icon,
-        rarity: item.rarity
-      });
-    }
-  }
-  
-  socket.emit('registerFighter', fighterData);
+  // Send only token+name+class; server loads/creates authoritative data
+  socket.emit('registerFighter', { token: playerToken, name: gameState.name, class: gameState.class });
 }
 
 // =====================================================
-// DODATKOWA FUNKCJA - automatyczna rejestracja przy zmianie statystyk
+// Auto-registration on stat changes (server handles validation)
 // =====================================================
 function updateFighterRegistration() {
   if (isConnected && isRegistered && gameState) {
@@ -602,4 +606,28 @@ function renderChat() {
   html += '</div>';
   html += '</div>';
   return html;
+}
+
+// =====================================================
+// SERVER-AUTHORITATIVE STAT ALLOCATION
+// =====================================================
+function allocateStat(stat, amt) {
+  amt = amt || 1;
+  if (typeof gameState === 'undefined' || !gameState || gameState.statPoints <= 0) return;
+  if (isConnected && isRegistered) {
+    socket.emit('allocateStat', { stat, amt });
+    if (typeof playSound === 'function') playSound('equip');
+  }
+}
+
+// =====================================================
+// CHARACTER DELETION
+// =====================================================
+function deleteCharacter() {
+  if (!confirm('\u26a0\ufe0f Delete your character permanently? This cannot be undone!')) return;
+  if (!isConnected) {
+    if (typeof showToast === 'function') showToast('Not connected to server!', 'error');
+    return;
+  }
+  socket.emit('deleteCharacter', { token: playerToken });
 }
