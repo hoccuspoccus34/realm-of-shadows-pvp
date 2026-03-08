@@ -318,11 +318,49 @@ io.on('connection', (socket) => {
 
     if (!token || !playersData[token]) {
       token = randomUUID();
-      playersData[token] = createNewCharacter(token, data.name, data.class);
+      const base = BASE_STATS[data.class];
+      // Bootstrap new players from their existing offline state instead of forcing level 1
+      const clvl = (typeof data.level === 'number' && data.level >= 1) ? Math.min(1000, Math.floor(data.level)) : 1;
+      const cxp  = (typeof data.xp === 'number' && data.xp >= 0) ? Math.min(xpForLevel(clvl) - 1, Math.floor(data.xp)) : 0;
+      const csp  = (typeof data.statPoints === 'number' && data.statPoints >= 0) ? Math.min((clvl - 1) * 3 + STARTING_STAT_POINTS, Math.floor(data.statPoints)) : STARTING_STAT_POINTS;
+      const cgold = (typeof data.gold === 'number' && data.gold >= 0) ? Math.min(1000000, Math.floor(data.gold)) : STARTING_GOLD;
+      const cstats = (data.stats && typeof data.stats === 'object') ? {
+        str: Math.min(base.str + 5000, Math.max(base.str, Math.floor(Number(data.stats.str) || base.str))),
+        dex: Math.min(base.dex + 5000, Math.max(base.dex, Math.floor(Number(data.stats.dex) || base.dex))),
+        int: Math.min(base.int + 5000, Math.max(base.int, Math.floor(Number(data.stats.int) || base.int))),
+        hp:  Math.min(base.hp  + 5000, Math.max(base.hp,  Math.floor(Number(data.stats.hp)  || base.hp))),
+        lck: Math.min(base.lck + 5000, Math.max(base.lck, Math.floor(Number(data.stats.lck) || base.lck))),
+      } : { str: base.str, dex: base.dex, int: base.int, hp: base.hp, lck: base.lck };
+      const chp = (typeof data.currentHP === 'number' && data.currentHP > 0) ? Math.min(cstats.hp, Math.floor(data.currentHP)) : cstats.hp;
+      playersData[token] = {
+        token, name: data.name, class: data.class,
+        level: clvl, xp: cxp, stats: cstats, statPoints: csp, gold: cgold, currentHP: chp,
+        arena: { rating: 1000, wins: 0, losses: 0, streak: 0, bestStreak: 0, history: [] },
+        equipment: { weapon: null, armor: null, helmet: null, boots: null, amulet: null, ring: null },
+        guildName: null
+      };
       savePlayersData();
-      console.log(`[REGISTER] New player: "${data.name}" (${data.class}) token=${token.slice(0, 8)}...`);
+      console.log(`[REGISTER] New player: "${data.name}" (${data.class}) lv=${playersData[token].level} token=${token.slice(0, 8)}...`);
     } else {
-      console.log(`[REGISTER] Returning player: "${playersData[token].name}" token=${token.slice(0, 8)}...`);
+      const pd = playersData[token];
+      // Accept client's higher level when they have progressed offline since last session
+      if (typeof data.level === 'number' && Math.floor(data.level) > pd.level) {
+        const clvl = Math.min(1000, Math.floor(data.level));
+        pd.level = clvl;
+        if (typeof data.xp === 'number' && data.xp >= 0) pd.xp = Math.min(xpForLevel(clvl) - 1, Math.floor(data.xp));
+        if (data.stats && typeof data.stats === 'object') {
+          for (const s of ['str', 'dex', 'int', 'hp', 'lck']) {
+            if (typeof data.stats[s] === 'number') pd.stats[s] = Math.min(BASE_STATS[pd.class][s] + 5000, Math.max(pd.stats[s], Math.floor(data.stats[s])));
+          }
+        }
+        if (typeof data.statPoints === 'number' && data.statPoints >= 0) pd.statPoints = Math.min((clvl - 1) * 3 + STARTING_STAT_POINTS, Math.floor(data.statPoints));
+        if (typeof data.gold === 'number' && data.gold >= 0) pd.gold = Math.min(1000000, Math.floor(data.gold));
+        pd.currentHP = Math.min(pd.stats.hp, Math.max(1, typeof data.currentHP === 'number' ? Math.floor(data.currentHP) : pd.currentHP));
+        savePlayersData();
+        console.log(`[REGISTER] Returning player synced: "${pd.name}" lv=${pd.level} token=${token.slice(0, 8)}...`);
+      } else {
+        console.log(`[REGISTER] Returning player: "${playersData[token].name}" token=${token.slice(0, 8)}...`);
+      }
     }
 
     const pd = playersData[token];

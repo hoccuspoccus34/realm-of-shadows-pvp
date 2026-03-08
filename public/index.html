@@ -1454,7 +1454,12 @@ function updateAttackButton() {
 // =====================================================
 function registerFighter() {
   if (!isConnected || !gameState) return;
-  socket.emit('registerFighter', { token: playerToken, name: gameState.name, class: gameState.class });
+  socket.emit('registerFighter', {
+    token: playerToken, name: gameState.name, class: gameState.class,
+    level: gameState.level, xp: gameState.xp,
+    stats: gameState.stats, statPoints: gameState.statPoints,
+    gold: gameState.gold, currentHP: gameState.currentHP
+  });
 }
 function updateFighterRegistration() { if (isConnected && isRegistered && gameState) registerFighter(); }
 
