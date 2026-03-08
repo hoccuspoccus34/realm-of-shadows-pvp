@@ -282,13 +282,7 @@ socket.on('battleEnd', (data) => {
     gameState.arena.wins++;
     // Add XP
     if (typeof addXP === 'function') {
-      gameState.xp += data.xpReward;
-      while (gameState.xp >= xpForLevel(gameState.level)) {
-        gameState.xp -= xpForLevel(gameState.level);
-        gameState.level++;
-        gameState.statPoints += 3;
-        gameState.currentHP = getTotalStat('hp');
-      }
+      addXP(data.xpReward);
     }
     // Record in local arena history
     gameState.arena.history.push({
@@ -313,9 +307,9 @@ socket.on('battleEnd', (data) => {
     });
   }
   
-  if (typeof playSound === 'function') playSound(won ? 'levelup' : 'death');
+  if (typeof playSound === 'function') playSound(won ? 'arena' : 'death');
   if (typeof showToast === 'function') {
-    showToast(won ? '⚔️ VICTORY! +' + data.winnerRatingChange + ' rating, +' + data.goldReward + ' gold!' : '💀 DEFEAT! ' + data.loserRatingChange + ' rating', won ? 'arena' : 'error', 5000);
+    showToast(won ? '⚔️ VICTORY! +' + data.winnerRatingChange + ' rating, +' + data.goldReward + ' gold, +' + data.xpReward + ' XP!' : '💀 DEFEAT! ' + data.loserRatingChange + ' rating', won ? 'arena' : 'error', 5000);
   }
   
   // Store result for display
