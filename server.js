@@ -359,7 +359,28 @@ io.on('connection', (socket) => {
         savePlayersData();
         console.log(`[REGISTER] Returning player synced: "${pd.name}" lv=${pd.level} token=${token.slice(0, 8)}...`);
       } else {
-        console.log(`[REGISTER] Returning player: "${playersData[token].name}" token=${token.slice(0, 8)}...`);
+        // Accept higher XP and gold within the same level (gains from quests and local combat)
+        let changed = false;
+        if (typeof data.level === 'number' && Math.floor(data.level) === pd.level) {
+          if (typeof data.xp === 'number' && Math.floor(data.xp) > pd.xp) {
+            pd.xp = Math.min(xpForLevel(pd.level) - 1, Math.floor(data.xp));
+            changed = true;
+          }
+          if (typeof data.gold === 'number' && Math.floor(data.gold) > pd.gold) {
+            pd.gold = Math.min(1000000, Math.floor(data.gold));
+            changed = true;
+          }
+          if (typeof data.currentHP === 'number') {
+            const newHP = Math.min(pd.stats.hp, Math.max(0, Math.floor(data.currentHP)));
+            if (newHP !== pd.currentHP) { pd.currentHP = newHP; changed = true; }
+          }
+        }
+        if (changed) {
+          savePlayersData();
+          console.log(`[REGISTER] Returning player progress synced: "${pd.name}" lv=${pd.level} xp=${pd.xp} token=${token.slice(0, 8)}...`);
+        } else {
+          console.log(`[REGISTER] Returning player: "${playersData[token].name}" token=${token.slice(0, 8)}...`);
+        }
       }
     }
 
