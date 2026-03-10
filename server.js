@@ -1084,3 +1084,46 @@ server.listen(PORT, () => {
   console.log('╚══════════════════════════════════════╝');
   console.log('');
 });
+
+// =====================================================
+// GRACEFUL SHUTDOWN - Save all data before exit
+// =====================================================
+function gracefulShutdown(signal) {
+  console.log(`\n[SERVER] ${signal} received. Saving data before shutdown...`);
+
+  // Cancel any pending debounced saves
+  if (savePlayersTimer) clearTimeout(savePlayersTimer);
+  if (saveGuildsTimer) clearTimeout(saveGuildsTimer);
+
+  // Synchronously save all data
+  try {
+    ensureDataDir();
+    fs.writeFileSync(PLAYERS_FILE, JSON.stringify(playersData, null, 2));
+    console.log('[DATA] Players data saved.');
+  } catch (e) {
+    console.error('[DATA] Failed to save players.json on shutdown:', e.message);
+  }
+
+  try {
+    ensureDataDir();
+    fs.writeFileSync(GUILDS_FILE, JSON.stringify(guilds, null, 2));
+    console.log('[DATA] Guilds data saved.');
+  } catch (e) {
+    console.error('[DATA] Failed to save guilds.json on shutdown:', e.message);
+  }
+
+  // Force exit if server.close hangs
+  const forceExitTimer = setTimeout(() => {
+    console.error('[SERVER] Forcing shutdown after timeout.');
+    process.exit(1);
+  }, 5000);
+
+  server.close(() => {
+    clearTimeout(forceExitTimer);
+    console.log('[SERVER] Shut down gracefully.');
+    process.exit(0);
+  });
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
