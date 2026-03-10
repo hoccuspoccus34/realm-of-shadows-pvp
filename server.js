@@ -150,11 +150,39 @@ function createNewCharacter(token, name, charClass) {
   };
 }
 
+function getEquipmentBonus(pd, stat) {
+  let bonus = 0;
+  const eq = pd.equipment;
+  if (!eq) return 0;
+  for (const slot of ['weapon', 'armor', 'helmet', 'boots', 'amulet', 'ring']) {
+    const item = eq[slot];
+    if (item && item.bonuses && typeof item.bonuses[stat] === 'number') bonus += item.bonuses[stat];
+  }
+  return bonus;
+}
+
 function getServerTotalStat(pd, stat) {
   let t = pd.stats[stat];
   const bonuses = getGuildBonuses(pd.guildName);
   t += bonuses[stat] || 0;
+  t += getEquipmentBonus(pd, stat);
   return t;
+}
+
+function sanitizeEquipment(data) {
+  const clean = { weapon: null, armor: null, helmet: null, boots: null, amulet: null, ring: null };
+  if (!data || typeof data !== 'object') return clean;
+  for (const slot of ['weapon', 'armor', 'helmet', 'boots', 'amulet', 'ring']) {
+    const item = data[slot];
+    if (item && typeof item === 'object' && item.bonuses && typeof item.bonuses === 'object') {
+      const bonuses = {};
+      for (const s of ['str', 'dex', 'int', 'hp', 'lck']) {
+        bonuses[s] = (typeof item.bonuses[s] === 'number') ? Math.max(0, Math.floor(item.bonuses[s])) : 0;
+      }
+      clean[slot] = { name: item.name || '', icon: item.icon || '', slot, rarity: item.rarity || 'Common', bonuses, level: Math.floor(Number(item.level) || 1) };
+    }
+  }
+  return clean;
 }
 
 function buildFighter(token) {
@@ -331,14 +359,16 @@ io.on('connection', (socket) => {
         hp:  Math.min(base.hp  + 5000, Math.max(base.hp,  Math.floor(Number(data.stats.hp)  || base.hp))),
         lck: Math.min(base.lck + 5000, Math.max(base.lck, Math.floor(Number(data.stats.lck) || base.lck))),
       } : { str: base.str, dex: base.dex, int: base.int, hp: base.hp, lck: base.lck };
-      const chp = (typeof data.currentHP === 'number' && data.currentHP > 0) ? Math.min(cstats.hp, Math.floor(data.currentHP)) : cstats.hp;
+      const cequip = sanitizeEquipment(data.equipment);
       playersData[token] = {
         token, name: data.name, class: data.class,
-        level: clvl, xp: cxp, stats: cstats, statPoints: csp, gold: cgold, currentHP: chp,
+        level: clvl, xp: cxp, stats: cstats, statPoints: csp, gold: cgold, currentHP: cstats.hp,
         arena: { rating: 1000, wins: 0, losses: 0, streak: 0, bestStreak: 0, history: [] },
-        equipment: { weapon: null, armor: null, helmet: null, boots: null, amulet: null, ring: null },
+        equipment: cequip,
         guildName: null
       };
+      const maxHP = getServerTotalStat(playersData[token], 'hp');
+      playersData[token].currentHP = (typeof data.currentHP === 'number' && data.currentHP > 0) ? Math.min(maxHP, Math.floor(data.currentHP)) : maxHP;
       savePlayersData();
       console.log(`[REGISTER] New player: "${data.name}" (${data.class}) lv=${playersData[token].level} token=${token.slice(0, 8)}...`);
     } else {
@@ -355,7 +385,9 @@ io.on('connection', (socket) => {
         }
         if (typeof data.statPoints === 'number' && data.statPoints >= 0) pd.statPoints = Math.min((clvl - 1) * 3 + STARTING_STAT_POINTS, Math.floor(data.statPoints));
         if (typeof data.gold === 'number' && data.gold >= 0) pd.gold = Math.min(1000000, Math.floor(data.gold));
-        pd.currentHP = Math.min(pd.stats.hp, Math.max(1, typeof data.currentHP === 'number' ? Math.floor(data.currentHP) : pd.currentHP));
+        pd.equipment = sanitizeEquipment(data.equipment);
+        const maxHP = getServerTotalStat(pd, 'hp');
+        pd.currentHP = Math.min(maxHP, Math.max(1, typeof data.currentHP === 'number' ? Math.floor(data.currentHP) : pd.currentHP));
         savePlayersData();
         console.log(`[REGISTER] Returning player synced: "${pd.name}" lv=${pd.level} token=${token.slice(0, 8)}...`);
       } else {
@@ -370,8 +402,10 @@ io.on('connection', (socket) => {
             pd.gold = Math.min(1000000, Math.floor(data.gold));
             changed = true;
           }
+          if (data.equipment) { pd.equipment = sanitizeEquipment(data.equipment); changed = true; }
           if (typeof data.currentHP === 'number') {
-            const newHP = Math.min(pd.stats.hp, Math.max(0, Math.floor(data.currentHP)));
+            const maxHP = getServerTotalStat(pd, 'hp');
+            const newHP = Math.min(maxHP, Math.max(0, Math.floor(data.currentHP)));
             if (newHP !== pd.currentHP) { pd.currentHP = newHP; changed = true; }
           }
         }
