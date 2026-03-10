@@ -1458,7 +1458,8 @@ function registerFighter() {
     token: playerToken, name: gameState.name, class: gameState.class,
     level: gameState.level, xp: gameState.xp,
     stats: gameState.stats, statPoints: gameState.statPoints,
-    gold: gameState.gold, currentHP: gameState.currentHP
+    gold: gameState.gold, currentHP: gameState.currentHP,
+    equipment: gameState.equipment
   });
 }
 function updateFighterRegistration() { if (isConnected && isRegistered && gameState) registerFighter(); }
