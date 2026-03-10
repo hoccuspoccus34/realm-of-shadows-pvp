@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 // =====================================================
 // DATA PERSISTENCE
 // =====================================================
-const DATA_DIR = path.join(__dirname, 'data');
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
 const PLAYERS_FILE = path.join(DATA_DIR, 'players.json');
 const GUILDS_FILE = path.join(DATA_DIR, 'guilds.json');
 
@@ -1075,6 +1075,19 @@ ensureDataDir();
 loadPlayersData();
 loadGuildsData();
 
+// Periodic auto-save every 5 minutes to reduce data loss on crashes
+const AUTO_SAVE_INTERVAL = 5 * 60 * 1000;
+const autoSaveTimer = setInterval(() => {
+  try {
+    ensureDataDir();
+    fs.writeFileSync(PLAYERS_FILE, JSON.stringify(playersData, null, 2));
+    fs.writeFileSync(GUILDS_FILE, JSON.stringify(guilds, null, 2));
+    console.log(`[DATA] Auto-saved ${Object.keys(playersData).length} players, ${Object.keys(guilds).length} guilds`);
+  } catch (e) {
+    console.error('[DATA] Auto-save failed:', e.message);
+  }
+}, AUTO_SAVE_INTERVAL);
+
 server.listen(PORT, () => {
   console.log('');
   console.log('╔══════════════════════════════════════╗');
@@ -1088,12 +1101,17 @@ server.listen(PORT, () => {
 // =====================================================
 // GRACEFUL SHUTDOWN - Save all data before exit
 // =====================================================
+let isShuttingDown = false;
+
 function gracefulShutdown(signal) {
+  if (isShuttingDown) return;
+  isShuttingDown = true;
   console.log(`\n[SERVER] ${signal} received. Saving data before shutdown...`);
 
-  // Cancel any pending debounced saves
+  // Cancel any pending debounced saves and auto-save
   if (savePlayersTimer) clearTimeout(savePlayersTimer);
   if (saveGuildsTimer) clearTimeout(saveGuildsTimer);
+  clearInterval(autoSaveTimer);
 
   // Synchronously save all data
   try {
@@ -1127,3 +1145,14 @@ function gracefulShutdown(signal) {
 
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGHUP', () => gracefulShutdown('SIGHUP'));
+
+process.on('uncaughtException', (err) => {
+  console.error('[SERVER] Uncaught exception:', err.message);
+  gracefulShutdown('uncaughtException');
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('[SERVER] Unhandled rejection:', reason);
+  gracefulShutdown('unhandledRejection');
+});
