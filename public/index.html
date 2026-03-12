@@ -2058,11 +2058,34 @@ function rerollQuests() {
   if (gameState.activeQuest && gameState.activeQuest.endTime) { showToast('Finish active quest first!', 'error'); return; }
   generateTavernQuests(); renderQuests(); showToast('New quests!', 'info');
 }
-function renderQuests(){
-  let list=document.getElementById('quest-list'),hasActive=gameState.activeQuest&&gameState.activeQuest.endTime;if(!tavernQuests.length)generateTavernQuests();
+function renderQuests() {
+  let list = document.getElementById('quest-list');
+  let hasActive = gameState.activeQuest && gameState.activeQuest.endTime;
+  if (!tavernQuests.length) generateTavernQuests();
   const xpBonusPct = getGuildXPBonus(), goldBonusPct = getGuildGoldBonus();
-  let html='';for(let i=0;i<tavernQuests.length;i++){let q=tavernQuests[i],sXP=Math.round(q.xp*(1+gameState.level*0.15)*(1+xpBonusPct/100)),sG=Math.round(q.gold*(1+gameState.level*0.1)*(1+goldBonusPct/100)),m=Math.floor(q.duration/60),s=q.duration%60,dur=m>0?m+'m '+s+'s':s+'s',isAct=hasActive&&gameState.activeQuest._questIndex===i;html+='<div class="quest-card '+(isAct?'quest-active':'')+'"><span class="quest-diff '+q.difficulty+'">'+(q.difficulty==='random'?'???':q.difficulty)+'</span>';if(q._isRandom)html+=' <span style="font-size:0.6rem;color:#bb86fc;">(Random!)</span>';html+='<div class="quest-title">'+q.name+'</div><div class="quest-desc">'+q.desc+'</div><div class="quest-rewards"><span>✨ '+sXP+(xpBonusPct>0?' <small style="color:var(--heal-green);">(+'+xpBonusPct+'%)</small>':''+'')+'</span><span>💰 '+sG+(goldBonusPct>0?' <small style="color:var(--heal-green);">(+'+goldBonusPct+'%)</small>':''+'')+'</span><span>🎁 '+Math.round(q.itemChance*100)+'%</span></div>';if(isAct)html+='<div class="quest-timer" id="quest-timer">⏳ ...</div>';else html+='<div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:8px;">⏱️ '+(q._isRandom?'???':dur)+'</div>';html+='<button class="btn-quest" onclick="startQuest('+i+')"'+(hasActive?' disabled':'')+'>'+(isAct?'⏳ In Progress...':'▶️ Start')+'</button></div>';}
-  list.innerHTML=html;if(hasActive)updateQuestTimer();
+  let html = '';
+  for (let i = 0; i < tavernQuests.length; i++) {
+    let q = tavernQuests[i];
+    let sXP = Math.round(q.xp * (1 + gameState.level * 0.15) * (1 + xpBonusPct / 100));
+    let sG = Math.round(q.gold * (1 + gameState.level * 0.1) * (1 + goldBonusPct / 100));
+    let m = Math.floor(q.duration / 60), s = q.duration % 60;
+    let dur = m > 0 ? m + 'm ' + s + 's' : s + 's';
+    let isAct = hasActive && gameState.activeQuest._questIndex === i;
+    html += '<div class="quest-card ' + (isAct ? 'quest-active' : '') + '">';
+    html += '<span class="quest-diff ' + q.difficulty + '">' + (q.difficulty === 'random' ? '???' : q.difficulty) + '</span>';
+    if (q._isRandom) html += ' <span style="font-size:0.6rem;color:#bb86fc;">(Random!)</span>';
+    html += '<div class="quest-title">' + q.name + '</div>';
+    html += '<div class="quest-desc">' + q.desc + '</div>';
+    html += '<div class="quest-rewards">';
+    html += '<span>✨ ' + sXP + (xpBonusPct > 0 ? ' <small style="color:var(--heal-green);">(+' + xpBonusPct + '%)</small>' : '') + '</span>';
+    html += '<span>💰 ' + sG + (goldBonusPct > 0 ? ' <small style="color:var(--heal-green);">(+' + goldBonusPct + '%)</small>' : '') + '</span>';
+    html += '<span>🎁 ' + Math.round(q.itemChance * 100) + '%</span></div>';
+    if (isAct) html += '<div class="quest-timer" id="quest-timer">⏳ ...</div>';
+    else html += '<div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:8px;">⏱️ ' + (q._isRandom ? '???' : dur) + '</div>';
+    html += '<button class="btn-quest" onclick="startQuest(' + i + ')"' + (hasActive ? ' disabled' : '') + '>' + (isAct ? '⏳ In Progress...' : '▶️ Start') + '</button></div>';
+  }
+  list.innerHTML = html;
+  if (hasActive) updateQuestTimer();
 }
 function startQuest(idx) {
   if (gameState.activeQuest && gameState.activeQuest.endTime) { showToast('Already on a quest!', 'error'); return; }

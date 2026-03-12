@@ -362,11 +362,12 @@ io.on('connection', (socket) => {
       const cequip = sanitizeEquipment(data.equipment);
       playersData[token] = {
         token, name: data.name, class: data.class,
-        level: clvl, xp: cxp, stats: cstats, statPoints: csp, gold: cgold, currentHP: cstats.hp,
+        level: clvl, xp: cxp, stats: cstats, statPoints: csp, gold: cgold, currentHP: 0,
         arena: { rating: 1000, wins: 0, losses: 0, streak: 0, bestStreak: 0, history: [] },
         equipment: cequip,
         guildName: null
       };
+      // Calculate maxHP including equipment bonuses, then set proper currentHP
       const maxHP = getServerTotalStat(playersData[token], 'hp');
       playersData[token].currentHP = (typeof data.currentHP === 'number' && data.currentHP > 0) ? Math.min(maxHP, Math.floor(data.currentHP)) : maxHP;
       savePlayersData();
