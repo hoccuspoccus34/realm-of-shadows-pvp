@@ -767,41 +767,81 @@ let chatMessages = [];
 const CLASS_ICONS = { Warrior: '⚔️', Mage: '🧙', Rogue: '🗡️' };
 
 // ---- UTILS ----
-function randInt(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
-function randPick(arr){return arr[Math.floor(Math.random()*arr.length)];}
-function uid(){return 'i_'+(++_uid);}
-function xpForLevel(lv){return lv*100;}
-function escapeHtml(text){const div=document.createElement('div');div.textContent=String(text||'');return div.innerHTML;}
-function rollRarity(){
-  let r=Math.random()*100,c=0,keys=Object.keys(RARITY_DATA);
-  for(let i=0;i<keys.length;i++){c+=RARITY_DATA[keys[i]].chance;if(r<=c)return keys[i];}
+function randInt(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
+function randPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function uid() { return 'i_' + (++_uid); }
+function xpForLevel(lv) { return lv * 100; }
+function escapeHtml(text) { const div = document.createElement('div'); div.textContent = String(text || ''); return div.innerHTML; }
+
+function rollRarity() {
+  let r = Math.random() * 100, c = 0, keys = Object.keys(RARITY_DATA);
+  for (let i = 0; i < keys.length; i++) { c += RARITY_DATA[keys[i]].chance; if (r <= c) return keys[i]; }
   return 'Common';
 }
-function showToast(msg,type,dur){
-  type=type||'info';dur=dur||3000;
-  let el=document.createElement('div');el.className='toast toast-'+type;el.textContent=msg;
+
+function showToast(msg, type, dur) {
+  type = type || 'info'; dur = dur || 3000;
+  let el = document.createElement('div');
+  el.className = 'toast toast-' + type;
+  el.textContent = msg;
   document.getElementById('toast-container').appendChild(el);
-  setTimeout(function(){el.style.transition='opacity .3s';el.style.opacity='0';setTimeout(function(){el.remove();},300);},dur);
+  setTimeout(function() { el.style.transition = 'opacity .3s'; el.style.opacity = '0'; setTimeout(function() { el.remove(); }, 300); }, dur);
 }
-function showModal(title,body,btn,cb){
-  document.getElementById('modal-container').innerHTML='<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()"><h2>'+title+'</h2>'+body+'<button class="btn-quest" onclick="closeModal();'+(cb?cb+'()':'')+'">'+((btn)||'OK')+'</button></div></div>';
+
+function showModal(title, body, btn, cb) {
+  document.getElementById('modal-container').innerHTML =
+    '<div class="modal-overlay" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">' +
+    '<h2>' + title + '</h2>' + body +
+    '<button class="btn-quest" onclick="closeModal();' + (cb ? cb + '()' : '') + '">' + ((btn) || 'OK') + '</button>' +
+    '</div></div>';
 }
-function closeModal(){document.getElementById('modal-container').innerHTML='';}
-function playSound(type){
-  try{
-    let ctx=new(window.AudioContext||window.webkitAudioContext)();
-    let o=ctx.createOscillator(),g=ctx.createGain();
-    o.connect(g);g.connect(ctx.destination);g.gain.value=0.1;
-    if(type==='hit'){o.frequency.value=200;o.type='sawtooth';g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.15);o.start();o.stop(ctx.currentTime+0.15);}
-    else if(type==='crit'){o.frequency.value=400;o.type='square';g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.2);o.start();o.stop(ctx.currentTime+0.2);}
-    else if(type==='levelup'){o.frequency.value=523;o.type='sine';g.gain.value=0.15;o.start();setTimeout(function(){o.frequency.value=659;},100);setTimeout(function(){o.frequency.value=784;},200);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.5);o.stop(ctx.currentTime+0.5);}
-    else if(type==='coin'){o.frequency.value=1200;o.type='sine';g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.1);o.start();o.stop(ctx.currentTime+0.1);}
-    else if(type==='equip'){o.frequency.value=600;o.type='triangle';g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.12);o.start();o.stop(ctx.currentTime+0.12);}
-    else if(type==='heal'){o.frequency.value=440;o.type='sine';g.gain.value=0.12;o.start();setTimeout(function(){o.frequency.value=550;},80);setTimeout(function(){o.frequency.value=660;},160);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.35);o.stop(ctx.currentTime+0.35);}
-    else if(type==='death'){o.frequency.value=150;o.type='sawtooth';g.gain.value=0.12;g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.5);o.start();o.stop(ctx.currentTime+0.5);}
-    else if(type==='mythic'){o.frequency.value=880;o.type='sine';g.gain.value=0.15;o.start();setTimeout(function(){o.frequency.value=1100;},80);setTimeout(function(){o.frequency.value=1320;},160);setTimeout(function(){o.frequency.value=1760;},240);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.6);o.stop(ctx.currentTime+0.6);}
-    else if(type==='arena'){o.frequency.value=330;o.type='square';g.gain.value=0.12;o.start();setTimeout(function(){o.frequency.value=440;},100);setTimeout(function(){o.frequency.value=550;},200);setTimeout(function(){o.frequency.value=660;},300);g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.5);o.stop(ctx.currentTime+0.5);}
-  }catch(e){}
+
+function closeModal() { document.getElementById('modal-container').innerHTML = ''; }
+
+function playSound(type) {
+  try {
+    let ctx = new (window.AudioContext || window.webkitAudioContext)();
+    let o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination); g.gain.value = 0.1;
+    if (type === 'hit') {
+      o.frequency.value = 200; o.type = 'sawtooth';
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15); o.start(); o.stop(ctx.currentTime + 0.15);
+    } else if (type === 'crit') {
+      o.frequency.value = 400; o.type = 'square';
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2); o.start(); o.stop(ctx.currentTime + 0.2);
+    } else if (type === 'levelup') {
+      o.frequency.value = 523; o.type = 'sine'; g.gain.value = 0.15; o.start();
+      setTimeout(function() { o.frequency.value = 659; }, 100);
+      setTimeout(function() { o.frequency.value = 784; }, 200);
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5); o.stop(ctx.currentTime + 0.5);
+    } else if (type === 'coin') {
+      o.frequency.value = 1200; o.type = 'sine';
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1); o.start(); o.stop(ctx.currentTime + 0.1);
+    } else if (type === 'equip') {
+      o.frequency.value = 600; o.type = 'triangle';
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12); o.start(); o.stop(ctx.currentTime + 0.12);
+    } else if (type === 'heal') {
+      o.frequency.value = 440; o.type = 'sine'; g.gain.value = 0.12; o.start();
+      setTimeout(function() { o.frequency.value = 550; }, 80);
+      setTimeout(function() { o.frequency.value = 660; }, 160);
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35); o.stop(ctx.currentTime + 0.35);
+    } else if (type === 'death') {
+      o.frequency.value = 150; o.type = 'sawtooth'; g.gain.value = 0.12;
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5); o.start(); o.stop(ctx.currentTime + 0.5);
+    } else if (type === 'mythic') {
+      o.frequency.value = 880; o.type = 'sine'; g.gain.value = 0.15; o.start();
+      setTimeout(function() { o.frequency.value = 1100; }, 80);
+      setTimeout(function() { o.frequency.value = 1320; }, 160);
+      setTimeout(function() { o.frequency.value = 1760; }, 240);
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.6); o.stop(ctx.currentTime + 0.6);
+    } else if (type === 'arena') {
+      o.frequency.value = 330; o.type = 'square'; g.gain.value = 0.12; o.start();
+      setTimeout(function() { o.frequency.value = 440; }, 100);
+      setTimeout(function() { o.frequency.value = 550; }, 200);
+      setTimeout(function() { o.frequency.value = 660; }, 300);
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5); o.stop(ctx.currentTime + 0.5);
+    }
+  } catch (e) {}
 }
 
 // =====================================================
@@ -1613,10 +1653,37 @@ function getTotalStat(stat) {
   t += getGuildStatBonus(stat);
   return t;
 }
-function getEquipBonus(stat) { let b = 0; for (let i = 0; i < ALL_SLOTS.length; i++) { let it = gameState.equipment[ALL_SLOTS[i]]; if (it && it.bonuses && it.bonuses[stat]) b += it.bonuses[stat]; } return b; }
-function calcPlayerDamage() { let c=gameState.class,s=getTotalStat('str'),d=getTotalStat('dex'),ii=getTotalStat('int'); let dmg=c==='Warrior'?s*2+d*0.5:c==='Mage'?ii*2.2+d*0.3:d*1.8+s*0.6; dmg+=gameState.level*1.5; return Math.max(1,Math.round(dmg*(0.85+Math.random()*0.3))); }
-function isCritical() { return Math.random()*100 < Math.min(60, getTotalStat('lck')*2); }
-function calcDefense() { let c=gameState.class,s=getTotalStat('str'),d=getTotalStat('dex'),ii=getTotalStat('int'),lv=gameState.level; let def; if(c==='Warrior')def=(s*0.8+d*0.2+lv*1.5)*0.65; else if(c==='Mage')def=(ii*0.3+d*0.2+lv*1.0)*0.5; else def=(d*0.6+s*0.2+lv*1.2)*0.55; return Math.min(CLASS_DATA[c].maxDefense,def); }
+function getEquipBonus(stat) {
+  let b = 0;
+  for (let i = 0; i < ALL_SLOTS.length; i++) {
+    let it = gameState.equipment[ALL_SLOTS[i]];
+    if (it && it.bonuses && it.bonuses[stat]) b += it.bonuses[stat];
+  }
+  return b;
+}
+
+function calcPlayerDamage() {
+  let c = gameState.class, s = getTotalStat('str'), d = getTotalStat('dex'), ii = getTotalStat('int');
+  let dmg;
+  if (c === 'Warrior') dmg = s * 2 + d * 0.5;
+  else if (c === 'Mage') dmg = ii * 2.2 + d * 0.3;
+  else dmg = d * 1.8 + s * 0.6;
+  dmg += gameState.level * 1.5;
+  return Math.max(1, Math.round(dmg * (0.85 + Math.random() * 0.3)));
+}
+
+function isCritical() {
+  return Math.random() * 100 < Math.min(60, getTotalStat('lck') * 2);
+}
+
+function calcDefense() {
+  let c = gameState.class, s = getTotalStat('str'), d = getTotalStat('dex'), ii = getTotalStat('int'), lv = gameState.level;
+  let def;
+  if (c === 'Warrior') def = (s * 0.8 + d * 0.2 + lv * 1.5) * 0.65;
+  else if (c === 'Mage') def = (ii * 0.3 + d * 0.2 + lv * 1.0) * 0.5;
+  else def = (d * 0.6 + s * 0.2 + lv * 1.2) * 0.55;
+  return Math.min(CLASS_DATA[c].maxDefense, def);
+}
 
 // =====================================================
 // CHARACTER PANEL
@@ -1669,8 +1736,11 @@ function allocateStat(stat, amt) {
     let pts = Math.min(amt, gameState.statPoints);
     if (pts <= 0) return;
     gameState.statPoints -= pts;
-    if (stat === 'hp') { gameState.stats.hp += pts*10; gameState.currentHP += pts*10; }
+    if (stat === 'hp') { gameState.stats.hp += pts * 10; }
     else gameState.stats[stat] += pts;
+    // Cap currentHP to new maxHP (do NOT restore health when allocating stat points)
+    let mx = getTotalStat('hp');
+    gameState.currentHP = Math.min(gameState.currentHP, mx);
     playSound('equip');
     if (pts > 1) showToast('+' + (stat==='hp'?pts*10:pts) + ' ' + STAT_INFO[stat].name + '!', 'success');
     updateStatusBar(); renderCharacterPanel(); saveGame(); updateFighterRegistration();
@@ -1746,15 +1816,69 @@ function buildItemCard(item){
   else{c+='<button class="btn-equip" onclick="equipItem(\''+item.id+'\')">Equip</button>';c+='<button class="btn-sell" onclick="sellItem(\''+item.id+'\')">Sell '+item.sellPrice+'g</button>';}
   return c+'</div>';
 }
-function equipItem(id){let item=null;for(let i=0;i<gameState.inventory.length;i++){if(gameState.inventory[i].id===id){item=gameState.inventory[i];break;}}if(!item)return;let prev=gameState.equipment[item.slot];gameState.equipment[item.slot]=item;gameState.inventory=gameState.inventory.filter(x=>x.id!==id);if(prev)gameState.inventory.push(prev);let mx=getTotalStat('hp');if(gameState.currentHP>mx)gameState.currentHP=mx;playSound('equip');showToast('Equipped '+item.name+'!','success');updateStatusBar();renderCharacterPanel();renderInventory();saveGame();updateFighterRegistration();}
-function unequipItem(slot){let item=gameState.equipment[slot];if(!item)return;gameState.equipment[slot]=null;gameState.inventory.push(item);let mx=getTotalStat('hp');if(gameState.currentHP>mx)gameState.currentHP=mx;playSound('equip');showToast('Unequipped '+item.name,'info');updateStatusBar();renderCharacterPanel();renderInventory();saveGame();updateFighterRegistration();}
-function sellItem(id){let item=null;for(let i=0;i<gameState.inventory.length;i++){if(gameState.inventory[i].id===id){item=gameState.inventory[i];break;}}if(!item)return;gameState.gold+=item.sellPrice;gameState.inventory=gameState.inventory.filter(x=>x.id!==id);playSound('coin');showToast('Sold '+item.name+' for '+item.sellPrice+'g','success');updateStatusBar();renderInventory();saveGame();}
+function equipItem(id) {
+  let item = null;
+  for (let i = 0; i < gameState.inventory.length; i++) {
+    if (gameState.inventory[i].id === id) { item = gameState.inventory[i]; break; }
+  }
+  if (!item) return;
+  let prev = gameState.equipment[item.slot];
+  gameState.equipment[item.slot] = item;
+  gameState.inventory = gameState.inventory.filter(x => x.id !== id);
+  if (prev) gameState.inventory.push(prev);
+  let mx = getTotalStat('hp');
+  if (gameState.currentHP > mx) gameState.currentHP = mx;
+  playSound('equip');
+  showToast('Equipped ' + item.name + '!', 'success');
+  updateStatusBar(); renderCharacterPanel(); renderInventory(); saveGame(); updateFighterRegistration();
+}
+
+function unequipItem(slot) {
+  let item = gameState.equipment[slot];
+  if (!item) return;
+  gameState.equipment[slot] = null;
+  gameState.inventory.push(item);
+  let mx = getTotalStat('hp');
+  if (gameState.currentHP > mx) gameState.currentHP = mx;
+  playSound('equip');
+  showToast('Unequipped ' + item.name, 'info');
+  updateStatusBar(); renderCharacterPanel(); renderInventory(); saveGame(); updateFighterRegistration();
+}
+
+function sellItem(id) {
+  let item = null;
+  for (let i = 0; i < gameState.inventory.length; i++) {
+    if (gameState.inventory[i].id === id) { item = gameState.inventory[i]; break; }
+  }
+  if (!item) return;
+  gameState.gold += item.sellPrice;
+  gameState.inventory = gameState.inventory.filter(x => x.id !== id);
+  playSound('coin');
+  showToast('Sold ' + item.name + ' for ' + item.sellPrice + 'g', 'success');
+  updateStatusBar(); renderInventory(); saveGame();
+}
 
 // =====================================================
 // COMBAT (PvE)
 // =====================================================
-function generateEnemy(){let t=randPick(ENEMY_TEMPLATES),lv=Math.max(1,gameState.level+randInt(-1,2)),m=1+(lv-1)*0.4+Math.pow(lv,1.15)*0.05;return{name:t.name,icon:t.icon,level:lv,maxHP:Math.round(t.baseHP*m),currentHP:Math.round(t.baseHP*m),damage:Math.round(t.baseDmg*m),xpReward:Math.round(t.xpMult*25*lv),goldReward:Math.round(t.goldMult*18*lv),itemDropChance:0.25+lv*0.02,critChance:0.08+lv*0.005};}
-function findEnemy(){if(gameState.currentHP<=0){showToast('Heal first!','error');return;}combatState={enemy:generateEnemy(),log:[],turn:0,finished:false};addLog('A wild '+combatState.enemy.icon+' '+combatState.enemy.name+' (Lv.'+combatState.enemy.level+') appears!','system');renderCombat();}
+function generateEnemy() {
+  let t = randPick(ENEMY_TEMPLATES), lv = Math.max(1, gameState.level + randInt(-1, 2));
+  let m = 1 + (lv - 1) * 0.4 + Math.pow(lv, 1.15) * 0.05;
+  return {
+    name: t.name, icon: t.icon, level: lv,
+    maxHP: Math.round(t.baseHP * m), currentHP: Math.round(t.baseHP * m),
+    damage: Math.round(t.baseDmg * m),
+    xpReward: Math.round(t.xpMult * 25 * lv), goldReward: Math.round(t.goldMult * 18 * lv),
+    itemDropChance: 0.25 + lv * 0.02, critChance: 0.08 + lv * 0.005
+  };
+}
+
+function findEnemy() {
+  if (gameState.currentHP <= 0) { showToast('Heal first!', 'error'); return; }
+  combatState = { enemy: generateEnemy(), log: [], turn: 0, finished: false };
+  addLog('A wild ' + combatState.enemy.icon + ' ' + combatState.enemy.name + ' (Lv.' + combatState.enemy.level + ') appears!', 'system');
+  renderCombat();
+}
 function renderCombat(){
   let area=document.getElementById('combat-area');
   if(!combatState||!combatState.enemy){area.innerHTML='<div style="text-align:center;padding:40px;color:var(--text-dim);"><div style="font-size:3rem;margin-bottom:12px;">🗡️</div><p>No enemy. Find one!</p><button class="btn-combat btn-new-enemy" onclick="findEnemy()" style="margin-top:16px;max-width:250px;">🔍 Find Enemy</button></div>';return;}
@@ -1763,68 +1887,293 @@ function renderCombat(){
   area.innerHTML='<div class="combat-arena"><div class="combatant animate-slide-left" id="player-c"><div class="avatar">'+CLASS_DATA[p.class].icon+'</div><div class="name">'+p.name+'</div><div class="level-badge">Lv.'+p.level+' '+p.class+'</div><div class="combat-hp-bar"><div class="bar-container"><div class="bar-fill hp" style="width:'+((p.currentHP/mx)*100)+'%"></div><div class="bar-text">'+p.currentHP+'/'+mx+'</div></div></div></div><div class="combat-vs">⚔️</div><div class="combatant animate-slide-right" id="enemy-c"><div class="avatar">'+e.icon+'</div><div class="name">'+e.name+'</div><div class="level-badge">Lv.'+e.level+' · ATK:'+e.damage+'</div><div class="combat-hp-bar"><div class="bar-container"><div class="bar-fill hp" style="width:'+((e.currentHP/e.maxHP)*100)+'%;'+(e.currentHP/e.maxHP<0.3?'animation:pulse .5s infinite':'')+'"></div><div class="bar-text">'+e.currentHP+'/'+e.maxHP+'</div></div></div></div></div><div class="combat-controls"><button class="btn-combat btn-fight" onclick="combatAttack()"'+(fn?' disabled':'')+'>⚔️ Attack</button><button class="btn-combat btn-heal" onclick="combatHeal()"'+(fn||p.gold<healCost?' disabled':'')+'>💊 Heal ('+healCost+'g)</button><button class="btn-combat btn-flee" onclick="combatFlee()"'+(fn?' disabled':'')+'>🏃 Flee</button><button class="btn-combat btn-new-enemy" onclick="findEnemy()"'+(!fn?' disabled':'')+'>🔍 New Enemy</button></div><div class="combat-log" id="combat-log">'+logHTML+'</div>';
   let cl=document.getElementById('combat-log');cl.scrollTop=cl.scrollHeight;
 }
-function addLog(t,c){if(combatState)combatState.log.push({t,c:c||''});}
-function enemyAttack(){let e=combatState.enemy,dmg=Math.round(e.damage*(0.8+Math.random()*0.4)),def=calcDefense(),red=Math.round(dmg*(def/100));dmg=Math.max(1,dmg-red);if(Math.random()<(e.critChance||0.08)){dmg=Math.round(dmg*1.8);addLog('💥 '+e.name+' CRITS for '+dmg+'!','crit');}else{addLog(e.icon+' '+e.name+' hits for '+dmg+'. ('+red+' blocked)','enemy');}gameState.currentHP=Math.max(0,gameState.currentHP-dmg);setTimeout(function(){let el=document.getElementById('player-c');if(el){el.classList.add('animate-shake');setTimeout(function(){el.classList.remove('animate-shake');},400);}},50);if(gameState.currentHP<=0){combatDefeat();return true;}return false;}
-function combatAttack(){if(!combatState||combatState.finished)return;combatState.turn++;let dmg=calcPlayerDamage(),crit=isCritical();if(crit){dmg=Math.round(dmg*2);addLog('💥 CRIT! '+dmg+' damage!','crit');playSound('crit');}else{addLog('⚔️ You hit '+combatState.enemy.name+' for '+dmg+'.','player');playSound('hit');}combatState.enemy.currentHP=Math.max(0,combatState.enemy.currentHP-dmg);setTimeout(function(){let el=document.getElementById('enemy-c');if(el){el.classList.add('animate-shake');setTimeout(function(){el.classList.remove('animate-shake');},400);}},50);if(combatState.enemy.currentHP<=0){combatVictory();renderCombat();return;}enemyAttack();renderCombat();updateStatusBar();}
-function combatVictory(){
-  combatState.finished=true;let e=combatState.enemy;
+function addLog(t, c) {
+  if (combatState) combatState.log.push({ t, c: c || '' });
+}
+
+function enemyAttack() {
+  let e = combatState.enemy;
+  let dmg = Math.round(e.damage * (0.8 + Math.random() * 0.4));
+  let def = calcDefense();
+  let red = Math.round(dmg * (def / 100));
+  dmg = Math.max(1, dmg - red);
+  if (Math.random() < (e.critChance || 0.08)) {
+    dmg = Math.round(dmg * 1.8);
+    addLog('💥 ' + e.name + ' CRITS for ' + dmg + '!', 'crit');
+  } else {
+    addLog(e.icon + ' ' + e.name + ' hits for ' + dmg + '. (' + red + ' blocked)', 'enemy');
+  }
+  gameState.currentHP = Math.max(0, gameState.currentHP - dmg);
+  setTimeout(function() {
+    let el = document.getElementById('player-c');
+    if (el) { el.classList.add('animate-shake'); setTimeout(function() { el.classList.remove('animate-shake'); }, 400); }
+  }, 50);
+  if (gameState.currentHP <= 0) { combatDefeat(); return true; }
+  return false;
+}
+
+function combatAttack() {
+  if (!combatState || combatState.finished) return;
+  combatState.turn++;
+  let dmg = calcPlayerDamage(), crit = isCritical();
+  if (crit) {
+    dmg = Math.round(dmg * 2);
+    addLog('💥 CRIT! ' + dmg + ' damage!', 'crit');
+    playSound('crit');
+  } else {
+    addLog('⚔️ You hit ' + combatState.enemy.name + ' for ' + dmg + '.', 'player');
+    playSound('hit');
+  }
+  combatState.enemy.currentHP = Math.max(0, combatState.enemy.currentHP - dmg);
+  setTimeout(function() {
+    let el = document.getElementById('enemy-c');
+    if (el) { el.classList.add('animate-shake'); setTimeout(function() { el.classList.remove('animate-shake'); }, 400); }
+  }, 50);
+  if (combatState.enemy.currentHP <= 0) { combatVictory(); renderCombat(); return; }
+  enemyAttack();
+  renderCombat();
+  updateStatusBar();
+}
+function combatVictory() {
+  combatState.finished = true;
+  let e = combatState.enemy;
+
   // Apply guild gold bonus
   const goldBonus = getGuildGoldBonus();
   let goldGain = Math.round(e.goldReward * (1 + goldBonus / 100));
-  gameState.gold+=goldGain;gameState.monstersKilled++;
-  addLog('🏆 Defeated '+e.icon+' '+e.name+'!','system');addLog('💰 +'+goldGain+' Gold'+(goldBonus>0?' (+'+goldBonus+'% guild)':''),'gold');
+  gameState.gold += goldGain;
+  gameState.monstersKilled++;
+  addLog('🏆 Defeated ' + e.icon + ' ' + e.name + '!', 'system');
+  addLog('💰 +' + goldGain + ' Gold' + (goldBonus > 0 ? ' (+' + goldBonus + '% guild)' : ''), 'gold');
+
   // Apply guild XP bonus
   const xpBonus = getGuildXPBonus();
   const xpGain = Math.round(e.xpReward * (1 + xpBonus / 100));
   addXP(xpGain);
-  if(Math.random()<e.itemDropChance){let dropSlot=randPick(ALL_SLOTS),item=generateItem(null,null,dropSlot);gameState.inventory.push(item);let slotName=SLOT_LABELS[item.slot].label;addLog('🎁 '+slotName+' drop: '+item.icon+' '+item.name+' ('+item.rarity+')!','item');if(item.rarity==='Mythic'){showToast('🔥 MYTHIC: '+item.name+'!','mythic',5000);playSound('mythic');}else showToast('🎁 '+item.name+' ('+item.rarity+')!',item.rarity==='Legendary'?'epic':'success');}
-  if(gameState.level>=5&&Math.random()<e.itemDropChance*0.3){let bi=generateItem(null,null,randPick(ALL_SLOTS));gameState.inventory.push(bi);addLog('🎁 Bonus: '+bi.icon+' '+bi.name+' ('+bi.rarity+')!','item');showToast('🎁 Bonus: '+bi.name+'!','success');}
-  playSound('coin');updateStatusBar();renderCharacterPanel();renderInventory();saveGame();updateFighterRegistration();
+
+  if (Math.random() < e.itemDropChance) {
+    let dropSlot = randPick(ALL_SLOTS), item = generateItem(null, null, dropSlot);
+    gameState.inventory.push(item);
+    let slotName = SLOT_LABELS[item.slot].label;
+    addLog('🎁 ' + slotName + ' drop: ' + item.icon + ' ' + item.name + ' (' + item.rarity + ')!', 'item');
+    if (item.rarity === 'Mythic') { showToast('🔥 MYTHIC: ' + item.name + '!', 'mythic', 5000); playSound('mythic'); }
+    else showToast('🎁 ' + item.name + ' (' + item.rarity + ')!', item.rarity === 'Legendary' ? 'epic' : 'success');
+  }
+  if (gameState.level >= 5 && Math.random() < e.itemDropChance * 0.3) {
+    let bi = generateItem(null, null, randPick(ALL_SLOTS));
+    gameState.inventory.push(bi);
+    addLog('🎁 Bonus: ' + bi.icon + ' ' + bi.name + ' (' + bi.rarity + ')!', 'item');
+    showToast('🎁 Bonus: ' + bi.name + '!', 'success');
+  }
+  playSound('coin');
+  updateStatusBar(); renderCharacterPanel(); renderInventory(); saveGame(); updateFighterRegistration();
 }
-function combatDefeat(){combatState.finished=true;let loss=Math.round(gameState.gold*0.15);gameState.gold=Math.max(0,gameState.gold-loss);gameState.currentHP=0;addLog('💀 Defeated...','enemy');if(loss)addLog('💸 Lost '+loss+' gold.','gold');playSound('death');updateStatusBar();saveGame();}
-function combatHeal(){if(!combatState||combatState.finished)return;let mx=getTotalStat('hp'),cost=Math.round(mx*0.3),heal=Math.round(mx*0.4);if(gameState.gold<cost){showToast('Not enough gold!','error');return;}gameState.gold-=cost;gameState.currentHP=Math.min(mx,gameState.currentHP+heal);addLog('💊 Healed '+heal+' HP! ('+cost+'g)','heal');playSound('heal');combatState.turn++;enemyAttack();renderCombat();updateStatusBar();saveGame();}
-function combatFlee(){if(!combatState||combatState.finished)return;if(Math.random()*100<Math.min(90,60+getTotalStat('dex')*0.5)){combatState.finished=true;addLog('🏃 You fled!','system');showToast('Escaped!','info');}else{addLog('❌ Failed to flee!','system');enemyAttack();}renderCombat();updateStatusBar();}
-function addXP(amt){
+
+function combatDefeat() {
+  combatState.finished = true;
+  let loss = Math.round(gameState.gold * 0.15);
+  gameState.gold = Math.max(0, gameState.gold - loss);
+  gameState.currentHP = 0;
+  addLog('💀 Defeated...', 'enemy');
+  if (loss) addLog('💸 Lost ' + loss + ' gold.', 'gold');
+  playSound('death');
+  updateStatusBar(); saveGame();
+}
+
+function combatHeal() {
+  if (!combatState || combatState.finished) return;
+  let mx = getTotalStat('hp'), cost = Math.round(mx * 0.3), heal = Math.round(mx * 0.4);
+  if (gameState.gold < cost) { showToast('Not enough gold!', 'error'); return; }
+  gameState.gold -= cost;
+  gameState.currentHP = Math.min(mx, gameState.currentHP + heal);
+  addLog('💊 Healed ' + heal + ' HP! (' + cost + 'g)', 'heal');
+  playSound('heal');
+  combatState.turn++;
+  enemyAttack();
+  renderCombat(); updateStatusBar(); saveGame();
+}
+
+function combatFlee() {
+  if (!combatState || combatState.finished) return;
+  if (Math.random() * 100 < Math.min(90, 60 + getTotalStat('dex') * 0.5)) {
+    combatState.finished = true;
+    addLog('🏃 You fled!', 'system');
+    showToast('Escaped!', 'info');
+  } else {
+    addLog('❌ Failed to flee!', 'system');
+    enemyAttack();
+  }
+  renderCombat(); updateStatusBar();
+}
+function addXP(amt) {
   const xpBonus = getGuildXPBonus();
   // amt already has guild bonus applied from combatVictory, so just add it
-  gameState.xp+=amt;addLog('✨ +'+amt+' XP'+(xpBonus>0?' (+'+xpBonus+'% guild)':''),'xp');
-  let leveled=false;
-  while(gameState.xp>=xpForLevel(gameState.level)){gameState.xp-=xpForLevel(gameState.level);gameState.level++;gameState.statPoints+=3;gameState.currentHP=getTotalStat('hp');leveled=true;addLog('🌟 LEVEL UP! Lv.'+gameState.level+'!','system');}
-  if(leveled){playSound('levelup');showToast('🌟 Level '+gameState.level+'!','epic',4000);let sb=document.getElementById('status-bar');sb.classList.add('animate-level-up');setTimeout(function(){sb.classList.remove('animate-level-up');},800);updateFighterRegistration();}
-  updateStatusBar();renderCharacterPanel();
+  gameState.xp += amt;
+  addLog('✨ +' + amt + ' XP' + (xpBonus > 0 ? ' (+' + xpBonus + '% guild)' : ''), 'xp');
+  let leveled = false;
+  while (gameState.xp >= xpForLevel(gameState.level)) {
+    gameState.xp -= xpForLevel(gameState.level);
+    gameState.level++;
+    gameState.statPoints += 3;
+    gameState.currentHP = getTotalStat('hp');
+    leveled = true;
+    addLog('🌟 LEVEL UP! Lv.' + gameState.level + '!', 'system');
+  }
+  if (leveled) {
+    playSound('levelup');
+    showToast('🌟 Level ' + gameState.level + '!', 'epic', 4000);
+    let sb = document.getElementById('status-bar');
+    sb.classList.add('animate-level-up');
+    setTimeout(function() { sb.classList.remove('animate-level-up'); }, 800);
+    updateFighterRegistration();
+  }
+  updateStatusBar(); renderCharacterPanel();
 }
 
 // =====================================================
 // QUESTS
 // =====================================================
 let tavernQuests = [];
-function generateTavernQuests(){let easy=QUEST_TEMPLATES.filter(q=>q.difficulty==='easy'),med=QUEST_TEMPLATES.filter(q=>q.difficulty==='medium'),hard=QUEST_TEMPLATES.filter(q=>q.difficulty==='hard'),rnd=QUEST_TEMPLATES.filter(q=>q.difficulty==='random');tavernQuests=[randPick(easy),randPick(med),randPick(hard),resolveRandom(randPick(rnd))];if(Math.random()<0.3&&rnd.length)tavernQuests.push(resolveRandom(randPick(rnd)));}
-function resolveRandom(t){return{name:t.name,desc:t.desc,difficulty:'random',duration:randInt(t.durationRange[0],t.durationRange[1]),xp:randInt(t.xpRange[0],t.xpRange[1]),gold:randInt(t.goldRange[0],t.goldRange[1]),itemChance:+(t.itemChanceRange[0]+Math.random()*(t.itemChanceRange[1]-t.itemChanceRange[0])).toFixed(2),_isRandom:true};}
-function rerollQuests(){if(gameState.activeQuest&&gameState.activeQuest.endTime){showToast('Finish active quest first!','error');return;}generateTavernQuests();renderQuests();showToast('New quests!','info');}
-function renderQuests(){
-  let list=document.getElementById('quest-list'),hasActive=gameState.activeQuest&&gameState.activeQuest.endTime;if(!tavernQuests.length)generateTavernQuests();
-  const xpBonusPct = getGuildXPBonus(), goldBonusPct = getGuildGoldBonus();
-  let html='';for(let i=0;i<tavernQuests.length;i++){let q=tavernQuests[i],sXP=Math.round(q.xp*(1+gameState.level*0.15)*(1+xpBonusPct/100)),sG=Math.round(q.gold*(1+gameState.level*0.1)*(1+goldBonusPct/100)),m=Math.floor(q.duration/60),s=q.duration%60,dur=m>0?m+'m '+s+'s':s+'s',isAct=hasActive&&gameState.activeQuest._questIndex===i;html+='<div class="quest-card '+(isAct?'quest-active':'')+'"><span class="quest-diff '+q.difficulty+'">'+(q.difficulty==='random'?'???':q.difficulty)+'</span>';if(q._isRandom)html+=' <span style="font-size:0.6rem;color:#bb86fc;">(Random!)</span>';html+='<div class="quest-title">'+q.name+'</div><div class="quest-desc">'+q.desc+'</div><div class="quest-rewards"><span>✨ '+sXP+(xpBonusPct>0?' <small style="color:var(--heal-green);">(+'+xpBonusPct+'%)</small>':''+'')+'</span><span>💰 '+sG+(goldBonusPct>0?' <small style="color:var(--heal-green);">(+'+goldBonusPct+'%)</small>':''+'')+'</span><span>🎁 '+Math.round(q.itemChance*100)+'%</span></div>';if(isAct)html+='<div class="quest-timer" id="quest-timer">⏳ ...</div>';else html+='<div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:8px;">⏱️ '+(q._isRandom?'???':dur)+'</div>';html+='<button class="btn-quest" onclick="startQuest('+i+')"'+(hasActive?' disabled':'')+'>'+(isAct?'⏳ In Progress...':'▶️ Start')+'</button></div>';}
-  list.innerHTML=html;if(hasActive)updateQuestTimer();
+function generateTavernQuests() {
+  let easy = QUEST_TEMPLATES.filter(q => q.difficulty === 'easy');
+  let med = QUEST_TEMPLATES.filter(q => q.difficulty === 'medium');
+  let hard = QUEST_TEMPLATES.filter(q => q.difficulty === 'hard');
+  let rnd = QUEST_TEMPLATES.filter(q => q.difficulty === 'random');
+  tavernQuests = [randPick(easy), randPick(med), randPick(hard), resolveRandom(randPick(rnd))];
+  if (Math.random() < 0.3 && rnd.length) tavernQuests.push(resolveRandom(randPick(rnd)));
 }
-function startQuest(idx){if(gameState.activeQuest&&gameState.activeQuest.endTime){showToast('Already on a quest!','error');return;}let q=tavernQuests[idx];if(!q)return;const xpBonusPct=getGuildXPBonus(),goldBonusPct=getGuildGoldBonus();gameState.activeQuest={name:q.name,difficulty:q.difficulty,xp:Math.round(q.xp*(1+gameState.level*0.15)*(1+xpBonusPct/100)),gold:Math.round(q.gold*(1+gameState.level*0.1)*(1+goldBonusPct/100)),itemChance:q.itemChance,endTime:Date.now()+q.duration*1000,_questIndex:idx,_isRandom:q._isRandom||false};showToast('Started: '+q.name,'info');saveGame();renderQuests();resumeQuestTimer();}
-function resumeQuestTimer(){if(questTimers.main)clearInterval(questTimers.main);questTimers.main=setInterval(function(){if(!gameState.activeQuest||!gameState.activeQuest.endTime){clearInterval(questTimers.main);return;}if(gameState.activeQuest.endTime-Date.now()<=0){clearInterval(questTimers.main);completeQuest();}else updateQuestTimer();},500);}
-function updateQuestTimer(){let el=document.getElementById('quest-timer');if(!el||!gameState.activeQuest)return;let rem=gameState.activeQuest.endTime-Date.now();if(rem<=0){el.textContent='✅ Complete!';return;}let s=Math.ceil(rem/1000),m=Math.floor(s/60);el.textContent='⏳ '+(m>0?m+'m ':'')+((s%60))+'s';}
-function completeQuest(){
-  if(!gameState.activeQuest)return;let q=gameState.activeQuest;gameState.gold+=q.gold;gameState.questsCompleted++;
-  let html='<p>✨ +'+q.xp+' XP</p><p>💰 +'+q.gold+' Gold</p>';
-  if(Math.random()<q.itemChance){let item;if(q._isRandom&&Math.random()<0.08)item=generateItem('Mythic',null,randPick(ALL_SLOTS));else if((q.difficulty==='hard'||q._isRandom)&&Math.random()<0.3)item=generateItem('Epic',null,randPick(ALL_SLOTS));else item=generateItem(null,null,randPick(ALL_SLOTS));gameState.inventory.push(item);html+='<p style="color:'+RARITY_DATA[item.rarity].color+'">🎁 '+item.icon+' '+item.name+' ('+item.rarity+')</p>';if(item.rarity==='Mythic')playSound('mythic');}
-  if(q._isRandom&&Math.random()<0.25){let bg=randInt(20,100)*gameState.level;gameState.gold+=bg;html+='<p style="color:var(--gold)">🎰 Bonus: +'+bg+'!</p>';}
-  gameState.xp+=q.xp;let leveled=false;while(gameState.xp>=xpForLevel(gameState.level)){gameState.xp-=xpForLevel(gameState.level);gameState.level++;gameState.statPoints+=3;gameState.currentHP=getTotalStat('hp');leveled=true;}
-  if(leveled){html+='<p style="color:var(--gold-bright)">🌟 LEVEL UP! Lv.'+gameState.level+'!</p>';playSound('levelup');}
-  gameState.activeQuest=null;showModal('🏆 Quest Complete!','<p style="margin-bottom:12px;color:var(--gold);">'+q.name+'</p>'+html,'Collect');playSound('coin');updateStatusBar();renderCharacterPanel();renderInventory();generateTavernQuests();renderQuests();saveGame();updateFighterRegistration();
+
+function resolveRandom(t) {
+  return {
+    name: t.name, desc: t.desc, difficulty: 'random',
+    duration: randInt(t.durationRange[0], t.durationRange[1]),
+    xp: randInt(t.xpRange[0], t.xpRange[1]),
+    gold: randInt(t.goldRange[0], t.goldRange[1]),
+    itemChance: +(t.itemChanceRange[0] + Math.random() * (t.itemChanceRange[1] - t.itemChanceRange[0])).toFixed(2),
+    _isRandom: true
+  };
+}
+
+function rerollQuests() {
+  if (gameState.activeQuest && gameState.activeQuest.endTime) { showToast('Finish active quest first!', 'error'); return; }
+  generateTavernQuests(); renderQuests(); showToast('New quests!', 'info');
+}
+function renderQuests() {
+  let list = document.getElementById('quest-list');
+  let hasActive = gameState.activeQuest && gameState.activeQuest.endTime;
+  if (!tavernQuests.length) generateTavernQuests();
+  const xpBonusPct = getGuildXPBonus(), goldBonusPct = getGuildGoldBonus();
+  let html = '';
+  for (let i = 0; i < tavernQuests.length; i++) {
+    let q = tavernQuests[i];
+    let sXP = Math.round(q.xp * (1 + gameState.level * 0.15) * (1 + xpBonusPct / 100));
+    let sG = Math.round(q.gold * (1 + gameState.level * 0.1) * (1 + goldBonusPct / 100));
+    let m = Math.floor(q.duration / 60), s = q.duration % 60;
+    let dur = m > 0 ? m + 'm ' + s + 's' : s + 's';
+    let isAct = hasActive && gameState.activeQuest._questIndex === i;
+    html += '<div class="quest-card ' + (isAct ? 'quest-active' : '') + '">';
+    html += '<span class="quest-diff ' + q.difficulty + '">' + (q.difficulty === 'random' ? '???' : q.difficulty) + '</span>';
+    if (q._isRandom) html += ' <span style="font-size:0.6rem;color:#bb86fc;">(Random!)</span>';
+    html += '<div class="quest-title">' + q.name + '</div>';
+    html += '<div class="quest-desc">' + q.desc + '</div>';
+    html += '<div class="quest-rewards">';
+    html += '<span>✨ ' + sXP + (xpBonusPct > 0 ? ' <small style="color:var(--heal-green);">(+' + xpBonusPct + '%)</small>' : '') + '</span>';
+    html += '<span>💰 ' + sG + (goldBonusPct > 0 ? ' <small style="color:var(--heal-green);">(+' + goldBonusPct + '%)</small>' : '') + '</span>';
+    html += '<span>🎁 ' + Math.round(q.itemChance * 100) + '%</span></div>';
+    if (isAct) html += '<div class="quest-timer" id="quest-timer">⏳ ...</div>';
+    else html += '<div style="font-size:0.7rem;color:var(--text-dim);margin-bottom:8px;">⏱️ ' + (q._isRandom ? '???' : dur) + '</div>';
+    html += '<button class="btn-quest" onclick="startQuest(' + i + ')"' + (hasActive ? ' disabled' : '') + '>' + (isAct ? '⏳ In Progress...' : '▶️ Start') + '</button></div>';
+  }
+  list.innerHTML = html;
+  if (hasActive) updateQuestTimer();
+}
+function startQuest(idx) {
+  if (gameState.activeQuest && gameState.activeQuest.endTime) { showToast('Already on a quest!', 'error'); return; }
+  let q = tavernQuests[idx];
+  if (!q) return;
+  const xpBonusPct = getGuildXPBonus(), goldBonusPct = getGuildGoldBonus();
+  gameState.activeQuest = {
+    name: q.name, difficulty: q.difficulty,
+    xp: Math.round(q.xp * (1 + gameState.level * 0.15) * (1 + xpBonusPct / 100)),
+    gold: Math.round(q.gold * (1 + gameState.level * 0.1) * (1 + goldBonusPct / 100)),
+    itemChance: q.itemChance, endTime: Date.now() + q.duration * 1000,
+    _questIndex: idx, _isRandom: q._isRandom || false
+  };
+  showToast('Started: ' + q.name, 'info');
+  saveGame(); renderQuests(); resumeQuestTimer();
+}
+
+function resumeQuestTimer() {
+  if (questTimers.main) clearInterval(questTimers.main);
+  questTimers.main = setInterval(function() {
+    if (!gameState.activeQuest || !gameState.activeQuest.endTime) { clearInterval(questTimers.main); return; }
+    if (gameState.activeQuest.endTime - Date.now() <= 0) { clearInterval(questTimers.main); completeQuest(); }
+    else updateQuestTimer();
+  }, 500);
+}
+
+function updateQuestTimer() {
+  let el = document.getElementById('quest-timer');
+  if (!el || !gameState.activeQuest) return;
+  let rem = gameState.activeQuest.endTime - Date.now();
+  if (rem <= 0) { el.textContent = '✅ Complete!'; return; }
+  let s = Math.ceil(rem / 1000), m = Math.floor(s / 60);
+  el.textContent = '⏳ ' + (m > 0 ? m + 'm ' : '') + (s % 60) + 's';
+}
+
+function completeQuest() {
+  if (!gameState.activeQuest) return;
+  let q = gameState.activeQuest;
+  gameState.gold += q.gold;
+  gameState.questsCompleted++;
+  let html = '<p>✨ +' + q.xp + ' XP</p><p>💰 +' + q.gold + ' Gold</p>';
+  if (Math.random() < q.itemChance) {
+    let item;
+    if (q._isRandom && Math.random() < 0.08) item = generateItem('Mythic', null, randPick(ALL_SLOTS));
+    else if ((q.difficulty === 'hard' || q._isRandom) && Math.random() < 0.3) item = generateItem('Epic', null, randPick(ALL_SLOTS));
+    else item = generateItem(null, null, randPick(ALL_SLOTS));
+    gameState.inventory.push(item);
+    html += '<p style="color:' + RARITY_DATA[item.rarity].color + '">🎁 ' + item.icon + ' ' + item.name + ' (' + item.rarity + ')</p>';
+    if (item.rarity === 'Mythic') playSound('mythic');
+  }
+  if (q._isRandom && Math.random() < 0.25) {
+    let bg = randInt(20, 100) * gameState.level;
+    gameState.gold += bg;
+    html += '<p style="color:var(--gold)">🎰 Bonus: +' + bg + '!</p>';
+  }
+  gameState.xp += q.xp;
+  let leveled = false;
+  while (gameState.xp >= xpForLevel(gameState.level)) {
+    gameState.xp -= xpForLevel(gameState.level);
+    gameState.level++;
+    gameState.statPoints += 3;
+    gameState.currentHP = getTotalStat('hp');
+    leveled = true;
+  }
+  if (leveled) { html += '<p style="color:var(--gold-bright)">🌟 LEVEL UP! Lv.' + gameState.level + '!</p>'; playSound('levelup'); }
+  gameState.activeQuest = null;
+  showModal('🏆 Quest Complete!', '<p style="margin-bottom:12px;color:var(--gold);">' + q.name + '</p>' + html, 'Collect');
+  playSound('coin');
+  updateStatusBar(); renderCharacterPanel(); renderInventory(); generateTavernQuests(); renderQuests(); saveGame(); updateFighterRegistration();
 }
 
 // =====================================================
 // SHOP
 // =====================================================
-function refreshShop(){shopItems=[];let slots=ALL_SLOTS.slice();for(let i=0;i<4;i++)slots.push(randPick(ALL_SLOTS));for(let j=0;j<slots.length;j++){let item=generateItem(null,null,slots[j]);item.buyPrice=Math.round(item.sellPrice*(3+Math.random()*2));shopItems.push(item);}shopSlotFilter='all';renderShop();}
-function setShopSlotFilter(s){shopSlotFilter=s;renderShop();}
+function refreshShop() {
+  shopItems = [];
+  let slots = ALL_SLOTS.slice();
+  for (let i = 0; i < 4; i++) slots.push(randPick(ALL_SLOTS));
+  for (let j = 0; j < slots.length; j++) {
+    let item = generateItem(null, null, slots[j]);
+    item.buyPrice = Math.round(item.sellPrice * (3 + Math.random() * 2));
+    shopItems.push(item);
+  }
+  shopSlotFilter = 'all';
+  renderShop();
+}
+
+function setShopSlotFilter(s) { shopSlotFilter = s; renderShop(); }
 function renderShop(){
   let filterHTML='<div class="inv-toolbar" style="margin-bottom:14px;"><span class="inv-toolbar-label">Filter:</span>',slotKeys=['all'].concat(ALL_SLOTS);
   for(let f=0;f<slotKeys.length;f++){let sk=slotKeys[f],sl2=SLOT_LABELS[sk],cnt=sk==='all'?shopItems.length:shopItems.filter(x=>x.slot===sk).length;if(cnt>0||sk==='all')filterHTML+='<button class="inv-filter-btn '+(shopSlotFilter===sk?'active':'')+'" onclick="setShopSlotFilter(\''+sk+'\')">'+sl2.icon+' '+sl2.label+(sk!=='all'?' ('+cnt+')':'')+'</button>';}
@@ -1836,13 +2185,42 @@ function renderShop(){
   if(!filtered.length&&shopSlotFilter!=='all')html+='<div class="empty-inv">No '+SLOT_LABELS[shopSlotFilter].label+' items.</div>';
   grid.innerHTML=html;
 }
-function buyItem(idx){let item=shopItems[idx];if(!item||gameState.gold<item.buyPrice){showToast('Not enough gold!','error');return;}gameState.gold-=item.buyPrice;let inv={},keys=Object.keys(item);for(let i=0;i<keys.length;i++){if(keys[i]!=='buyPrice')inv[keys[i]]=item[keys[i]];}gameState.inventory.push(inv);shopItems.splice(idx,1);playSound('coin');showToast('Bought '+item.name+'!','success');updateStatusBar();renderShop();renderInventory();saveGame();}
-function buyHeal(cost,frac){if(gameState.gold<cost){showToast('Not enough gold!','error');return;}let mx=getTotalStat('hp');if(gameState.currentHP>=mx){showToast('Full health!','info');return;}gameState.gold-=cost;let amt=Math.round(mx*frac);gameState.currentHP=Math.min(mx,gameState.currentHP+amt);playSound('heal');showToast('Healed '+amt+' HP!','success');updateStatusBar();renderShop();saveGame();}
+function buyItem(idx) {
+  let item = shopItems[idx];
+  if (!item || gameState.gold < item.buyPrice) { showToast('Not enough gold!', 'error'); return; }
+  gameState.gold -= item.buyPrice;
+  let inv = {}, keys = Object.keys(item);
+  for (let i = 0; i < keys.length; i++) {
+    if (keys[i] !== 'buyPrice') inv[keys[i]] = item[keys[i]];
+  }
+  gameState.inventory.push(inv);
+  shopItems.splice(idx, 1);
+  playSound('coin');
+  showToast('Bought ' + item.name + '!', 'success');
+  updateStatusBar(); renderShop(); renderInventory(); saveGame();
+}
+
+function buyHeal(cost, frac) {
+  if (gameState.gold < cost) { showToast('Not enough gold!', 'error'); return; }
+  let mx = getTotalStat('hp');
+  if (gameState.currentHP >= mx) { showToast('Full health!', 'info'); return; }
+  gameState.gold -= cost;
+  let amt = Math.round(mx * frac);
+  gameState.currentHP = Math.min(mx, gameState.currentHP + amt);
+  playSound('heal');
+  showToast('Healed ' + amt + ' HP!', 'success');
+  updateStatusBar(); renderShop(); saveGame();
+}
 
 // =====================================================
 // PVP ARENA
 // =====================================================
-function getArenaRank(rating){for(let i=ARENA_RANKS.length-1;i>=0;i--){if(rating>=ARENA_RANKS[i].minRating)return ARENA_RANKS[i];}return ARENA_RANKS[0];}
+function getArenaRank(rating) {
+  for (let i = ARENA_RANKS.length - 1; i >= 0; i--) {
+    if (rating >= ARENA_RANKS[i].minRating) return ARENA_RANKS[i];
+  }
+  return ARENA_RANKS[0];
+}
 function renderArena(){
   let html='';
   html+='<div class="mp-status-bar"><div id="connection-status">'+(isConnected?'<span style="color:var(--heal-green);">🟢 Connected</span>':'<span style="color:var(--hp-red);">🔴 Disconnected</span>')+'</div><div>👥 Online: <b id="online-count">'+onlinePlayers.length+'</b></div>';

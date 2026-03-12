@@ -362,11 +362,12 @@ io.on('connection', (socket) => {
       const cequip = sanitizeEquipment(data.equipment);
       playersData[token] = {
         token, name: data.name, class: data.class,
-        level: clvl, xp: cxp, stats: cstats, statPoints: csp, gold: cgold, currentHP: cstats.hp,
+        level: clvl, xp: cxp, stats: cstats, statPoints: csp, gold: cgold, currentHP: 0,
         arena: { rating: 1000, wins: 0, losses: 0, streak: 0, bestStreak: 0, history: [] },
         equipment: cequip,
         guildName: null
       };
+      // Calculate maxHP including equipment bonuses, then set proper currentHP
       const maxHP = getServerTotalStat(playersData[token], 'hp');
       playersData[token].currentHP = (typeof data.currentHP === 'number' && data.currentHP > 0) ? Math.min(maxHP, Math.floor(data.currentHP)) : maxHP;
       savePlayersData();
@@ -464,8 +465,12 @@ io.on('connection', (socket) => {
     if (pts <= 0) { socket.emit('error', { message: 'No stat points available!' }); return; }
 
     pd.statPoints -= pts;
-    if (stat === 'hp') { pd.stats.hp += pts * 10; pd.currentHP += pts * 10; }
+    if (stat === 'hp') { pd.stats.hp += pts * 10; }
     else pd.stats[stat] += pts;
+
+    // Cap currentHP to new maxHP (do NOT restore health when allocating stat points)
+    const maxHP = getServerTotalStat(pd, 'hp');
+    pd.currentHP = Math.min(pd.currentHP, maxHP);
 
     players[socket.id].fighter = buildFighter(token);
     savePlayersData();
