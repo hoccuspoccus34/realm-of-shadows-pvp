@@ -464,8 +464,12 @@ io.on('connection', (socket) => {
     if (pts <= 0) { socket.emit('error', { message: 'No stat points available!' }); return; }
 
     pd.statPoints -= pts;
-    if (stat === 'hp') { pd.stats.hp += pts * 10; pd.currentHP += pts * 10; }
+    if (stat === 'hp') { pd.stats.hp += pts * 10; }
     else pd.stats[stat] += pts;
+
+    // Cap currentHP to new maxHP (do NOT restore health when allocating stat points)
+    const maxHP = getServerTotalStat(pd, 'hp');
+    pd.currentHP = Math.min(pd.currentHP, maxHP);
 
     players[socket.id].fighter = buildFighter(token);
     savePlayersData();
