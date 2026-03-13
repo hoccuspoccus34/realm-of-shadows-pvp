@@ -609,7 +609,7 @@ function allocateStat(stat, amt) {
   amt = amt || 1;
   if (typeof gameState === 'undefined' || !gameState || gameState.statPoints <= 0) return;
   if (isConnected && isRegistered) {
-    socket.emit('allocateStat', { stat, amt });
+    socket.emit('allocateStat', { stat, amt, currentHP: gameState.currentHP });
     if (typeof playSound === 'function') playSound('equip');
   }
 }

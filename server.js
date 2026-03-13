@@ -464,6 +464,12 @@ io.on('connection', (socket) => {
     const pts = Math.min(amt, pd.statPoints);
     if (pts <= 0) { socket.emit('error', { message: 'No stat points available!' }); return; }
 
+    // Sync currentHP from client to account for PvE combat damage
+    if (typeof data.currentHP === 'number' && data.currentHP >= 1) {
+      const currentMaxHP = getServerTotalStat(pd, 'hp');
+      pd.currentHP = Math.min(currentMaxHP, Math.max(1, Math.floor(data.currentHP)));
+    }
+
     pd.statPoints -= pts;
     if (stat === 'hp') { pd.stats.hp += pts * 10; }
     else pd.stats[stat] += pts;
