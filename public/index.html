@@ -1729,7 +1729,7 @@ function allocateStat(stat, amt) {
   if (!gameState || gameState.statPoints <= 0) return;
   if (isConnected && isRegistered) {
     // Server-authoritative: let server validate and apply, then sync back
-    socket.emit('allocateStat', { stat, amt });
+    socket.emit('allocateStat', { stat, amt, currentHP: gameState.currentHP });
     playSound('equip');
   } else {
     // Offline fallback (local only, not anti-cheat protected)
